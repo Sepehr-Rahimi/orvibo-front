@@ -1,0 +1,132 @@
+import Box from '@mui/material/Box';
+import { Link } from '@mui/material';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import CardHeader from '@mui/material/CardHeader';
+import ListItemText from '@mui/material/ListItemText';
+
+import { paths } from 'src/routes/paths';
+
+import { fCurrency } from 'src/utils/format-number';
+
+import { Scrollbar } from 'src/components/scrollbar';
+import { ColorPreview } from 'src/components/color-utils';
+
+// ----------------------------------------------------------------------
+
+export function OrderDetailsItems({ taxes, shipping, discount, items = [], totalAmount }) {
+  const subtotal = items.reduce((total, current) => +current.price * +current.quantity + +total, 0);
+
+  const renderTotal = (
+    <Stack
+      spacing={2}
+      alignItems="flex-end"
+      sx={{ p: 3, textAlign: 'right', typography: 'body2' }}
+      className="print-avoid-break"
+    >
+      <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>جمع جزء</Box>
+        <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subtotal) || '-'}</Box>
+      </Stack>
+
+      <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>هزینه حمل و نقل</Box>
+        <Box sx={{ width: 160, ...(shipping && { color: 'error.main' }) }}>
+          {shipping ? `- ${fCurrency(shipping)}` : '-'}
+        </Box>
+      </Stack>
+
+      <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>تخفیف</Box>
+        <Box sx={{ width: 160, ...(discount && { color: 'error.main' }) }}>
+          {discount ? `- ${fCurrency(discount)}` : '-'}
+        </Box>
+      </Stack>
+
+      {taxes && (
+        <Stack direction="row">
+          <Box sx={{ color: 'text.secondary' }}>مالیات</Box>
+          <Box sx={{ width: 160 }}>{taxes ? fCurrency(taxes) : '-'}</Box>
+        </Stack>
+      )}
+
+      <Stack direction="row" sx={{ typography: 'subtitle1' }}>
+        <div>جمع کل</div>
+        <Box sx={{ width: 160 }}>{fCurrency(totalAmount) || '-'}</Box>
+      </Stack>
+    </Stack>
+  );
+
+  return (
+    <Card>
+      <CardHeader
+        title="جزئیات"
+        // action={
+        //   <IconButton>
+        //     <Iconify icon="solar:pen-bold" />
+        //   </IconButton>
+        // }
+      />
+
+      <Scrollbar>
+        {items.map((item) => (
+          <Stack
+            className="print-avoid-break"
+            key={item.id}
+            direction="row"
+            alignItems="center"
+            sx={{
+              p: 3,
+              minWidth: 640,
+              borderBottom: (theme) => `dashed 2px ${theme.vars.palette.background.neutral}`,
+            }}
+          >
+            <Avatar
+              src={item?.product?.images[0]}
+              variant="rounded"
+              sx={{ width: 48, height: 48, mr: 2 }}
+            />
+            {/* {console.log(item)} */}
+            <ListItemText
+              primary={
+                <Link target="_blank" href={`${paths.product.details(item?.product?.slug)}`}>
+                  {item.product.name}
+                </Link>
+              }
+              secondary={
+                <Stack direction="row" spacing={2}>
+                  {item.product.model ? <Box>مدل : {item.product.model} </Box> : ''}
+                  {item.size ? <Box> | سایز : {item.size}</Box> : ''}
+                  {item.kind ? <Box> | نوع : {item.kind}</Box> : ''}
+                  {item.color ? (
+                    <Stack direction="row" spacing={2}>
+                      | رنگ :
+                      <ColorPreview colors={[item.color]} />
+                    </Stack>
+                  ) : (
+                    ''
+                  )}
+                </Stack>
+              }
+              primaryTypographyProps={{ typography: 'body2' }}
+              secondaryTypographyProps={{
+                component: 'span',
+                color: 'text.disabled',
+                mt: 0.5,
+              }}
+            />
+
+            <Box sx={{ typography: 'body2' }}>x{item.quantity}</Box>
+
+            <Box sx={{ width: 110, textAlign: 'right', typography: 'subtitle2' }}>
+              {fCurrency(item.price)}
+            </Box>
+          </Stack>
+        ))}
+      </Scrollbar>
+
+      {renderTotal}
+    </Card>
+  );
+}

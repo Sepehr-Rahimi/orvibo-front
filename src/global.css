@@ -1,0 +1,229 @@
+/** **************************************
+* Fonts: app
+*************************************** */
+/* @import '@fontsource/public-sans/400.css';
+@import '@fontsource/public-sans/500.css';
+@import '@fontsource/public-sans/600.css';
+@import '@fontsource/public-sans/700.css';
+@import '@fontsource/public-sans/800.css'; */
+
+/* @import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/barlow/800.css'; */
+
+/** **************************************
+* Fonts: options
+*************************************** */
+/* @import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
+@import '@fontsource/dm-sans/800.css';
+
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+
+@import '@fontsource/nunito-sans/400.css';
+@import '@fontsource/nunito-sans/500.css';
+@import '@fontsource/nunito-sans/600.css';
+@import '@fontsource/nunito-sans/700.css';
+@import '@fontsource/nunito-sans/800.css'; */
+
+/** **************************************
+* Plugins
+*************************************** */
+/* scrollbar */
+@import './components/scrollbar/styles.css';
+
+/* image */
+/* @import './components/image/styles.css'; */
+
+/* map */
+@import './components/map/styles.css';
+
+/* lightbox */
+@import './components/lightbox/styles.css';
+
+/* chart */
+@import './components/chart/styles.css';
+
+/** **************************************
+* Baseline
+*************************************** */
+@font-face {
+  font-family: 'Yekan';
+  src: url('../public/fonts/Yekan.eot');
+  src:
+    url('../public/fonts/Yekan.eot?#iefix') format('embedded-opentype'),
+    url('../public/fonts/Yekan.woff2') format('woff2'),
+    url('../public/fonts/Yekan.woff') format('woff'),
+    url('../public/fonts/Yekan.ttf') format('truetype'),
+    url('../public/fonts/Yekan.svg#Yekan') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+0600-06FF, U+FB50-FDFF, U+FE70-FEFF; /* Persian/Arabic characters*/
+  font-display: swap;
+}
+
+html {
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+body,
+#root,
+#root__layout {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 100%;
+  flex-direction: column;
+  font-family: var(--font-yekan), Tahoma, Arial, sans-serif;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+input[type='number']::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.dot-animation .dots::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  text-align: right;
+  animation: dots 1.35s steps(3, start) infinite;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@keyframes dots {
+  0% {
+    content: '';
+  }
+  33% {
+    content: '.';
+  }
+  66% {
+    content: '..';
+  }
+  100% {
+    content: '...';
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  /* مخفی کردن بخش‌های اضافی */
+  .layout__header,
+  .printOff,
+  .sidebar,
+  .navbar {
+    display: none !important;
+  }
+
+  .mnl__scrollbar__root {
+    display: contents;
+  }
+
+  /* .layout__main__content {
+    flex-direction: column-reverse;
+  } */
+
+  .print-user {
+    order: -1; /* bring user info above */
+  }
+  .print-items {
+    order: 0;
+  }
+
+  /* .print-only {
+    display: block;
+    text-align: center;
+    margin-top: 40px;
+    page-break-after: auto;
+  } */
+
+  .print-only {
+    display: block;
+  }
+  /* .MuiCard-root {
+    break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+
+  .MuiTable-root {
+    break-inside: auto; 
+    page-break-inside: auto;
+  }
+
+  .MuiTableRow-root {
+    break-inside: avoid; 
+    page-break-inside: avoid;
+  } */
+  /* 
+  .order-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  } */
+
+  .print-flex-container {
+    padding-left: 0.5cm;
+    padding-right: 0.5cm;
+    justify-content: space-between !important;
+    flex-direction: row !important ;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* پرینت کل صفحه رو به صورت تمام عرض */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* برای اینکه صفحه شبیه فاکتور وسط بیفته */
+  .print-container {
+    width: 100%;
+    padding: 20px;
+  }
+}
