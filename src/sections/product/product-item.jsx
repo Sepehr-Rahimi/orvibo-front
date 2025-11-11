@@ -10,6 +10,7 @@ import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
 import { Image } from 'src/components/image';
@@ -52,6 +53,15 @@ export function ProductItem({ product, sx }) {
   const linkTo = paths.product.details(slug);
 
   const handleAddCart = async () => {
+    // if (window._mtm) {
+    //   // console.log(window._mtm);
+    //   window._mtm.push({
+    //     event: 'product-view',
+    //     productName: product.name,
+    //     productId: product.id,
+    //   });
+    // }
+    trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
     const newProduct = {
       id,
       name,
@@ -108,7 +118,7 @@ export function ProductItem({ product, sx }) {
         <Fab
           color="warning"
           size="medium"
-          className="add-cart-btn"
+          className="add-to-cart-btn"
           onClick={handleAddCart}
           disabled={productStock?.quantity >= stock}
           sx={{
@@ -191,7 +201,7 @@ export function ProductItem({ product, sx }) {
   );
 
   return (
-    <Card sx={{ '&:hover .add-cart-btn': { opacity: 1 }, width: 1, ...sx }}>
+    <Card sx={{ '&:hover .add-to-cart-btn': { opacity: 1 }, width: 1, ...sx }}>
       {renderLabels}
 
       {renderImg}

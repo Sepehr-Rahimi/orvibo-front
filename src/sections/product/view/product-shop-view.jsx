@@ -11,6 +11,8 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useDebounce } from 'src/hooks/use-debounce';
 import { useSetState } from 'src/hooks/use-set-state';
 
+import { trackMatomoEvent } from 'src/utils/helper';
+
 import { PRODUCT_SORT_OPTIONS } from 'src/_mock';
 import { useSearchProducts } from 'src/actions/product';
 
@@ -25,6 +27,18 @@ import { ProductFiltersResult } from '../product-filters-result';
 // ----------------------------------------------------------------------
 
 export function ProductShopView({ products, ...params }) {
+  useEffect(() =>
+    trackMatomoEvent('ecommerce-info', {
+      ecommerce: {
+        productName: categoryName,
+        items: [
+          {
+            category: categoryName,
+          },
+        ],
+      },
+    })
+  );
   const checkout = useCheckoutContext();
 
   const router = useRouter();
@@ -52,6 +66,10 @@ export function ProductShopView({ products, ...params }) {
   const [searchQuery, setSearchQuery] = useState(searchParams?.get('search') ?? '');
 
   const debouncedQuery = useDebounce(searchQuery);
+
+  const categoryName = decodeURIComponent(pathName.split('/')[3]);
+
+  // console.log(categoryName);
 
   useEffect(() => {
     // if (searchParams.get('sort') !== sortBy && searchParams.get('order')!==) {
@@ -103,7 +121,8 @@ export function ProductShopView({ products, ...params }) {
     params: {
       sort: searchParams.get('sort'),
       order: searchParams.get('order'),
-      category: searchParams.get('category'),
+      // category:searchParams.get('category'),
+      category_name: categoryName,
       search: debouncedQuery,
     },
   });

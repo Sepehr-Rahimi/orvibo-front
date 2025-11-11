@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '@mui/material';
-
 import { useCheckoutContext } from './context';
 import { CheckoutProductCard } from './checkout-product-card';
 

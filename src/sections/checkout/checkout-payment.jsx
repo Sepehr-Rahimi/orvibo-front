@@ -1,4 +1,5 @@
 import { z as zod } from 'zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import LoadingButton from '@mui/lab/LoadingButton';
+
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import { createOrder } from 'src/actions/orders';
 import { validateDiscountCode } from 'src/actions/discountCodes';
@@ -93,6 +96,8 @@ export function CheckoutPayment() {
     formState: { isSubmitting },
   } = methods;
 
+  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout payment' }), []);
+
   // console.log(checkout);
 
   const onSubmit = handleSubmit(async (data) => {
@@ -121,6 +126,7 @@ export function CheckoutPayment() {
       });
 
       if (data.payment === 1 && res.status === 200) {
+        trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
         router.push(res.data.paymentUrl);
       }
       // checkout.onNextStep();

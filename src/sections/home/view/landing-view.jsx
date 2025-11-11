@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import { Box, Stack, Button, Container, Typography } from '@mui/material';
@@ -16,6 +16,8 @@ import TimeCountdown from 'src/components/time-countdown/timeCountdown';
 // import HomeHotDeals from '../home-hot-deals';
 // import HomeNewBlogs from '../home-new-blogs';
 // import HomeCategories from '../home-categories';
+import { useAuthContext } from 'src/auth/hooks';
+import { trackMatomoEvent } from 'src/utils/helper';
 import { AiSearchInput } from '../home-ai-search';
 // import HomeNewProducts from '../home-new-products';
 
@@ -55,6 +57,12 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
   //   limit: 4,
   //   featured: true,
   // });
+
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    if (user) trackMatomoEvent('signin-success', { userFullName: user?.displayName });
+  });
 
   return (
     // const { products, productsLoading } = useGetProducts();

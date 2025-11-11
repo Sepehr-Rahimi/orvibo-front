@@ -58,7 +58,7 @@ const ProductCard = ({ product, items, onAddCart, disableActions }) => {
 
   const values = watch();
 
-  console.log('watch value :', values);
+  // console.log('watch value :', values);
 
   const handleAddCart = useCallback(() => {
     try {

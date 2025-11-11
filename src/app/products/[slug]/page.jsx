@@ -60,7 +60,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { slug: productSlug } = await params;
 
-  console.log(productSlug);
+  // console.log(productSlug);
 
   const { product } = await getProductBySlug(productSlug);
   const similarProducts = await getSimilarProducts(product.id);

@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { formHelperTextClasses } from '@mui/material/FormHelperText';
 
@@ -15,6 +16,7 @@ import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -54,9 +56,10 @@ export function ProductDetailsSummary({
     code,
     label,
     slug,
-    is_publishedو,
+    is_published,
   } = product;
 
+  const theme = useTheme();
   // const isMaxQuantity =
   //   !!items?.length &&
   //   items.filter((item) => item.id === id)?.map((item) => item.quantity)[0] >= stock;
@@ -92,7 +95,7 @@ export function ProductDetailsSummary({
   }, [product]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    // console.log(data);
     try {
       onAddCart?.({
         ...data,
@@ -104,6 +107,7 @@ export function ProductDetailsSummary({
         price: discount_price > 0 ? discount_price : price,
         subtotal: (discount_price > 0 ? discount_price : price) * data.quantity,
       });
+      trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
       onGotoStep?.(0);
       router.push(paths.product.checkout);
     } catch (error) {
@@ -124,14 +128,17 @@ export function ProductDetailsSummary({
         subtotal: (discount_price > 0 ? discount_price : price) * values.quantity,
       });
 
+      trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
+
       if (totalQuantity + values.quantity + values.quantity > stock) setValue('quantity', 0);
     } catch (error) {
       console.error(error);
     }
-  }, [onAddCart, values, discount_price, code, model, price, stock, slug, setValue, totalQuantity]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onAddCart, values, discount_price, code, model, slug, price, totalQuantity, stock, setValue]);
 
   const renderPrice = (
-    <Box sx={{ typography: 'h5' }}>
+    <Box sx={{ typography: 'h5', color: theme.palette.primary.main }}>
       {discount_price > 0 ? (
         <>
           <Box
@@ -280,6 +287,7 @@ export function ProductDetailsSummary({
   const renderActions = (
     <Stack direction="row" spacing={2}>
       <Button
+        className="add-to-cart-btn"
         fullWidth
         disabled={isMaxQuantity || disableActions}
         size="large"
@@ -293,6 +301,7 @@ export function ProductDetailsSummary({
       </Button>
 
       <Button
+        className="add-to-cart-btn"
         fullWidth
         size="large"
         type="submit"
@@ -358,8 +367,6 @@ export function ProductDetailsSummary({
 
           {/* {renderRating} */}
 
-          {renderPrice}
-
           {renderSubDescription}
         </Stack>
 
@@ -374,6 +381,8 @@ export function ProductDetailsSummary({
         {renderQuantity}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+
+        {renderPrice}
 
         {renderActions}
 

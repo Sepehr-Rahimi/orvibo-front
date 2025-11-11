@@ -123,3 +123,11 @@ export const merge = (target, ...sources) => {
 
   return merge(target, ...sources);
 };
+
+// ----------------------------------------------------------------------
+
+export function trackMatomoEvent(eventName, data = {}) {
+  if (window._mtm) {
+    window._mtm.push({ event: eventName, ...data });
+  }
+}

@@ -35,6 +35,7 @@ export const NewProductSchema = zod.object({
   code: zod.string().min(1, { message: 'کد محصول الزامی است!' }),
   model: zod.string().min(1, { message: 'مدل محصول الزامی است!' }),
   stock: zod.number().min(0, { message: 'موجودی الزامی است!' }),
+  slug: zod.string().min(1, { message: 'اسلاگ محصول الزامی است' }),
   category_id: zod.number().min(1, { message: 'دسته بندی الزامی است!' }),
   brand_id: zod.string().min(1, { message: 'برند الزامی است!' }),
   colors: zod.string().array().nonempty({ message: 'حداقل یک رنگ انتخاب شود' }),

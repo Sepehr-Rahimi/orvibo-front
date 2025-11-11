@@ -2,17 +2,19 @@ import React, { useEffect } from 'react';
 
 import { Box, Button, Divider, Typography } from '@mui/material';
 
-import { useLocalStorage } from 'src/hooks/use-local-storage';
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import OrderCompleteIllustration from 'src/assets/illustrations/order-complete-illustration';
 
 import { Iconify } from 'src/components/iconify';
-import { STORAGE_KEY } from 'src/components/settings';
+
 import { useCheckoutContext } from '../checkout/context';
 
 export const PaymentSuccess = ({ refId }) => {
   const checkout = useCheckoutContext();
   useEffect(() => checkout.resetCart());
+
+  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'purchased' }));
 
   return (
     <Box

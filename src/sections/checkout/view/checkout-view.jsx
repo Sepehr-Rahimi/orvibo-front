@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
+import { trackMatomoEvent } from 'src/utils/helper';
+
 import { getProduct } from 'src/actions/product-ssr';
 import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
 
@@ -23,6 +25,14 @@ export function CheckoutView() {
 
   useEffect(() => {
     checkout.initialStep();
+
+    // if (window._mtm) {
+    //   // console.log(window._mtm);
+    //   window._mtm.push({
+    //     event: 'checkout-start',
+    //   });
+    // }
+    trackMatomoEvent('checkout-start');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

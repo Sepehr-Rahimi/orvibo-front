@@ -50,7 +50,28 @@ const LandingPage = async () => {
   ]);
   // console.log('products :', products);
   // console.log('banners :', banners);
-  return <LandingView featureProducts={featureProducts?.products} banners={banners?.data} />;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: CONFIG.site.name,
+    url: CONFIG.site.baseURL,
+    logo: `${CONFIG.site.baseURL}/logo/logo-full.png`,
+    sameAs: ['https://www.instagram.com/noyanstore.ir'],
+    description: 'نویان استور مرجع خرید آنلاین انواع گجت و لوازم دیجیتال با قیمت مناسب و پشتیبانی.',
+  };
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+      <LandingView featureProducts={featureProducts?.products} banners={banners?.data} />{' '}
+    </>
+  );
 };
 // const LandingPage = () => <SplashScreen />;
 

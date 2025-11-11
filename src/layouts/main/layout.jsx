@@ -7,6 +7,8 @@ import { usePathname } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { MatomoTracker } from 'src/components/matomo/matomoTracker';
+
 import { CartIcon } from 'src/sections/product/components/cart-icon';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -21,7 +23,7 @@ import { navData as mainNavData } from '../config-nav-main';
 
 // ----------------------------------------------------------------------
 
-export function MainLayout({ sx, data, children, cartIcon }) {
+export function MainLayout({ sx, data, children, cartIcon, productInfo }) {
   const theme = useTheme();
 
   const pathname = usePathname();
@@ -39,6 +41,8 @@ export function MainLayout({ sx, data, children, cartIcon }) {
   return (
     <Box>
       {/* {cartIcon && <CartIcon />} */}
+      <MatomoTracker product={productInfo} />
+
       <NavMobile data={navData} open={mobileNavOpen.value} onClose={mobileNavOpen.onFalse} />
 
       <LayoutSection

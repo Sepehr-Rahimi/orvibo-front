@@ -1,11 +1,12 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
+import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -13,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 
 import { useTabs } from 'src/hooks/use-tabs';
+
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import { varAlpha } from 'src/theme/styles';
 import { useGetParentCategories } from 'src/actions/categories';
@@ -67,6 +70,31 @@ export function ProductShopDetailsView({ product, similarProducts }) {
 
   const tabs = useTabs('description');
 
+  useEffect(() => {
+    // Send custom event to Matomo Tag Manager
+    // if (window._mtm) {
+    //   // console.log(window._mtm);
+    //   window._mtm.push({
+    //     event: 'product-view',
+    //     productName: product.name,
+    //     productId: product.id,
+    //   });
+    // }
+    trackMatomoEvent('ecommerce-info', {
+      productName: product.name,
+      ecommerce: {
+        items: [
+          {
+            sku: product.id,
+            name: product.name,
+            price: product.price,
+            category: parentCategories[0],
+          },
+        ],
+      },
+    });
+  }, [product, parentCategories]);
+
   return (
     <Container sx={{ mt: 5, mb: 10 }}>
       {/* <CartIcon totalItems={checkout.totalItems} /> */}
@@ -86,6 +114,7 @@ export function ProductShopDetailsView({ product, similarProducts }) {
       />
 
       <Grid container spacing={{ xs: 3, md: 5, lg: 8 }}>
+        {/* <Button className="test-button">test click</Button> */}
         <Grid xs={12} md={6} lg={7}>
           <Suspense fallback={<Box>loading...</Box>}>
             <ProductDetailsCarousel images={product?.images} />

@@ -1,28 +1,15 @@
+import { Box, Divider, Link, Stack, Typography } from '@mui/material';
 import React from 'react';
-
-import { Box, Card, Link, Stack, Divider, IconButton, Typography } from '@mui/material';
-
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-
-import { fCurrency } from 'src/utils/format-number';
-import { trackMatomoEvent } from 'src/utils/helper';
-
-import { Image } from 'src/components/image';
-import { Iconify } from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
+import { Image } from 'src/components/image';
+import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
+import { IncrementerButton } from 'src/sections/product/components/incrementer-button';
+import { fCurrency } from 'src/utils/format-number';
 
-import { IncrementerButton } from '../product/components/incrementer-button';
-
-export const CheckoutProductCard = ({
-  product,
-  onDelete,
-  onDecreaseQuantity,
-  onIncreaseQuantity,
-}) => {
-  const productCurrentPrice =
-    product.discount_price && product.discount_price > 0 ? product.discount_price : product.price;
-
+export const OrderItemCard = ({ item }) => {
+  const i = 0;
+  // const itemCurrentPrice = item.discount_price > 0 ? item.discount_price : item.price
   return (
     <Box
       sx={{
@@ -47,8 +34,8 @@ export const CheckoutProductCard = ({
           }}
         >
           <Image
-            alt={product.name}
-            src={product.coverUrl}
+            alt={item.product.name}
+            src={item.product.images[0]}
             ratio="1/1"
             sx={{ transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.05)' } }}
           />
@@ -58,7 +45,7 @@ export const CheckoutProductCard = ({
         <Stack spacing={1.1} flex={1} justifyContent="center" alignItems="start">
           <Link
             component={RouterLink}
-            href={paths.product.details(product.slug)}
+            href={paths.product.details(item.product.slug)}
             color="inherit"
             variant="subtitle2"
             sx={{
@@ -72,27 +59,30 @@ export const CheckoutProductCard = ({
               lineHeight: 1.4,
             }}
           >
-            {product.name}
+            {item.product.name}
           </Link>
 
-          <ColorPreview colors={[product.colors]} />
+          <ColorPreview colors={[item.color]} />
 
-          {product.discount_price > 0 ? (
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography fontWeight={600}>{fCurrency(product.discount_price)}</Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: 'text.disabled',
-                  textDecoration: 'line-through',
-                }}
-              >
-                {fCurrency(product.price)}
-              </Typography>
-            </Stack>
-          ) : (
-            <Typography fontWeight={600}>{fCurrency(product.price)}</Typography>
-          )}
+          <Stack justifyContent="space-between" direction="row" width={1}>
+            {item.discount_price > 0 ? (
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography fontWeight={600}>{fCurrency(item.discount_price)}</Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.disabled',
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  {fCurrency(item.price)}
+                </Typography>
+              </Stack>
+            ) : (
+              <Typography fontWeight={600}>{fCurrency(item.price)}</Typography>
+            )}
+            <Typography fontWeight={600} variant="subtitle2">{`x${item.quantity}`}</Typography>
+          </Stack>
         </Stack>
       </Stack>
 
@@ -103,11 +93,11 @@ export const CheckoutProductCard = ({
         <Typography variant="body2">
           قیمت کل:{' '}
           <Typography component="span" fontWeight={300} color="text.primary">
-            {fCurrency(productCurrentPrice * product.quantity)}
+            {fCurrency(item.price * item.quantity)}
           </Typography>
         </Typography>
 
-        <Stack direction="row" alignItems="center" spacing={1}>
+        {/* <Stack direction="row" alignItems="center" spacing={1}>
           <IncrementerButton
             quantity={product.quantity}
             onDecrease={() => onDecreaseQuantity(product.cartItemId)}
@@ -116,14 +106,7 @@ export const CheckoutProductCard = ({
             disabledIncrease={product.quantity >= product.stock}
           />
           <IconButton
-            className="delete-from-cart"
-            onClick={() => {
-              trackMatomoEvent('delete-from-cart', {
-                productName: product.name,
-                productId: product.id,
-              });
-              onDelete(product.cartItemId);
-            }}
+            onClick={() => onDelete(product.cartItemId)}
             size="small"
             sx={{
               ml: 0.5,
@@ -131,7 +114,7 @@ export const CheckoutProductCard = ({
           >
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>
-        </Stack>
+        </Stack> */}
       </Stack>
     </Box>
   );

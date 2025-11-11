@@ -13,7 +13,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (typeof window !== 'undefined') {
-      toast?.error(error.response?.data?.message || error?.message);
+      toast?.error(error.response?.data?.message || error?.message || 'خطایی رخ داد');
     }
     return Promise.reject((error.response && error.response.data) || 'Something went wrong!');
   }
@@ -141,6 +141,7 @@ export const endpoints = {
     adminList: '/api/products/admin_list',
     one: '/api/products/one',
     name: '/api/products/name',
+    slug: '/api/products/slug',
     adminOne: '/api/products/admin_one',
     search: '/api/products/search',
     create: '/api/products/create',

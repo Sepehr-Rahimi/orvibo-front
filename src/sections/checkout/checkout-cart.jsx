@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -6,6 +8,8 @@ import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
+
+import { trackMatomoEvent } from 'src/utils/helper';
 
 import { CONFIG } from 'src/config-global';
 
@@ -23,6 +27,8 @@ export function CheckoutCart() {
   const checkout = useCheckoutContext();
 
   const empty = !checkout.items.length;
+
+  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout overview' }), []);
 
   return (
     <Grid container spacing={3}>

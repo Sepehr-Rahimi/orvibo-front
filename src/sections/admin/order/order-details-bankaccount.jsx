@@ -6,14 +6,14 @@ import { getBankAccount } from 'src/actions/bankAccounts';
 
 export const OrderDetailsBankAccounts = () => {
   const [bankAccounts, setBankAccounts] = useState([]);
-  const [chooseAccount, setChooseAccount] = useState();
+  const [chooseAccount, setChooseAccount] = useState(false);
 
   useEffect(() => {
     getBankAccount().then((res) => setBankAccounts(res.account));
   }, []);
 
   return (
-    <Card className="print-avoid-break">
+    <Card className={`print-avoid-break ${!chooseAccount && 'printOff'}`}>
       <Typography sx={{ px: 1, py: 1 }} variant="body1">
         اطلاعات حساب بانکی
       </Typography>
@@ -31,9 +31,13 @@ export const OrderDetailsBankAccounts = () => {
               </Typography>
               <Typography variant="body2">شماره شبا : {account.sheba_number}</Typography>
               <Button
-                className="printOff "
+                className="printOff"
                 variant={chooseAccount === account.card_number ? 'outlined' : 'contained'}
-                onClick={() => setChooseAccount(account.card_number)}
+                onClick={() =>
+                  setChooseAccount((prev) =>
+                    prev === account.card_number ? false : account.card_number
+                  )
+                }
               >
                 انتخاب
               </Button>

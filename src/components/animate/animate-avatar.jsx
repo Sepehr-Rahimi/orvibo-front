@@ -21,7 +21,7 @@ export function AnimateAvatar({ sx, slotProps, children, width = 40, ...other })
         alignItems: 'center',
         display: 'inline-flex',
         justifyContent: 'center',
-        bgcolor: 'white',
+        bgcolor: 'transparent',
         ...sx,
       }}
       {...other}

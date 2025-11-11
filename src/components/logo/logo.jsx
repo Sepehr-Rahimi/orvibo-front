@@ -9,6 +9,8 @@ import { useTheme } from '@mui/material/styles';
 
 import { RouterLink } from 'src/routes/components';
 
+import { trackMatomoEvent } from 'src/utils/helper';
+
 import { logoClasses } from './classes';
 import logo from '../../../public/logo/logo-single.png';
 
@@ -84,6 +86,7 @@ export const Logo = forwardRef(
         }
       >
         <Box
+          onClick={() => trackMatomoEvent('nav-clicked', { navTitle: 'store logo' })}
           ref={ref}
           component={RouterLink}
           href={href}
