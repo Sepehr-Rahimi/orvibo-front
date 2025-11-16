@@ -61,7 +61,7 @@ export function ProductItem({ product, sx }) {
   const prices = variants.map((singleVariant) =>
     getCurrentPrice(singleVariant.price, singleVariant.discount_price)
   );
-  // console.log(prices);
+  console.log(variants);
 
   const priceRange = getPriceRange(prices);
   // console.log(priceRange);
@@ -219,7 +219,7 @@ export function ProductItem({ product, sx }) {
           ) : (
             <Box component="span">{fCurrency(choosedVariant.price)}</Box>
           )} */}
-          <Box component="span">{`${fNumber(priceRange[0])} - ${fNumber(priceRange[1])}`}</Box>
+          <Box component="span">{`${fCurrency(priceRange[0])} - ${fCurrency(priceRange[1])}`}</Box>
         </Stack>
       </Stack>
     </Stack>

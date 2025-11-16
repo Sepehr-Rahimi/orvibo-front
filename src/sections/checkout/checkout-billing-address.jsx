@@ -76,7 +76,7 @@ export function CheckoutBillingAddress() {
                           addressForm.onTrue();
                         }}
                         size="small"
-                        color="secondary"
+                        color="primary"
                         variant="text"
                         sx={{ mx: 1 }}
                       >

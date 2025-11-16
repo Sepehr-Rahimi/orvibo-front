@@ -20,6 +20,7 @@ import { useCheckoutContext } from './context';
 import { CheckoutSummary } from './checkout-summary';
 import { CheckoutCartProductList } from './checkout-cart-product-list';
 import { CheckoutProductListWrapper } from './checkout-product-list-wrapper';
+import { CheckoutCartServiceOptions } from './checkout-cart-service-options';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ export function CheckoutCart() {
             // />
           )}
         </Card>
+        <CheckoutCartServiceOptions checkout={checkout} />
 
         <Button
           component={RouterLink}
@@ -81,6 +83,8 @@ export function CheckoutCart() {
           total={checkout.total}
           discount={checkout.discount}
           subtotal={checkout.subtotal}
+          services={checkout.services}
+          guarantee={checkout.guarantee}
           onApplyDiscount={checkout.onApplyDiscount}
         />
 

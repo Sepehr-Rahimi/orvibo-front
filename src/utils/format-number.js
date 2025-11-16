@@ -2,7 +2,7 @@ import { formatNumberLocale } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
-const DEFAULT_LOCALE = { code: 'fa-IR', currency: 'IRR' };
+const DEFAULT_LOCALE = { code: 'en-US', currency: 'USD' };
 
 function processInput(inputValue) {
   if (inputValue == null || Number.isNaN(inputValue)) return null;
@@ -12,7 +12,9 @@ function processInput(inputValue) {
 // ----------------------------------------------------------------------
 
 export function fNumber(inputValue, options) {
-  const locale = formatNumberLocale() || DEFAULT_LOCALE;
+  const locale =
+    // formatNumberLocale() ||
+    DEFAULT_LOCALE;
 
   const number = processInput(inputValue);
   if (number === null) return '';
@@ -42,7 +44,7 @@ export function fCurrency(inputValue, options) {
   //   ...options,
   // }).format(number);
 
-  const fm = `${fNumber(inputValue)} تومان`;
+  const fm = `$${fNumber(inputValue)}`;
 
   return fm;
 }

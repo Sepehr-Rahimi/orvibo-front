@@ -34,6 +34,7 @@ export const createProduct = async ({
   label,
   is_published,
   images,
+  weight,
   variants,
 }) => {
   try {
@@ -57,6 +58,7 @@ export const createProduct = async ({
       code,
       label,
       is_published,
+      weight,
       variants,
     };
 
@@ -112,6 +114,7 @@ export const updateProduct = async ({
   images,
   id,
   orderImages,
+  weight,
   variants,
 }) => {
   try {
@@ -136,6 +139,7 @@ export const updateProduct = async ({
       label,
       is_published,
       orderImages,
+      weight,
       variants,
     };
 

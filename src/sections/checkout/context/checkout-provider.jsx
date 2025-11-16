@@ -30,6 +30,8 @@ const initialState = {
   typeOfShipping: 1,
   typeOfPayment: 1,
   billing: null,
+  services: 0,
+  guarantee: 0,
   totalItems: 0,
 };
 
@@ -69,8 +71,19 @@ function Container({ children }) {
 
     setField('subtotal', subtotal);
     setField('totalItems', totalItems);
-    setField('total', state.subtotal - state.discount + state.shipping);
-  }, [setField, state.discount, state.items, state.shipping, state.subtotal]);
+    setField(
+      'total',
+      state.subtotal - state.discount + state.shipping + state.guarantee + state.services
+    );
+  }, [
+    setField,
+    state.discount,
+    state.items,
+    state.shipping,
+    state.subtotal,
+    state.guarantee,
+    state.services,
+  ]);
 
   useEffect(() => {
     const restoredValue = getStorage(STORAGE_KEY);
@@ -179,6 +192,20 @@ function Container({ children }) {
     [onNextStep, setField]
   );
 
+  const onAddGuarantee = useCallback(
+    (price) => {
+      setField('guarantee', price);
+    },
+    [setField]
+  );
+
+  const onAddService = useCallback(
+    (price) => {
+      setField('services', price);
+    },
+    [setField]
+  );
+
   const onApplyDiscount = useCallback(
     (discount, code) => {
       setField('discount', discount);
@@ -198,6 +225,13 @@ function Container({ children }) {
   const onApplyPayment = useCallback(
     (typeOfPayment) => {
       setField('typeOfPayment', typeOfPayment);
+    },
+    [setField]
+  );
+
+  const onDeleteField = useCallback(
+    (fieldName) => {
+      setField(fieldName, null);
     },
     [setField]
   );
@@ -233,6 +267,8 @@ function Container({ children }) {
       //
       completed,
       //
+      onDeleteField,
+      //
       onAddToCart,
       onDeleteCart,
       //
@@ -249,6 +285,9 @@ function Container({ children }) {
       onBackStep,
       onNextStep,
       onGotoStep,
+      //
+      onAddGuarantee,
+      onAddService,
     }),
     [
       state,
@@ -272,6 +311,9 @@ function Container({ children }) {
       onIncreaseQuantity,
       onApplyPayment,
       onUpdateItems,
+      onAddService,
+      onAddGuarantee,
+      onDeleteField,
     ]
   );
 

@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { fCurrency } from 'src/utils/format-number';
+import { calculatePercentage } from 'src/utils/helper';
 
 import { validateDiscountCode } from 'src/actions/discountCodes';
 
@@ -21,7 +22,16 @@ import { useCheckoutContext } from './context';
 
 // ----------------------------------------------------------------------
 
-export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, onApplyDiscount }) {
+export function CheckoutSummary({
+  total,
+  onEdit,
+  discount,
+  subtotal,
+  shipping,
+  onApplyDiscount,
+  guarantee,
+  services,
+}) {
   const displayShipping = shipping !== null ? '-' : '-';
 
   const checkout = useCheckoutContext();
@@ -75,10 +85,10 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
             variant="body2"
             sx={{ flexGrow: 1, color: 'text.secondary' }}
           >
-            تخفیف
+            هزینه حمل و ترخیص
           </Typography>
           <Typography component="span" variant="subtitle2">
-            {discount ? `${fCurrency(discount)}-` : '-'}
+            {fCurrency(calculatePercentage(40, subtotal))}
           </Typography>
         </Box>
 
@@ -88,10 +98,48 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
             variant="body2"
             sx={{ flexGrow: 1, color: 'text.secondary' }}
           >
-            هزینه ارسال
+            گارانتی تجهیزات
           </Typography>
           <Typography component="span" variant="subtitle2">
-            {shipping ? fCurrency(shipping) : displayShipping}
+            {guarantee ? fCurrency(guarantee) : displayShipping}
+          </Typography>
+        </Box>
+        <Box display="flex">
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ flexGrow: 1, color: 'text.secondary' }}
+          >
+            خدمات نصب و راه اندازی
+          </Typography>
+          <Typography component="span" variant="subtitle2">
+            {services ? fCurrency(services) : displayShipping}
+          </Typography>
+        </Box>
+
+        <Box display="flex">
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ flexGrow: 1, color: 'text.secondary' }}
+          >
+            سود بازرگانی
+          </Typography>
+          <Typography component="span" variant="subtitle2">
+            {fCurrency(calculatePercentage(10, subtotal))}
+          </Typography>
+        </Box>
+
+        <Box display="flex">
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ flexGrow: 1, color: 'text.secondary' }}
+          >
+            تخفیف
+          </Typography>
+          <Typography component="span" variant="subtitle2">
+            {discount ? `${fCurrency(discount)}-` : '-'}
           </Typography>
         </Box>
 
@@ -106,7 +154,7 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
             <Typography
               component="span"
               variant="subtitle1"
-              sx={{ display: 'block', color: 'error.main' }}
+              sx={{ display: 'block', color: 'white' }}
             >
               {fCurrency(total)}
             </Typography>

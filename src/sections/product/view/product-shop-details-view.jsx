@@ -71,28 +71,28 @@ export function ProductShopDetailsView({ product, similarProducts }) {
   const tabs = useTabs('description');
 
   // useEffect(() => {
-  //   // Send custom event to Matomo Tag Manager
-  //   // if (window._mtm) {
-  //   //   // console.log(window._mtm);
-  //   //   window._mtm.push({
-  //   //     event: 'product-view',
-  //   //     productName: product.name,
-  //   //     productId: product.id,
-  //   //   });
-  //   // }
-  //   // trackMatomoEvent('ecommerce-info', {
-  //   //   productName: product.name,
-  //   //   ecommerce: {
-  //   //     items: [
-  //   //       {
-  //   //         sku: product.id,
-  //   //         name: product.name,
-  //   //         price: product.price,
-  //   //         category: parentCategories[0],
-  //   //       },
-  //   //     ],
-  //   //   },
-  //   // });
+  // Send custom event to Matomo Tag Manager
+  // if (window._mtm) {
+  //   // console.log(window._mtm);
+  //   window._mtm.push({
+  //     event: 'product-view',
+  //     productName: product.name,
+  //     productId: product.id,
+  //   });
+  // }
+  // trackMatomoEvent('ecommerce-info', {
+  //   productName: product.name,
+  //   ecommerce: {
+  //     items: [
+  //       {
+  //         sku: product.id,
+  //         name: product.name,
+  //         price: product.price,
+  //         category: parentCategories[0],
+  //       },
+  //     ],
+  //   },
+  // });
   // }, [product, parentCategories]);
 
   return (

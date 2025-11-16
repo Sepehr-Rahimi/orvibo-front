@@ -61,6 +61,7 @@ export function ProductDetailsSummary({
     label,
     slug,
     is_published,
+    weight,
     variants,
   } = product;
 
@@ -361,15 +362,21 @@ export function ProductDetailsSummary({
       component="span"
       sx={{
         typography: 'overline',
-        color:
-          (choosedVariant.stock === 0 && 'error.main') ||
-          (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'warning.main') ||
-          'success.main',
+        // color:
+        //   (choosedVariant.stock === 0 && 'error.main') ||
+        //   (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'warning.main') ||
+        //   'success.main',
       }}
     >
-      {(choosedVariant.stock === 0 && 'ناموجود') ||
-        (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'تعداد محدود')}
+      {
+        choosedVariant.stock === 0 && 'ناموجود'
+        // (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'تعداد محدود')
+      }
     </Box>
+  );
+
+  const renderProperties = (
+    <Box my={2}>{weight && <Typography variant="subtitle2">وزن : {weight}kg</Typography>}</Box>
   );
 
   return (
@@ -387,6 +394,7 @@ export function ProductDetailsSummary({
             <Link component={RouterLink} href={paths.product.byBrand(brand?.name)}>
               {brand?.name}
             </Link>
+            {renderProperties}
           </Stack>
 
           {/* {renderRating} */}
