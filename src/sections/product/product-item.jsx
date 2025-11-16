@@ -9,13 +9,18 @@ import Tooltip from '@mui/material/Tooltip';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-import { fCurrency } from 'src/utils/format-number';
-import { trackMatomoEvent } from 'src/utils/helper';
+import { fNumber, fCurrency } from 'src/utils/format-number';
+// import { trackMatomoEvent } from 'src/utils/helper';
+
+import { useState } from 'react';
+
+import { getPriceRange, getCurrentPrice } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
+import { VariantPickup } from 'src/components/variant-pickup/variant-pickup';
 
 import { useCheckoutContext } from '../checkout/context';
 import { ProductImagePlaceHolder } from './product-skeleton';
@@ -27,12 +32,12 @@ export function ProductItem({ product, sx }) {
 
   const {
     name,
-    price,
-    discount_price,
+    // price,
+    // discount_price,
     summary,
-    colors,
-    sizes,
-    stock,
+    // colors,
+    // sizes,
+    // stock,
     main_features,
     description,
     kinds,
@@ -46,46 +51,61 @@ export function ProductItem({ product, sx }) {
     id,
     images,
     slug,
+    variants,
   } = product;
 
   const productStock = checkout.items.find((prod) => prod.id === id);
 
   const linkTo = paths.product.details(slug);
 
-  const handleAddCart = async () => {
-    // if (window._mtm) {
-    //   // console.log(window._mtm);
-    //   window._mtm.push({
-    //     event: 'product-view',
-    //     productName: product.name,
-    //     productId: product.id,
-    //   });
-    // }
-    trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
-    const newProduct = {
-      id,
-      name,
-      discount_price,
-      colors: colors?.length ? colors[0] : undefined,
-      sizes: sizes?.length ? sizes[0] : undefined,
-      stock,
-      kinds: kinds?.length ? kinds[0] : undefined,
-      model,
-      category_id,
-      brand_id,
-      code,
-      label,
-      quantity: 1,
-      price: discount_price > 0 ? discount_price : price,
-      coverUrl: images[0],
-      slug,
-    };
-    try {
-      checkout.onAddToCart(newProduct);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const prices = variants.map((singleVariant) =>
+    getCurrentPrice(singleVariant.price, singleVariant.discount_price)
+  );
+  // console.log(prices);
+
+  const priceRange = getPriceRange(prices);
+  // console.log(priceRange);
+
+  const colors = [...new Set(variants.map((v) => v.color))];
+
+  // const handleAddCart = async () => {
+  // if (window._mtm) {
+  //   // console.log(window._mtm);
+  //   window._mtm.push({
+  //     event: 'product-view',
+  //     productName: product.name,
+  //     productId: product.id,
+  //   });
+  // }
+  // trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
+  //   const newProduct = {
+  //     id,
+  //     name,
+  //     discount_price: choosedVariant?.discount_price,
+  //     colors: choosedVariant.color,
+  //     sizes: choosedVariant?.sizes?.length ? choosedVariant?.sizes[0] : undefined,
+  //     stock: choosedVariant.stock,
+  //     kinds: kinds?.length ? kinds[0] : undefined,
+  //     model,
+  //     category_id,
+  //     brand_id,
+  //     code,
+  //     label,
+  //     quantity: 1,
+  //     price:
+  //       choosedVariant.discount_price > 0 ? choosedVariant.discount_price : choosedVariant.price,
+  //     coverUrl: images[0],
+  //     slug,
+  //     variant_id: choosedVariant.id,
+  //   };
+  //   try {
+  //     checkout.onAddToCart(newProduct);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const [choosedVariant, setChoosedVariant] = useState({ ...variants[0] });
 
   const renderLabels = label && (
     <Stack
@@ -114,13 +134,13 @@ export function ProductItem({ product, sx }) {
 
   const renderImg = (
     <Box sx={{ position: 'relative', p: 1 }}>
-      {!!stock && (
+      {/* {!!choosedVariant.stock && (
         <Fab
           color="warning"
           size="medium"
           className="add-to-cart-btn"
           onClick={handleAddCart}
-          disabled={productStock?.quantity >= stock}
+          disabled={productStock?.quantity >= choosedVariant.stock}
           sx={{
             right: 16,
             bottom: 16,
@@ -136,20 +156,23 @@ export function ProductItem({ product, sx }) {
         >
           <Iconify icon="solar:cart-plus-bold" width={24} />
         </Fab>
-      )}
+      )} */}
 
-      <Tooltip title={!stock && 'ناموجود'} placement="bottom-end">
-        {images[0] ? (
-          <Image
-            alt={name}
-            src={images[0]}
-            ratio="1/1"
-            sx={{ borderRadius: 1.5, ...(!stock && { opacity: 0.48, filter: 'grayscale(1)' }) }}
-          />
-        ) : (
-          <ProductImagePlaceHolder />
-        )}
-      </Tooltip>
+      {/* <Tooltip title={!choosedVariant.stock && 'ناموجود'} placement="bottom-end"> */}
+      {images[0] ? (
+        <Image
+          alt={name}
+          src={images[0]}
+          ratio="1/1"
+          sx={{
+            borderRadius: 1.5,
+            // ...(!choosedVariant.stock && { opacity: 0.48, filter: 'grayscale(1)' }),
+          }}
+        />
+      ) : (
+        <ProductImagePlaceHolder />
+      )}
+      {/* </Tooltip> */}
     </Box>
   );
 
@@ -177,6 +200,7 @@ export function ProductItem({ product, sx }) {
         alignItems="center"
         justifyContent="space-between"
       >
+        {/* <ColorPreview colors={colors} /> */}
         <ColorPreview colors={colors} />
 
         <Stack
@@ -185,16 +209,17 @@ export function ProductItem({ product, sx }) {
           spacing={0.5}
           sx={{ typography: 'subtitle1', fontSize: 'min(3vw, 14px)', textWrap: 'nowrap' }}
         >
-          {discount_price > 0 ? (
+          {/* {choosedVariant.discount_price > 0 ? (
             <>
-              <Box component="span">{fCurrency(discount_price)}</Box>
+              <Box component="span">{fCurrency(choosedVariant.discount_price)}</Box>
               <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
-                {fCurrency(price)}
+                {fCurrency(choosedVariant.price)}
               </Box>
             </>
           ) : (
-            <Box component="span">{fCurrency(price)}</Box>
-          )}
+            <Box component="span">{fCurrency(choosedVariant.price)}</Box>
+          )} */}
+          <Box component="span">{`${fNumber(priceRange[0])} - ${fNumber(priceRange[1])}`}</Box>
         </Stack>
       </Stack>
     </Stack>

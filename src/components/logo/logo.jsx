@@ -9,15 +9,15 @@ import { useTheme } from '@mui/material/styles';
 
 import { RouterLink } from 'src/routes/components';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { logoClasses } from './classes';
-import logo from '../../../public/logo/logo-single.png';
+import logo from '../../../public/logo/logo-orvibo.svg';
 
 // ----------------------------------------------------------------------
 
 export const Logo = forwardRef(
-  ({ width = 40, height = 40, disableLink = false, className, href = '/', sx, ...other }, ref) => {
+  ({ width = 80, height = 40, disableLink = false, className, href = '/', sx, ...other }, ref) => {
     const theme = useTheme();
 
     const gradientId = useId();
@@ -86,7 +86,7 @@ export const Logo = forwardRef(
         }
       >
         <Box
-          onClick={() => trackMatomoEvent('nav-clicked', { navTitle: 'store logo' })}
+          // onClick={() => trackMatomoEvent('nav-clicked', { navTitle: 'store logo' })}
           ref={ref}
           component={RouterLink}
           href={href}
@@ -105,7 +105,12 @@ export const Logo = forwardRef(
           }}
           {...other}
         >
-          <Image src={logo} alt="logo" width={40} height={32.35} />
+          <Box
+            component="img"
+            alt="logo"
+            src="/logo/logo-orvibo.svg"
+            sx={{ width: 80, height: 48 }}
+          />
         </Box>
       </NoSsr>
     );

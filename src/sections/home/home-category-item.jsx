@@ -24,7 +24,7 @@ const HomeCategoryItem = ({ category }) => (
         cursor: 'pointer',
         height: '100%',
         ':hover': {
-          backgroundColor: (theme) => theme.palette.grey[300],
+          backgroundColor: (theme) => theme.palette.grey[900],
         },
       }}
     >

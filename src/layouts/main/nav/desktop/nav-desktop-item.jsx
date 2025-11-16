@@ -9,7 +9,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 
 import { RouterLink } from 'src/routes/components';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { CONFIG } from 'src/config-global';
 
@@ -26,7 +26,7 @@ export const NavItem = forwardRef(
 
     return (
       <StyledNavItem
-        onClick={() => trackMatomoEvent(() => trackMatomoEvent('nav-clicked', { navTitle: title }))}
+        // onClick={() => trackMatomoEvent(() => trackMatomoEvent('nav-clicked', { navTitle: title }))}
         sx={
           isAi && {
             background: 'linear-gradient(270deg, #d300eb, #8d00eb, #2a0236)',

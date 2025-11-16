@@ -29,7 +29,7 @@ import { AccountConfirmDialogContent } from 'src/sections/account/account-confir
 
 import { useAuthContext } from 'src/auth/hooks';
 import { signUp, validateUserInfo } from 'src/auth/context/jwt';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 // ----------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ export function JwtSignUpView() {
       });
       await checkUserSession?.();
 
-      trackMatomoEvent('signup-success', { userFullName: `${data.firstName} ${data.lastName}` });
+      // trackMatomoEvent('signup-success', { userFullName: `${data.firstName} ${data.lastName}` });
 
       router.refresh();
     } catch (error) {

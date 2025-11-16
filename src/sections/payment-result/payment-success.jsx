@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box, Button, Divider, Typography } from '@mui/material';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import OrderCompleteIllustration from 'src/assets/illustrations/order-complete-illustration';
 
@@ -14,7 +14,7 @@ export const PaymentSuccess = ({ refId }) => {
   const checkout = useCheckoutContext();
   useEffect(() => checkout.resetCart());
 
-  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'purchased' }));
+  // useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'purchased' }));
 
   return (
     <Box

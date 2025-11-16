@@ -53,6 +53,7 @@ export function fCurrencyPrice(inputValue) {
 
   return fm;
 }
+
 // ----------------------------------------------------------------------
 export function fPercent(inputValue, options) {
   const locale = formatNumberLocale() || DEFAULT_LOCALE;

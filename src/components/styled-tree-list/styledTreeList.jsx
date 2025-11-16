@@ -7,7 +7,7 @@ import { varAlpha, stylesMode } from 'src/theme/styles';
 // ----------------------------------------------------------------------
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
-  color: theme.vars.palette.grey[800],
+  color: theme.vars.palette.grey[50],
   [stylesMode.dark]: { color: theme.vars.palette.grey[200] },
   [`& .${treeItemClasses.content}`]: {
     borderRadius: theme.spacing(0.5),

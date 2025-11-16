@@ -13,12 +13,12 @@ export const navData = [
     path: paths.product.root,
     icon: <Iconify width={22} icon="solar:box-minimalistic-bold" />,
   },
-  {
-    title: 'چی میخوای؟',
-    path: paths.recommendProducts,
-    icon: <Iconify width={22} icon="solar:cpu-outline" />,
-    isAi: true,
-  },
+  // {
+  //   title: 'چی میخوای؟',
+  //   path: paths.recommendProducts,
+  //   icon: <Iconify width={22} icon="solar:cpu-outline" />,
+  //   isAi: true,
+  // },
   // {
   //   title: 'Components',
   //   path: paths.components,
@@ -82,11 +82,11 @@ export const navData = [
   //   icon: <Iconify width={22} icon="solar:cart-large-minimalistic-broken" />,
   //   path: paths.product.checkout,
   // },
-  {
-    title: 'بلاگ ها',
-    icon: <Iconify width={22} icon="solar:bill-list-bold" />,
-    path: paths.blogs,
-  },
+  // {
+  //   title: 'بلاگ ها',
+  //   icon: <Iconify width={22} icon="solar:bill-list-bold" />,
+  //   path: paths.blogs,
+  // },
   // {
   //   title: `درباره ${CONFIG.site.name}`,
   //   path: paths.about,

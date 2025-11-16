@@ -11,7 +11,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useDebounce } from 'src/hooks/use-debounce';
 import { useSetState } from 'src/hooks/use-set-state';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { PRODUCT_SORT_OPTIONS } from 'src/_mock';
 import { useSearchProducts } from 'src/actions/product';
@@ -27,18 +27,19 @@ import { ProductFiltersResult } from '../product-filters-result';
 // ----------------------------------------------------------------------
 
 export function ProductShopView({ products, ...params }) {
-  useEffect(() =>
-    trackMatomoEvent('ecommerce-info', {
-      ecommerce: {
-        productName: categoryName,
-        items: [
-          {
-            category: categoryName,
-          },
-        ],
-      },
-    })
-  );
+  // console.log(products);
+  // useEffect(() =>
+  //   trackMatomoEvent('ecommerce-info', {
+  //     ecommerce: {
+  //       productName: categoryName,
+  //       items: [
+  //         {
+  //           category: categoryName,s
+  //         },
+  //       ],
+  //     },
+  //   })
+  // );
   const checkout = useCheckoutContext();
 
   const router = useRouter();

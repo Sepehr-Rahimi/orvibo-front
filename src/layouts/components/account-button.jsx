@@ -4,6 +4,8 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { varHover, AnimateAvatar } from 'src/components/animate';
+import { Button } from '@mui/material';
+import { paths } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -30,34 +32,39 @@ export function AccountButton({ open, photoURL, displayName, sx, ...other }) {
   // );
 
   return (
-    <IconButton
-      // component={m.button}
-      whileTap="tap"
-      whileHover="hover"
-      variants={varHover(1.05)}
-      sx={{ p: 0, ...sx }}
+    <Button
+      href={`${paths.dashboard.root}`}
+      variant="outlined" // minimal style
+      color="inherit"
+      sx={{
+        minWidth: 0,
+        padding: 1,
+        borderRadius: '50%',
+        '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' },
+        ...sx,
+      }}
       {...other}
     >
-      <NoSsr>
+      {/* <NoSsr>
         <AnimateAvatar
           sx={{ bgColor: 'transparent' }}
           slotProps={{
             avatar: {
               src: photoURL,
               alt: displayName,
-              sx: { bgcolor: 'transparent' },
+              sx: { bgcolor: 'transparent', color: 'white' },
             },
-            overlay: {
-              border: 1,
-              spacing: 2,
-              color: `conic-gradient(${theme.vars.palette.primary.main}, ${theme.vars.palette.warning.main}, ${theme.vars.palette.primary.main})`,
-            },
+            // overlay: {
+            //   border: 1,
+            //   spacing: 2,
+            //   color: `conic-gradient(${theme.vars.palette.primary.main}, ${theme.vars.palette.warning.main}, ${theme.vars.palette.primary.main})`,
+            // },
           }}
-        >
-          <Iconify width={24} height={24} icon="solar:user-rounded-bold" color="black" />
-          {/* {displayName?.charAt(0).toUpperCase()} */}
-        </AnimateAvatar>
-      </NoSsr>
-    </IconButton>
+        > */}
+      <Iconify width={24} height={24} icon="solar:user-rounded-bold" />
+      {/* {displayName?.charAt(0).toUpperCase()} */}
+      {/* </AnimateAvatar>
+      </NoSsr> */}
+    </Button>
   );
 }

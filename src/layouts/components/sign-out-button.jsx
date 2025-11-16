@@ -14,7 +14,7 @@ import { signOut as jwtSignOut } from 'src/auth/context/jwt/action';
 import { signOut as amplifySignOut } from 'src/auth/context/amplify/action';
 import { signOut as supabaseSignOut } from 'src/auth/context/supabase/action';
 import { signOut as firebaseSignOut } from 'src/auth/context/firebase/action';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ export function SignOutButton({ onClose, ...other }) {
       await signOut();
       await checkUserSession?.();
 
-      trackMatomoEvent('user-logout');
+      // trackMatomoEvent('user-logout');
 
       onClose?.();
       router.refresh();

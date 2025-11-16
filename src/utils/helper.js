@@ -126,8 +126,16 @@ export const merge = (target, ...sources) => {
 
 // ----------------------------------------------------------------------
 
-export function trackMatomoEvent(eventName, data = {}) {
-  if (window._mtm) {
-    window._mtm.push({ event: eventName, ...data });
-  }
-}
+// export function trackMatomoEvent(eventName, data = {}) {
+//   if (window._mtm) {
+//     window._mtm.push({ event: eventName, ...data });
+//   }
+// }
+
+// ----------------------------------------------------------------------
+
+export const getPriceRange = (prices) => [Math.min(...prices), Math.max(...prices)];
+
+// ----------------------------------------------------------------------
+
+export const getCurrentPrice = (prices) => Math.max(Math.min(prices), 0);

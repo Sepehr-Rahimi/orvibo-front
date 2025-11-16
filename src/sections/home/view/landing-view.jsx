@@ -17,7 +17,7 @@ import TimeCountdown from 'src/components/time-countdown/timeCountdown';
 // import HomeNewBlogs from '../home-new-blogs';
 // import HomeCategories from '../home-categories';
 import { useAuthContext } from 'src/auth/hooks';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 import { AiSearchInput } from '../home-ai-search';
 // import HomeNewProducts from '../home-new-products';
 
@@ -60,14 +60,14 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
 
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    if (user) trackMatomoEvent('signin-success', { userFullName: user?.displayName });
-  });
+  // useEffect(() => {
+  //   if (user) trackMatomoEvent('signin-success', { userFullName: user?.displayName });
+  // });
 
   return (
     // const { products, productsLoading } = useGetProducts();
 
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4, overflow: 'hidden' }}>
+    <Box sx={{ mt: 4, mb: 4, overflow: 'hidden', p: '0 !important', m: '0 !important', width: 1 }}>
       <Box sx={{ aspectRatio: { xs: '4/3', sm: '16/8' }, width: '100%' }}>
         {/* Hero Section - Carousel Banner */}
         <CarouselAnimation data={banners} />
@@ -76,8 +76,8 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
       <Box sx={{ mt: 4, height: 70 }}>
         <HomeAutoScroll />
       </Box>
-      <AiSearchInput />
-      <Stack spacing={2} sx={{ mt: 6 }}>
+      {/* <AiSearchInput /> */}
+      <Stack spacing={2} sx={{ mt: 6, mx: 2 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography
             variant="h4"
@@ -102,8 +102,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
         <HomeCategories />
       </Stack>
 
-      {/* Hot Deal Today Section */}
-      {featureProducts && featureProducts.length > 0 && (
+      {/* {featureProducts && featureProducts.length > 0 && (
         <Stack spacing={2} sx={{ mt: 6 }} overflow="visible">
           <Stack
             direction="row"
@@ -142,10 +141,10 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
           </Stack>
           <HomeHotDeals products={featureProducts} />
         </Stack>
-      )}
+      )} */}
 
       {/* Top Products Section */}
-      <Stack spacing={2} sx={{ mt: 6 }}>
+      {/* <Stack spacing={2} sx={{ mt: 6 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography
             variant="h4"
@@ -168,9 +167,9 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
           </Button>
         </Stack>
         <HomeNewProducts />
-      </Stack>
+      </Stack> */}
 
-      <Stack spacing={2} sx={{ mt: 6 }}>
+      {/* <Stack spacing={2} sx={{ mt: 6 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography
             variant="h4"
@@ -193,7 +192,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
           </Button>
         </Stack>
         <HomeNewBlogs />
-      </Stack>
+      </Stack> */}
 
       {/* Footer Section */}
       {/* <Box sx={{ mt: 6, py: 4, textAlign: 'center', borderTop: '1px solid #e0e0e0' }}>
@@ -201,7 +200,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
           © {new Date().getFullYear()} Noyan Shop. All rights reserved
         </Typography>
       </Box> */}
-    </Container>
+    </Box>
   );
 };
 export default LandingView;

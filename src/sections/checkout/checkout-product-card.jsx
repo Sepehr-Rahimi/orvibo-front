@@ -6,7 +6,7 @@ import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
@@ -118,10 +118,10 @@ export const CheckoutProductCard = ({
           <IconButton
             className="delete-from-cart"
             onClick={() => {
-              trackMatomoEvent('delete-from-cart', {
-                productName: product.name,
-                productId: product.id,
-              });
+              // trackMatomoEvent('delete-from-cart', {
+              //   productName: product.name,
+              //   productId: product.id,
+              // });
               onDelete(product.cartItemId);
             }}
             size="small"

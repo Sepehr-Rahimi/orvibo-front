@@ -13,7 +13,6 @@ import { ProgressBar } from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { detectSettings } from 'src/components/settings/server';
 import { SettingsDrawer, defaultSettings, SettingsProvider } from 'src/components/settings';
-// import { GoogleAnalyticsProvider } from 'src/components/google-analytics-provider/googleAnalyticsProvider';
 
 import { CheckoutProvider } from 'src/sections/checkout/context';
 
@@ -23,8 +22,8 @@ import { AuthProvider as AmplifyAuthProvider } from 'src/auth/context/amplify';
 import { AuthProvider as SupabaseAuthProvider } from 'src/auth/context/supabase';
 import { AuthProvider as FirebaseAuthProvider } from 'src/auth/context/firebase';
 import Script from 'next/script';
-import { MatomoTracker } from 'src/components/matomo/matomoTracker';
-import { InitialMatomo } from 'src/components/matomo/initialMatomo';
+// import { MatomoTracker } from 'src/components/matomo/matomoTracker';
+// import { InitialMatomo } from 'src/components/matomo/initialMatomo';
 
 // ----------------------------------------------------------------------
 
@@ -81,8 +80,8 @@ export default async function RootLayout({ children }) {
     // <html lang={lang ?? 'en'} suppressHydrationWarning>
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body>
-        <InitialMatomo />
-        <MatomoTracker />
+        {/* <InitialMatomo />
+        <MatomoTracker /> */}
         {getInitColorSchemeScript}
         {/* <GoogleAnalyticsProvider> */}
         <I18nProvider lang={CONFIG.isStaticExport ? undefined : lang}>

@@ -10,7 +10,13 @@ import { varAlpha, bgGradient } from 'src/theme/styles';
 
 import { Image } from 'src/components/image';
 import { varFade, MotionContainer } from 'src/components/animate';
-import { Carousel, useCarousel, CarouselArrowNumberButtons } from 'src/components/carousel';
+import {
+  Carousel,
+  useCarousel,
+  CarouselArrowNumberButtons,
+  CarouselArrowFloatButtons,
+  CarouselArrowProgressButtons,
+} from 'src/components/carousel';
 
 import { IndexLabel } from './elements';
 
@@ -36,12 +42,12 @@ export function CarouselAnimation({ data }) {
         ))}
       </Carousel>
 
-      <CarouselArrowNumberButtons
+      <CarouselArrowProgressButtons
         {...carousel.arrows}
         options={carousel.options}
         totalSlides={carousel.dots.dotCount}
         selectedIndex={carousel.dots.selectedIndex + 1}
-        sx={{ top: 16, right: 16, position: 'absolute' }}
+        sx={{ bottom: 16, right: '45%', position: 'absolute' }}
       />
     </Box>
   );

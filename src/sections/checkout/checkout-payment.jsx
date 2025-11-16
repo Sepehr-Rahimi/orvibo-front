@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { createOrder } from 'src/actions/orders';
 import { validateDiscountCode } from 'src/actions/discountCodes';
@@ -96,7 +96,7 @@ export function CheckoutPayment() {
     formState: { isSubmitting },
   } = methods;
 
-  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout payment' }), []);
+  // useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout payment' }), []);
 
   // console.log(checkout);
 
@@ -126,7 +126,7 @@ export function CheckoutPayment() {
       });
 
       if (data.payment === 1 && res.status === 200) {
-        trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
+        // trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
         router.push(res.data.paymentUrl);
       }
       // checkout.onNextStep();

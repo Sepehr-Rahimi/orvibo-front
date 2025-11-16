@@ -10,7 +10,7 @@ export const CONFIG = {
     customer: 1,
   },
   site: {
-    name: 'نویان استور',
+    name: 'ایران ارویبو',
     serverUrl: process.env.NEXT_PUBLIC_SERVER_URL ?? '',
     assetURL: process.env.NEXT_PUBLIC_ASSET_URL ?? '',
     basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '',

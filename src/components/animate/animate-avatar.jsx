@@ -21,7 +21,7 @@ export function AnimateAvatar({ sx, slotProps, children, width = 40, ...other })
         alignItems: 'center',
         display: 'inline-flex',
         justifyContent: 'center',
-        bgcolor: 'transparent',
+        // bgcolor: 'white',
         ...sx,
       }}
       {...other}
@@ -56,11 +56,11 @@ export function AnimateAvatar({ sx, slotProps, children, width = 40, ...other })
           height: 1,
           position: 'absolute',
           borderRadius: 'inherit',
-          background: slotProps?.overlay?.color ?? 'conic-gradient(cyan, magenta, yellow, cyan)',
-          mask: 'linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0)',
-          WebkitMask: 'linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0)',
-          maskComposite: 'exclude',
-          WebkitMaskComposite: 'xor',
+          // background: slotProps?.overlay?.color ?? 'conic-gradient(cyan, magenta, yellow, cyan)',
+          // mask: 'linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0)',
+          // WebkitMask: 'linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0)',
+          // maskComposite: 'exclude',
+          // WebkitMaskComposite: 'xor',
           p: `${borderWidth}px`,
         }}
       />

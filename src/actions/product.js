@@ -17,12 +17,12 @@ const swrOptions = {
 export const createProduct = async ({
   name,
   // price,
-  currency_price,
-  discount_percentage,
+  // currency_price,
+  // discount_percentage,
   summary,
-  colors,
-  sizes,
-  stock,
+  // colors,
+  // sizes,
+  // stock,
   slug,
   main_features,
   description,
@@ -34,18 +34,19 @@ export const createProduct = async ({
   label,
   is_published,
   images,
+  variants,
 }) => {
   try {
     const params = {
       images,
       name,
       // price,
-      currency_price,
-      discount_percentage,
+      // currency_price,
+      // discount_percentage,
       summary,
-      colors,
-      sizes,
-      stock,
+      // colors,
+      // sizes,
+      // stock,
       slug,
       main_features,
       description,
@@ -56,6 +57,7 @@ export const createProduct = async ({
       code,
       label,
       is_published,
+      variants,
     };
 
     // console.log('hi');
@@ -110,6 +112,7 @@ export const updateProduct = async ({
   images,
   id,
   orderImages,
+  variants,
 }) => {
   try {
     const params = {
@@ -133,6 +136,7 @@ export const updateProduct = async ({
       label,
       is_published,
       orderImages,
+      variants,
     };
 
     const url = `${endpoints.product.update}/${id}`;
@@ -280,3 +284,20 @@ export function useGetSimilarProducts(productId) {
 }
 
 // ----------------------------------------------------------------------
+
+export const useGetProductsAndCategory = () => {
+  const url = endpoints.product.getProduct_Categories;
+  const { data, isLoading, error, isValidating } = useSWR(url, fetcher, swrOptions);
+
+  const memoizedValue = useMemo(
+    () => ({
+      data: data?.data,
+      dataLoading: isLoading,
+      dataError: error,
+      productValidating: isValidating,
+    }),
+    [data?.data, error, isLoading, isValidating]
+  );
+
+  return memoizedValue;
+};

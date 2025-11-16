@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { paths } from 'src/routes/paths';
 import { useRouter, usePathname } from 'src/routes/hooks';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { varAlpha } from 'src/theme/styles';
 
@@ -75,7 +75,7 @@ export function AccountDrawer({ data, sx, ...other }) {
       <AccountButton
         open={open}
         onClick={() => {
-          trackMatomoEvent('nav-clicked', { navTitle: 'account' });
+          // trackMatomoEvent('nav-clicked', { navTitle: 'account' });
           router.push(paths.dashboard.root);
         }}
         photoURL={user?.photoURL}

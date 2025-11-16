@@ -1,10 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
-import Box from '@mui/material/Box';
 import { Link } from '@mui/material';
-import Fade from '@mui/material/Fade';
 import Stack from '@mui/material/Stack';
-import Portal from '@mui/material/Portal';
 import { useTheme } from '@mui/material/styles';
 import ListSubheader from '@mui/material/ListSubheader';
 
@@ -13,10 +10,9 @@ import { usePathname } from 'src/routes/hooks';
 import { useActiveLink } from 'src/routes/hooks/use-active-link';
 import { isExternalLink, removeLastSlash } from 'src/routes/utils';
 
-import { paper } from 'src/theme/styles';
-
 import { NavLi, NavUl } from 'src/components/nav-section';
 
+import { NavDesktopPortal } from './nav-desktop-portal';
 import { NavItem, NavItemDashboard } from './nav-desktop-item';
 
 // ----------------------------------------------------------------------
@@ -74,7 +70,7 @@ export function NavList({ data }) {
 
     if (element) {
       const rect = element.getBoundingClientRect();
-      setClientRect({ top: rect.top, height: rect.height });
+      setClientRect({ top: rect.top - 6, height: rect.height });
     }
   }, []);
 
@@ -94,51 +90,12 @@ export function NavList({ data }) {
         {renderNavItem}
 
         {openMenu && (
-          <Portal>
-            <Fade in>
-              <Box
-                onMouseEnter={handleOpenMenu}
-                onMouseLeave={handleCloseMenu}
-                sx={{
-                  pt: 0.5,
-                  left: 0,
-                  right: 0,
-                  mx: 'auto',
-                  position: 'fixed',
-                  zIndex: theme.zIndex.modal,
-                  maxWidth: theme.breakpoints.values.lg,
-                  top: Math.round(clientRect.top + clientRect.height),
-                }}
-              >
-                <Box
-                  component="nav"
-                  sx={{
-                    ...paper({ theme, dropdown: true }),
-                    borderRadius: 2,
-                    p: theme.spacing(5, 1, 1, 4),
-                  }}
-                >
-                  <NavUl
-                    sx={{
-                      gap: 3,
-                      width: 1,
-                      flexWrap: 'wrap',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    {data.children.map((list) => (
-                      <NavSubList
-                        key={list.subheader}
-                        subheader={list.subheader}
-                        path={list.path}
-                        data={list.items}
-                      />
-                    ))}
-                  </NavUl>
-                </Box>
-              </Box>
-            </Fade>
-          </Portal>
+          <NavDesktopPortal
+            data={data.children}
+            clientRect={clientRect}
+            handleCloseMenu={handleCloseMenu}
+            handleOpenMenu={handleOpenMenu}
+          />
         )}
       </NavLi>
     );
@@ -153,6 +110,8 @@ function NavSubList({ data, subheader, sx, path, ...other }) {
   const pathname = usePathname();
 
   const isDashboard = subheader === 'Dashboard';
+
+  const [productRender, setProductRender] = useState();
 
   return (
     <Stack

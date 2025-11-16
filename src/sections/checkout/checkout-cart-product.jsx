@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 
 import { fCurrency } from 'src/utils/format-number';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -86,7 +86,7 @@ export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
       <TableCell align="right" sx={{ px: 1 }}>
         <IconButton
           onClick={() => {
-            trackMatomoEvent('delete-from-cart', { productName: row.name, productId: row.id });
+            // trackMatomoEvent('delete-from-cart', { productName: row.name, productId: row.id });
             onDelete();
           }}
           className="delete-from-cart"

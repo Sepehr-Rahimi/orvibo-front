@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { CONFIG } from 'src/config-global';
 
@@ -28,7 +28,7 @@ export function CheckoutCart() {
 
   const empty = !checkout.items.length;
 
-  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout overview' }), []);
+  // useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout overview' }), []);
 
   return (
     <Grid container spacing={3}>

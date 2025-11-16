@@ -1,5 +1,5 @@
 import { z as zod } from 'zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo, useEffect, useCallback } from 'react';
 
@@ -8,6 +8,7 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Divider from '@mui/material/Divider';
+import { Button, MenuItem } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -34,19 +35,38 @@ export const NewProductSchema = zod.object({
   images: schemaHelper.files({ message: { required_error: 'عکس الزامی است!' } }),
   code: zod.string().min(1, { message: 'کد محصول الزامی است!' }),
   model: zod.string().min(1, { message: 'مدل محصول الزامی است!' }),
-  stock: zod.number().min(0, { message: 'موجودی الزامی است!' }),
+  // stock: zod.number().min(0, { message: 'موجودی الزامی است!' }),
   slug: zod.string().min(1, { message: 'اسلاگ محصول الزامی است' }),
   category_id: zod.number().min(1, { message: 'دسته بندی الزامی است!' }),
   brand_id: zod.string().min(1, { message: 'برند الزامی است!' }),
-  colors: zod.string().array().nonempty({ message: 'حداقل یک رنگ انتخاب شود' }),
-  sizes: zod.string().array(),
-  kinds: zod.string().array(),
+  // colors: zod.string().array().nonempty({ message: 'حداقل یک رنگ انتخاب شود' }),
+  // sizes: zod.string().array(),
+  // kinds: zod.string().array(),
   main_features: zod.string().array(),
-  currency_price: zod.number().min(1, { message: 'قیمت الزامی است' }),
-  discount_percentage: zod.number(),
+  // currency_price: zod.number().min(1, { message: 'قیمت الزامی است' }),
+  // discount_percentage: zod.number(),
   is_published: zod.boolean(),
   summary: zod.string(),
   label: zod.object({ enabled: zod.boolean(), content: zod.string() }),
+  variants: zod
+    .array(
+      zod.object({
+        color: zod.string().min(1, 'رنگ نباید خالی باشد'),
+        // size: zod.string(),
+        stock: zod
+          .number()
+          // .int('موجودی باید یک عدد صحیح باشد')
+          .min(0, 'موجودی نمی‌تواند منفی باشد'),
+        currency_price: zod
+          .union([zod.string(), zod.number()])
+          .refine((val) => !Number.isNaN(Number(val)), {
+            message: 'Must be a number or numeric string',
+          }),
+        discount_percentage: zod.number().optional(),
+        isPublished: zod.boolean().optional(),
+      })
+    )
+    .min(1, 'حداقل یک ورژن محصول لازم است'),
 });
 
 // ----------------------------------------------------------------------
@@ -85,6 +105,20 @@ export function ProductNewEditForm({ currentProduct }) {
         content: currentProduct?.label || '',
         enabled: !!currentProduct?.label,
       },
+      variants:
+        currentProduct?.variants ||
+        [
+          /* 
+        {        
+        color:#hex
+        size:string
+        stock:number
+        currencyPrice:number
+        discount_price:number(percentage)
+        isPublished:boolean
+        }
+        */
+        ],
       is_published: !!currentProduct?.is_published,
     }),
     [currentProduct]
@@ -102,8 +136,14 @@ export function ProductNewEditForm({ currentProduct }) {
     watch,
     setValue,
     handleSubmit,
+    control,
     formState: { isSubmitting, errors },
   } = methods;
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'variants',
+  });
 
   const values = watch();
 
@@ -239,13 +279,13 @@ export function ProductNewEditForm({ currentProduct }) {
 
           <Field.Text name="model" label="مدل" />
 
-          <Field.Text
+          {/* <Field.Text
             name="stock"
             label="موجودی"
             placeholder="0"
             type="number"
             InputLabelProps={{ shrink: true }}
-          />
+          /> */}
 
           {/* <Field.Select
             native
@@ -272,17 +312,17 @@ export function ProductNewEditForm({ currentProduct }) {
             ))}
           </Field.Select>
 
-          <Field.MultiSelect
+          {/* <Field.MultiSelect
             checkbox
             name="colors"
             label="رنگ ها"
             color
             options={PRODUCT_COLOR_NAME_OPTIONS}
-          />
+          /> */}
 
-          <MultiValueTextField label="سایزها" name="sizes" />
+          {/* <MultiValueTextField label="سایزها" name="sizes" /> */}
 
-          <MultiValueTextField label="انواع" name="kinds" />
+          {/* <MultiValueTextField label="انواع" name="kinds" /> */}
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -329,7 +369,7 @@ export function ProductNewEditForm({ currentProduct }) {
       <CardHeader title="قیمت ها" sx={{ mb: 3 }} />
 
       <Divider />
-
+      {/* 
       <Stack spacing={3} sx={{ p: 3 }}>
         <Field.Text
           name="currency_price"
@@ -363,9 +403,9 @@ export function ProductNewEditForm({ currentProduct }) {
           //     </InputAdornment>
           //   ),
           // }}
-        />
+        /> */}
 
-        {/* <FormControlLabel
+      {/* <FormControlLabel
           control={
             <Switch id="toggle-taxes" checked={includeTaxes} onChange={handleChangeIncludeTaxes} />
           }
@@ -390,7 +430,7 @@ export function ProductNewEditForm({ currentProduct }) {
             }}
           />
         )} */}
-      </Stack>
+      {/* </Stack> */}
     </Card>
   );
 
@@ -399,7 +439,7 @@ export function ProductNewEditForm({ currentProduct }) {
       <FormControlLabel
         control={
           <Switch
-            checked={values.is_published}
+            checked={!!values.is_published}
             onChange={(e) => setValue('is_published', e.target.checked)}
             inputProps={{
               id: 'is_published',
@@ -417,6 +457,126 @@ export function ProductNewEditForm({ currentProduct }) {
     </Stack>
   );
 
+  const renderVariantCreation = (
+    <Card>
+      <CardHeader title="انواع" sx={{ mb: 2 }} />
+
+      {fields.map((variant, index) => (
+        <Stack gap={2} direction="column" py={3} px={2} key={variant.id}>
+          <Stack gap={2} direction={{ md: 'row', xs: 'column' }} width={1}>
+            <Field.Select
+              name={`variants.${index}.color`}
+              label="رنگ"
+              // options={PRODUCT_COLOR_NAME_OPTIONS}
+              sx={{ width: 1 }}
+            >
+              {PRODUCT_COLOR_NAME_OPTIONS.map((option) => (
+                <MenuItem
+                  key={option.label}
+                  value={option.value}
+                  // onClick={() => handleSelectService(index, service.name)}
+                >
+                  <Stack alignItems="center" direction="row" spacing={1}>
+                    <Box> {option.label}</Box>
+                    <Box
+                      sx={{
+                        width: 15,
+                        height: 15,
+                        borderRadius: '100%',
+                        backgroundColor: option.value,
+                      }}
+                    />
+                  </Stack>
+                </MenuItem>
+              ))}
+            </Field.Select>
+            <MultiValueTextField label="سایز" name={`variants.${index}.size`} sx={{ width: 1 }} />
+          </Stack>
+          <Stack gap={2} direction={{ md: 'row', xs: 'column' }}>
+            <Field.Text
+              name={`variants.${index}.currency_price`}
+              label=" قیمت محصول به دلار"
+              placeholder="00"
+              type="number"
+              InputLabelProps={{ shrink: true }}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <Box component="span" sx={{ color: 'text.disabled' }}>
+              //         $
+              //       </Box>
+              //     </InputAdornment>
+              //   ),
+              // }}
+            />
+
+            <Field.Text
+              name={`variants.${index}.discount_percentage`}
+              label="درصد تخفیف"
+              placeholder="0"
+              type="number"
+              InputLabelProps={{ shrink: true }}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <Box component="span" sx={{ color: 'text.disabled' }}>
+              //         $
+              //       </Box>
+              //     </InputAdornment>
+              //   ),
+              // }}
+            />
+          </Stack>
+
+          <Stack direction={{ md: 'row', xs: 'column' }} gap={2}>
+            <Field.Text
+              name={`variants.${index}.stock`}
+              label="موجودی"
+              placeholder="0"
+              type="number"
+              InputLabelProps={{ shrink: true }}
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={watch(`variants.${index}.is_published`)}
+                  onChange={(e) => setValue(`variants.${index}.is_published`, e.target.checked)}
+                  inputProps={{
+                    id: `variants.${index}.is_published`,
+                    name: `variants.${index}.is_published`,
+                  }}
+                />
+              }
+              label="نشان دادن در سایت"
+              sx={{ pl: 3, flexGrow: 1 }}
+            />
+          </Stack>
+          <Button variant="outlined" onClick={() => remove(index)}>
+            حذف
+          </Button>
+        </Stack>
+      ))}
+      <Box sx={{ px: 2, my: 2 }}>
+        <Button
+          variant="contained"
+          sx={{ width: 1 }}
+          onClick={() =>
+            append({
+              color: '',
+              size: '',
+              stock: 0,
+              currency_price: 0,
+              discount_percentage: 0,
+              is_published: false,
+            })
+          }
+        >
+          افزودن ورژن
+        </Button>
+      </Box>
+    </Card>
+  );
+
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <Stack spacing={{ xs: 3, md: 5 }} sx={{ mx: 'auto', maxWidth: { xs: 720, xl: 880 } }}>
@@ -424,7 +584,9 @@ export function ProductNewEditForm({ currentProduct }) {
 
         {renderProperties}
 
-        {renderPricing}
+        {/* {renderPricing} */}
+
+        {renderVariantCreation}
 
         {renderActions}
       </Stack>

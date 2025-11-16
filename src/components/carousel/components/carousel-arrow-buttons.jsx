@@ -132,6 +132,91 @@ export function CarouselArrowNumberButtons({
 
 // ----------------------------------------------------------------------
 
+export function CarouselArrowProgressButtons({
+  options,
+  slotProps,
+  totalSlides,
+  selectedIndex,
+
+  //
+  onClickPrev,
+
+  onClickNext,
+  disablePrev,
+  disableNext,
+  sx,
+  ...other
+}) {
+  const theme = useTheme();
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      display="inline-flex"
+      className={carouselClasses.arrows}
+      dir="ltr"
+      sx={{
+        p: 0.5,
+        gap: 0.25,
+        zIndex: 9,
+        borderRadius: 1.25,
+        color: 'common.white',
+        bgcolor: varAlpha(theme.vars.palette.grey['900Channel'], 0.48),
+        ...sx,
+      }}
+      {...other}
+    >
+      <ArrowButton
+        variant="prev"
+        options={options}
+        disabled={disablePrev}
+        onClick={onClickPrev}
+        sx={{ p: 0.75, borderRadius: 'inherit', ...slotProps?.prevBtn?.sx }}
+        svgIcon={slotProps?.prevBtn?.svgIcon}
+        svgSize={slotProps?.prevBtn?.svgSize ?? 16}
+      />
+
+      {/* --- Pagination lines --- */}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        spacing={0.5}
+        sx={{ mx: 1 }}
+      >
+        {Array.from({ length: totalSlides }).map((_, i) => (
+          <Box
+            key={i}
+            sx={{
+              width: 16,
+              height: 2,
+              borderRadius: 1,
+              bgcolor:
+                i === selectedIndex - 1
+                  ? theme.palette.primary.main
+                  : varAlpha(theme.vars.palette.grey['500Channel'], 0.5),
+              transition: 'all 0.3s ease',
+            }}
+          />
+        ))}
+      </Stack>
+
+      <ArrowButton
+        variant="next"
+        options={options}
+        disabled={disableNext}
+        onClick={onClickNext}
+        sx={{ p: 0.75, borderRadius: 'inherit', ...slotProps?.nextBtn?.sx }}
+        svgIcon={slotProps?.nextBtn?.svgIcon}
+        svgSize={slotProps?.nextBtn?.svgSize ?? 16}
+      />
+    </Stack>
+  );
+}
+
+// ----------------------------------------------------------------------
+
 export function CarouselArrowFloatButtons({
   options,
   slotProps,

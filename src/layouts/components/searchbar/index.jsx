@@ -17,7 +17,7 @@ import { isExternalLink } from 'src/routes/utils';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useDebounce } from 'src/hooks/use-debounce';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { varAlpha } from 'src/theme/styles';
 import { searchProducts } from 'src/actions/product';
@@ -52,7 +52,7 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
           setData((d) => ({ ...d, products: res.data.products }));
         })
         .catch((err) => console.log(err));
-      trackMatomoEvent('user-searched', { whereSearch: 'search bar', userSearch: debouncedQuery });
+      // trackMatomoEvent('user-searched', { whereSearch: 'search bar', userSearch: debouncedQuery });
     } else {
       setData([]);
     }
@@ -131,7 +131,7 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
     <Button
       onClick={() => {
         search.onTrue();
-        trackMatomoEvent('nav-clicked', { navTitle: 'search bar' });
+        // trackMatomoEvent('nav-clicked', { navTitle: 'search bar' });
       }}
       variant="outlined" // minimal style
       color="inherit"

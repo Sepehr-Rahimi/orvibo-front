@@ -9,7 +9,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { useNavItem } from 'src/components/nav-section/hooks';
 import { gradientAnimation } from 'src/sections/home/home-ai-search';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ export const NavItem = forwardRef(
 
     return (
       <StyledNavItem
-        onClick={() => trackMatomoEvent('nav-clicked', { navTitle: title })}
+        // onClick={() => trackMatomoEvent('nav-clicked', { navTitle: title })}
         ref={ref}
         aria-label={title}
         open={open}

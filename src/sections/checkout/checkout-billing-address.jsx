@@ -8,7 +8,7 @@ import { Paper, Typography } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { SignInButton } from 'src/layouts/components/sign-in-button';
 import { deleteAddress, useGetAddresses } from 'src/actions/addresses';
@@ -24,7 +24,7 @@ import { AddressItem, AddressNewEditForm } from '../address';
 // ----------------------------------------------------------------------
 
 export function CheckoutBillingAddress() {
-  useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'choosing address' }), []);
+  // useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'choosing address' }), []);
 
   const checkout = useCheckoutContext();
 

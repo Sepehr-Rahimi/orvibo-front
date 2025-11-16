@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
@@ -16,12 +16,15 @@ import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
+
+import { getCurrentPrice } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 import { ColorPicker } from 'src/components/color-utils';
+import { VariantPickup } from 'src/components/variant-pickup/variant-pickup';
 
 import { IncrementerButton } from './components/incrementer-button';
 
@@ -33,6 +36,7 @@ export function ProductDetailsSummary({
   onAddCart,
   onGotoStep,
   disableActions,
+  disableVariant,
   ...other
 }) {
   const router = useRouter();
@@ -40,12 +44,12 @@ export function ProductDetailsSummary({
   const {
     id,
     name,
-    price,
-    discount_price,
+    // price,
+    // discount_price,
     summary,
-    colors,
-    sizes,
-    stock,
+    // colors,
+    // sizes,
+    // stock,
     images,
     kinds,
     model,
@@ -57,6 +61,7 @@ export function ProductDetailsSummary({
     label,
     slug,
     is_published,
+    variants,
   } = product;
 
   const theme = useTheme();
@@ -64,21 +69,29 @@ export function ProductDetailsSummary({
   //   !!items?.length &&
   //   items.filter((item) => item.id === id)?.map((item) => item.quantity)[0] >= stock;
 
+  const [choosedVariant, setChoosedVariant] = useState(variants[0]);
+
   const totalQuantity = Array.isArray(items)
-    ? items.filter((item) => item.id === id).reduce((sum, item) => sum + item.quantity, 0)
+    ? items
+        .filter((item) => item.variant_id === choosedVariant.id)
+        .reduce((sum, item) => sum + item.quantity, 0)
     : 0;
 
-  const isMaxQuantity = totalQuantity >= stock;
+  console.log(totalQuantity);
+  console.log(items);
+
+  const isMaxQuantity = totalQuantity >= choosedVariant.stock;
 
   const defaultValues = {
     id,
     name,
+    variant_id: choosedVariant.id,
     coverUrl: images?.length ? images[0] : undefined,
-    stock,
-    colors: colors?.length ? colors[0] : undefined,
-    kinds: kinds?.length ? kinds[0] : undefined,
-    size: sizes?.length ? sizes[0] : undefined,
-    quantity: stock < 1 ? 0 : 1,
+    stock: choosedVariant.stock,
+    color: choosedVariant.color,
+    // kinds: kinds?.length ? kinds[0] : undefined,
+    size: choosedVariant?.size,
+    quantity: choosedVariant.stock < 1 ? 0 : 1,
   };
 
   const methods = useForm({ defaultValues });
@@ -99,15 +112,17 @@ export function ProductDetailsSummary({
     try {
       onAddCart?.({
         ...data,
+        variant_id: choosedVariant.id,
         slug,
-        discount_price,
+        discount_price: choosedVariant.discount_price,
         code,
         model,
-        colors: values.colors,
-        price: discount_price > 0 ? discount_price : price,
-        subtotal: (discount_price > 0 ? discount_price : price) * data.quantity,
+        color: choosedVariant.color,
+        price: getCurrentPrice(choosedVariant.price, choosedVariant.discount_price),
+        subtotal:
+          getCurrentPrice(choosedVariant.price, choosedVariant.discount_price) * data.quantity,
       });
-      trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
+      // trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
       onGotoStep?.(0);
       router.push(paths.product.checkout);
     } catch (error) {
@@ -119,38 +134,41 @@ export function ProductDetailsSummary({
     try {
       onAddCart?.({
         ...values,
-        discount_price,
+        discount_price: choosedVariant.discount_price,
+        variant_id: choosedVariant.id,
         code,
         model,
         slug,
-        colors: values.colors,
-        price: discount_price > 0 ? discount_price : price,
-        subtotal: (discount_price > 0 ? discount_price : price) * values.quantity,
+        color: values.color,
+        price: getCurrentPrice(choosedVariant.price, choosedVariant.discount_price),
+        subtotal:
+          getCurrentPrice(choosedVariant.price, choosedVariant.discount_price) * values.quantity,
       });
 
-      trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
+      // trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
 
-      if (totalQuantity + values.quantity + values.quantity > stock) setValue('quantity', 0);
+      if (totalQuantity + values.quantity + values.quantity > choosedVariant.stock)
+        setValue('quantity', 0);
     } catch (error) {
       console.error(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onAddCart, values, discount_price, code, model, slug, price, totalQuantity, stock, setValue]);
+  }, [onAddCart, values, code, model, slug, totalQuantity, setValue, choosedVariant]);
 
   const renderPrice = (
     <Box sx={{ typography: 'h5', color: theme.palette.primary.main }}>
-      {discount_price > 0 ? (
+      {choosedVariant.discount_price > 0 ? (
         <>
           <Box
             component="span"
             sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
           >
-            {fCurrency(price)}
+            {fCurrency(choosedVariant.price)}
           </Box>
-          {fCurrency(discount_price)}
+          {fCurrency(choosedVariant.discount_price)}
         </>
       ) : (
-        fCurrency(price)
+        fCurrency(choosedVariant.price)
       )}
     </Box>
   );
@@ -190,14 +208,19 @@ export function ProductDetailsSummary({
       </Typography>
 
       <Controller
-        name="colors"
+        name="color"
         control={control}
         render={({ field }) => (
-          <ColorPicker
-            colors={colors}
-            selected={field.value}
-            onSelectColor={(color) => field.onChange(color)}
-            limit={4}
+          // <ColorPicker
+          //   colors={colors}
+          //   selected={field.value}
+          //   onSelectColor={(color) => field.onChange(color)}
+          //   limit={4}
+          // />
+          <VariantPickup
+            choosedVariant={choosedVariant}
+            setChoosedVariant={(variant) => setChoosedVariant(variant)}
+            variants={variants}
           />
         )}
       />
@@ -223,7 +246,7 @@ export function ProductDetailsSummary({
           [`& .${formHelperTextClasses.root}`]: { mx: 0, mt: 1, textAlign: 'right' },
         }}
       >
-        {sizes?.map((size) => (
+        {choosedVariant.sizes?.map((size) => (
           <MenuItem key={size} value={size}>
             {size}
           </MenuItem>
@@ -270,7 +293,7 @@ export function ProductDetailsSummary({
           name="quantity"
           quantity={values.quantity}
           disabledDecrease={values.quantity <= 1}
-          disabledIncrease={values.quantity >= stock - totalQuantity}
+          disabledIncrease={values.quantity >= choosedVariant.stock - totalQuantity}
           onIncrease={() => {
             setValue('quantity', values.quantity + 1);
           }}
@@ -278,7 +301,7 @@ export function ProductDetailsSummary({
         />
 
         <Typography variant="caption" component="div" sx={{ textAlign: 'right' }}>
-          موجود: {stock}
+          موجود: {choosedVariant.stock}
         </Typography>
       </Stack>
     </Stack>
@@ -289,7 +312,7 @@ export function ProductDetailsSummary({
       <Button
         className="add-to-cart-btn"
         fullWidth
-        disabled={isMaxQuantity || disableActions}
+        disabled={isMaxQuantity || disableActions || disableVariant(choosedVariant)}
         size="large"
         color="warning"
         variant="contained"
@@ -306,7 +329,7 @@ export function ProductDetailsSummary({
         size="large"
         type="submit"
         variant="contained"
-        disabled={disableActions || isMaxQuantity}
+        disabled={disableActions || isMaxQuantity || disableVariant(choosedVariant)}
       >
         خرید
       </Button>
@@ -339,12 +362,13 @@ export function ProductDetailsSummary({
       sx={{
         typography: 'overline',
         color:
-          (stock === 0 && 'error.main') ||
-          (stock > 0 && stock < 5 && 'warning.main') ||
+          (choosedVariant.stock === 0 && 'error.main') ||
+          (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'warning.main') ||
           'success.main',
       }}
     >
-      {(stock === 0 && 'ناموجود') || (stock > 0 && stock < 5 && 'تعداد محدود')}
+      {(choosedVariant.stock === 0 && 'ناموجود') ||
+        (choosedVariant.stock > 0 && choosedVariant.stock < 5 && 'تعداد محدود')}
     </Box>
   );
 
@@ -372,11 +396,11 @@ export function ProductDetailsSummary({
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {colors?.length ? renderColorOptions : null}
+        {renderColorOptions}
 
-        {kinds?.length ? renderKindOptions : null}
+        {/* {kinds?.length ? renderKindOptions : null} */}
 
-        {sizes?.length ? renderSizeOptions : null}
+        {/* {sizes?.length ? renderSizeOptions : null} */}
 
         {renderQuantity}
 

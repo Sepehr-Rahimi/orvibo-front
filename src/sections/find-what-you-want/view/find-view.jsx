@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Stack, Container, Typography } from '@mui/material';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { useGetRecommendProducts } from 'src/actions/recommed';
 
@@ -32,7 +32,7 @@ export const FindView = ({ ...params }) => {
 
   useEffect(() => {
     if (searchInput) setChatHistory((prev) => [...prev, { sender: 'user', message: searchInput }]);
-    trackMatomoEvent('user-search', { whereSearch: 'ai page', userSearch: searchInput });
+    // trackMatomoEvent('user-search', { whereSearch: 'ai page', userSearch: searchInput });
   }, [searchInput]);
 
   useEffect(() => setSearchInput(newSearchInput), [newSearchInput]);

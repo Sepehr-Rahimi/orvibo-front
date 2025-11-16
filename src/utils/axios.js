@@ -149,6 +149,7 @@ export const endpoints = {
     delete: '/api/products/delete',
     deleteProductImages: '/api/products/delete_images',
     similarProduct: '/api/products/similar_products',
+    getProduct_Categories: '/api/products/product-category',
   },
   recommend: {
     get: '/api/recommend',

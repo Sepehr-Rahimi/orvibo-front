@@ -89,57 +89,105 @@ const MuiButton = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              color: theme.vars.palette.common.white,
-              backgroundColor: theme.vars.palette.grey[800],
+              color: theme.vars.palette.grey[900],
+              backgroundColor: '#E5E5E5', // slightly darker white
               '&:hover': {
+                backgroundColor: '#CCCCCC',
                 boxShadow: theme.customShadows.z8,
-                backgroundColor: theme.vars.palette.grey[700],
               },
-              [stylesMode.dark]: {
-                color: theme.vars.palette.grey[800],
-                backgroundColor: theme.vars.palette.common.white,
-                '&:hover': { backgroundColor: theme.vars.palette.grey[400] },
+            }),
+        },
+        base: {
+          ...(ownerState.color !== 'inherit' &&
+            !ownerState.disabled && {
+              backgroundColor: '#E5E5E5', // slightly darker white
+              color: theme.vars.palette.grey[900],
+              '&:hover': {
+                backgroundColor: '#CCCCCC',
+                boxShadow: theme.customShadows.z8,
               },
             }),
         },
       };
-      return { ...styled.inheritColor, ...styled.colors };
+      return { ...styled.inheritColor, ...styled.colors, ...styled.base };
     },
-    /**
-     * @variant outlined
-     */
+
     outlined: ({ theme, ownerState }) => {
       const styled = {
         colors: styleColors(ownerState, (color) => ({
           borderColor: varAlpha(theme.vars.palette[color].mainChannel, 0.48),
+          '&:hover': {
+            backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.12),
+            boxShadow: theme.customShadows[color],
+          },
         })),
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
-              '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+              borderColor: '#CCCCCC', // slightly darker than white
+              color: '#CCCCCC',
+              '&:hover': {
+                backgroundColor: '#E5E5E5',
+                boxShadow: theme.customShadows.z8,
+                color: '#7d7d7d',
+              },
             }),
         },
         base: {
-          '&:hover': { borderColor: 'currentColor', boxShadow: '0 0 0 0.75px currentColor' },
+          '&:hover': { boxShadow: '0 0 0 0.75px currentColor' },
         },
       };
       return { ...styled.base, ...styled.inheritColor, ...styled.colors };
     },
-    /**
-     * @variant text
-     */
-    text: ({ ownerState, theme }) => {
+
+    text: ({ theme, ownerState }) => {
       const styled = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+              color: '#E5E5E5',
+              '&:hover': { backgroundColor: '#333333' },
             }),
         },
       };
       return { ...styled.inheritColor };
     },
+
+    /**
+     * @variant outlined
+     */
+    // outlined: ({ theme, ownerState }) => {
+    //   const styled = {
+    //     colors: styleColors(ownerState, (color) => ({
+    //       borderColor: varAlpha(theme.vars.palette[color].mainChannel, 0.48),
+    //     })),
+    //     inheritColor: {
+    //       ...(ownerState.color === 'inherit' &&
+    //         !ownerState.disabled && {
+    //           borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
+    //           '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+    //         }),
+    //     },
+    //     base: {
+    //       '&:hover': { borderColor: 'currentColor', boxShadow: '0 0 0 0.75px currentColor' },
+    //     },
+    //   };
+    //   return { ...styled.base, ...styled.inheritColor, ...styled.colors };
+    // },
+    // /**
+    //  * @variant text
+    //  */
+    // text: ({ ownerState, theme }) => {
+    //   const styled = {
+    //     inheritColor: {
+    //       ...(ownerState.color === 'inherit' &&
+    //         !ownerState.disabled && {
+    //           '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+    //         }),
+    //     },
+    //   };
+    //   return { ...styled.inheritColor };
+    // },
     /**
      * @size
      */

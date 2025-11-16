@@ -26,7 +26,7 @@ import { Form, Field, schemaHelper } from 'src/components/hook-form';
 import { useAuthContext } from 'src/auth/hooks';
 import { signInWithPassword } from 'src/auth/context/jwt';
 import { Box } from '@mui/material';
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ export function JwtSignInView() {
     try {
       await signInWithPassword({ phone: data.phone, password: data.password });
       await checkUserSession?.();
-      trackMatomoEvent('signin-success', { userFullName: user?.displayName });
+      // trackMatomoEvent('signin-success', { userFullName: user?.displayName });
 
       router.refresh();
     } catch (error) {

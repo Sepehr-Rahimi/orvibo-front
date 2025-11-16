@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { trackMatomoEvent } from 'src/utils/helper';
+// import { trackMatomoEvent } from 'src/utils/helper';
 
 import { getProduct } from 'src/actions/product-ssr';
 import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
@@ -32,39 +32,39 @@ export function CheckoutView() {
     //     event: 'checkout-start',
     //   });
     // }
-    trackMatomoEvent('checkout-start');
+    // trackMatomoEvent('checkout-start');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    // update checkout items price and discount_price
-    const checkoutItems = checkout.items;
-    if (!checkoutItems || checkoutItems.length <= 0) return;
-    // checkout.resetCart();
-    async function updateCheckoutPrices() {
-      // console.log(checkout);
+  // useEffect(() => {
+  //   // update checkout items price and discount_price
+  //   const checkoutItems = checkout.items;
+  //   if (!checkoutItems || checkoutItems.length <= 0) return;
+  //   // checkout.resetCart();
+  //   async function updateCheckoutPrices() {
+  //     // console.log(checkout);
 
-      const updatedCheckout = await Promise.all(
-        checkoutItems?.map(async (checkoutItem) => {
-          // console.log(checkoutItem);
-          const res = await getProduct(checkoutItem.id);
+  //     const updatedCheckout = await Promise.all(
+  //       checkoutItems?.map(async (checkoutItem) => {
+  //         // console.log(checkoutItem);
+  //         const res = await getProduct(checkoutItem.id);
 
-          // if (!res) checkout.resetCart();
-          const product = res?.data;
+  //         // if (!res) checkout.resetCart();
+  //         const product = res?.data;
 
-          // console.log(product);
-          return { ...checkoutItem, price: product?.price, discount_price: product.discount_price };
-        })
-      );
+  //         // console.log(product);
+  //         return { ...checkoutItem, price: product?.price, discount_price: product.discount_price };
+  //       })
+  //     );
 
-      // console.log(updatedCheckout);
+  //     // console.log(updatedCheckout);
 
-      if (updatedCheckout.length <= 0) return;
-      checkout.onUpdateItems(updatedCheckout);
-    }
-    updateCheckoutPrices();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkout.items?.map((i) => i.id).join(',')]);
+  //     if (updatedCheckout.length <= 0) return;
+  //     checkout.onUpdateItems(updatedCheckout);
+  //   }
+  //   updateCheckoutPrices();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [checkout.items?.map((i) => i.id).join(',')]);
 
   return (
     <Container sx={{ mb: 10 }}>

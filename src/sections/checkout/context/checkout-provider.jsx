@@ -7,6 +7,8 @@ import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { getStorage, useLocalStorage } from 'src/hooks/use-local-storage';
 
+import { getCurrentPrice } from 'src/utils/helper';
+
 import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
 
 import { SplashScreen } from 'src/components/loading-screen';
@@ -61,8 +63,7 @@ function Container({ children }) {
     const totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
 
     const subtotal = state.items.reduce((total, item) => {
-      const price =
-        item.discount_price && item.discount_price > 0 ? item.discount_price : item.price;
+      const price = getCurrentPrice(item.price, item.discount_price);
       return total + item.quantity * price;
     }, 0);
 
@@ -105,11 +106,7 @@ function Container({ children }) {
 
   const onAddToCart = useCallback(
     (newItem) => {
-      const isSame = (item) =>
-        item.id === newItem.id &&
-        item.colors === newItem.colors &&
-        item.kinds === newItem.kinds &&
-        item.size === newItem.size;
+      const isSame = (item) => item.variant_id === newItem.variant_id;
 
       const updatedItems = state.items.map((item) => {
         if (isSame(item)) {
