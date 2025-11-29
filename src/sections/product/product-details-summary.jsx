@@ -15,7 +15,7 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency, fIrr } from 'src/utils/format-number';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
 import { getCurrentPrice } from 'src/utils/helper';
@@ -35,8 +35,8 @@ export function ProductDetailsSummary({
   product,
   onAddCart,
   onGotoStep,
-  disableActions,
-  disableVariant,
+  // disableActions,
+  // disableVariant,
   ...other
 }) {
   const router = useRouter();
@@ -78,10 +78,10 @@ export function ProductDetailsSummary({
         .reduce((sum, item) => sum + item.quantity, 0)
     : 0;
 
-  console.log(totalQuantity);
-  console.log(items);
+  // console.log(totalQuantity);
+  // console.log(items);
 
-  const isMaxQuantity = totalQuantity >= choosedVariant.stock;
+  // const isMaxQuantity = totalQuantity >= choosedVariant.stock;
 
   const defaultValues = {
     id,
@@ -100,6 +100,9 @@ export function ProductDetailsSummary({
   const { reset, watch, control, setValue, handleSubmit } = methods;
 
   const values = watch();
+
+  const buyDisableCases =
+    totalQuantity >= choosedVariant?.stock || values?.quantity <= 0 || !choosedVariant?.stock;
 
   useEffect(() => {
     if (product) {
@@ -140,10 +143,11 @@ export function ProductDetailsSummary({
         code,
         model,
         slug,
-        color: values.color,
+        color: choosedVariant.color,
         price: getCurrentPrice(choosedVariant.price, choosedVariant.discount_price),
         subtotal:
-          getCurrentPrice(choosedVariant.price, choosedVariant.discount_price) * values.quantity,
+          getCurrentPrice(choosedVariant.price, choosedVariant.discount_price) *
+          choosedVariant.quantity,
       });
 
       // trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
@@ -157,21 +161,24 @@ export function ProductDetailsSummary({
   }, [onAddCart, values, code, model, slug, totalQuantity, setValue, choosedVariant]);
 
   const renderPrice = (
-    <Box sx={{ typography: 'h5', color: theme.palette.primary.main }}>
-      {choosedVariant.discount_price > 0 ? (
-        <>
-          <Box
-            component="span"
-            sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
-          >
-            {fCurrency(choosedVariant.price)}
-          </Box>
-          {fCurrency(choosedVariant.discount_price)}
-        </>
-      ) : (
-        fCurrency(choosedVariant.price)
-      )}
-    </Box>
+    <Stack>
+      <Box sx={{ typography: 'h5' }}>
+        {choosedVariant.discount_price > 0 ? (
+          <>
+            <Box
+              component="span"
+              sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
+            >
+              {fCurrency(choosedVariant.price)}
+            </Box>
+            {fCurrency(choosedVariant.discount_price)}
+          </>
+        ) : (
+          fCurrency(choosedVariant.price)
+        )}
+      </Box>
+      <Box sx={{ typography: 'subtitle2' }}>معادل {fIrr(choosedVariant?.irrExchange)}</Box>
+    </Stack>
   );
 
   const renderShare = (
@@ -220,7 +227,10 @@ export function ProductDetailsSummary({
           // />
           <VariantPickup
             choosedVariant={choosedVariant}
-            setChoosedVariant={(variant) => setChoosedVariant(variant)}
+            setChoosedVariant={(variant) => {
+              setChoosedVariant(variant);
+              field.onChange(variant.color);
+            }}
             variants={variants}
           />
         )}
@@ -313,7 +323,7 @@ export function ProductDetailsSummary({
       <Button
         className="add-to-cart-btn"
         fullWidth
-        disabled={isMaxQuantity || disableActions || disableVariant(choosedVariant)}
+        disabled={buyDisableCases}
         size="large"
         color="warning"
         variant="contained"
@@ -330,7 +340,7 @@ export function ProductDetailsSummary({
         size="large"
         type="submit"
         variant="contained"
-        disabled={disableActions || isMaxQuantity || disableVariant(choosedVariant)}
+        disabled={buyDisableCases}
       >
         خرید
       </Button>

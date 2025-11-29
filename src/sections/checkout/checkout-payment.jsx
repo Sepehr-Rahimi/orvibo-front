@@ -109,6 +109,9 @@ export function CheckoutPayment() {
         });
       const res = await createOrder({
         address_id: checkout.billing.id,
+        services: checkout.services,
+        guarantee: checkout.guarantee,
+        businessProfit: checkout.businessProfit,
         // delivery_cost: checkout.shipping,
         type_of_delivery: data.delivery,
         type_of_payment: data.payment,
@@ -116,18 +119,20 @@ export function CheckoutPayment() {
         discount_code: checkout.discount_code,
         items: checkout?.items?.map((i) => ({
           product_id: i.id,
-          color: i.colors,
+          variant_id: i.variant_id,
+          color: i.color,
           quantity: i.quantity,
-          size: i.sizes,
-          type: i.kinds,
+          size: i.size,
+          type: i.kind,
           price: i.price,
+          discount_price: +i.discount_price,
         })),
         // total_cost: checkout.total,
       });
 
       if (data.payment === 1 && res.status === 200) {
         // trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
-        router.push(res.data.paymentUrl);
+        router.push(res?.data?.paymentUrl);
       }
       // checkout.onNextStep();
 
@@ -165,13 +170,7 @@ export function CheckoutPayment() {
         <Grid xs={12} md={4}>
           <CheckoutBillingInfo billing={checkout.billing} onBackStep={checkout.onBackStep} />
 
-          <CheckoutSummary
-            total={checkout.total}
-            subtotal={checkout.subtotal}
-            discount={checkout.discount}
-            shipping={checkout.shipping}
-            onEdit={() => checkout.onGotoStep(0)}
-          />
+          <CheckoutSummary checkout={checkout} onEdit={() => checkout.onGotoStep(0)} />
 
           <LoadingButton
             fullWidth

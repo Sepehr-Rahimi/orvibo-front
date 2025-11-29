@@ -67,7 +67,7 @@ export default async function Page(params, ...p) {
   return (
     <ProductShopView
       products={response?.products}
-      pagination={response?.pagination}
+      // pagination={response?.pagination}
       categoryName={params?.params.name}
     />
   );

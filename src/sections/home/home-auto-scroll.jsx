@@ -2,15 +2,30 @@ import AutoScroll from 'embla-carousel-auto-scroll';
 
 import Box from '@mui/material/Box';
 
-import { useGetBrands } from 'src/actions/brands';
-
 import { Image } from 'src/components/image';
 import { Carousel, useCarousel } from 'src/components/carousel';
 
 // ----------------------------------------------------------------------
 
 export function HomeAutoScroll() {
-  const { brands } = useGetBrands();
+  const workswithImages = [
+    { logo_url: '/assets/images/landing/workswith/applehome.png', name: 'appleHome' },
+    { logo_url: '/assets/images/landing/workswith/alexa.png', name: 'alexa' },
+    { logo_url: '/assets/images/landing/workswith/googlehome.png', name: 'googleHome' },
+    { logo_url: '/assets/images/landing/workswith/Matter_logo.jpg', name: 'matter' },
+    {
+      logo_url: '/assets/images/landing/workswith/smartthing-wwst_vertical.webp',
+      name: 'smartthings',
+    },
+    { logo_url: '/assets/images/landing/workswith/alexa.png', name: 'alexa' },
+    { logo_url: '/assets/images/landing/workswith/applehome.png', name: 'appleHome' },
+    { logo_url: '/assets/images/landing/workswith/googlehome.png', name: 'googleHome' },
+    { logo_url: '/assets/images/landing/workswith/Matter_logo.jpg', name: 'matter' },
+    {
+      logo_url: '/assets/images/landing/workswith/smartthing-wwst_vertical.webp',
+      name: 'smartthings',
+    },
+  ];
 
   const carousel = useCarousel(
     {
@@ -26,13 +41,17 @@ export function HomeAutoScroll() {
         slotProps={{
           slide: {
             // height: '100%',
-            flex: '0 0 20%',
+            // maxHeight: '100%',
+            flex: '0 0 auto',
+          },
+          container: {
+            height: 1,
           },
         }}
         carousel={carousel}
-        sx={{ borderRadius: 0, height: 70, alignItems: 'center', display: 'flex' }}
+        sx={{ borderRadius: 0, height: { sm: 70, xs: 40 }, alignItems: 'center', display: 'flex' }}
       >
-        {[...brands, ...brands, ...brands].map((item, index) => (
+        {workswithImages.map((item, index) => (
           <CarouselItem key={index} index={index} item={item} />
         ))}
       </Carousel>
@@ -67,9 +86,9 @@ function CarouselItem({ item, index }) {
         src={item.logo_url}
         // ratio={{ xs: '4/3', sm: '16/10' }}
         sx={{
-          filter: 'grayscale(100%) brightness(50%)',
-          width: '100%',
-          height: 'auto',
+          // filter: 'grayscale(100%) brightness(50%)',
+          width: 'auto',
+          height: '100%',
         }}
       />
     </Box>

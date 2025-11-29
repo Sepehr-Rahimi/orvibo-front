@@ -24,9 +24,9 @@ export const CheckoutButton = () => {
   }, [totalItems]);
   return (
     <Button
+      data-theme="light"
       href={`${paths.product.checkout}`}
       variant="outlined" // minimal style
-      color="inherit"
       sx={{
         minWidth: 0,
         padding: 1,

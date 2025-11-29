@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Link, Stack, Typography, useTheme } from '@mui/material';
 import { paths } from 'src/routes/paths';
 
-export const NavDesktopPortalTitle = ({ titles = [], handleTitleActive, isActive }) => {
+export const NavDesktopPortalTitle = ({ data = [], handleTitleActive, isActive }) => {
   const theme = useTheme();
 
   return (
@@ -16,14 +16,14 @@ export const NavDesktopPortalTitle = ({ titles = [], handleTitleActive, isActive
         pb: 1,
       }}
     >
-      {titles.map((title) => {
-        const active = isActive(title);
+      {data.map((item) => {
+        const active = isActive(item.title);
 
         return (
-          <Link href={`${paths.product.byCategory(title)}`}>
+          <Link href={`${item.path}`}>
             <Box
-              key={title}
-              onMouseEnter={() => handleTitleActive(title)}
+              key={item.title}
+              onMouseEnter={() => handleTitleActive(item.title)}
               sx={{
                 position: 'relative',
                 cursor: 'pointer',
@@ -56,7 +56,7 @@ export const NavDesktopPortalTitle = ({ titles = [], handleTitleActive, isActive
                   userSelect: 'none',
                 }}
               >
-                {title}
+                {item.title}
               </Typography>
             </Box>
           </Link>

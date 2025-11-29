@@ -22,6 +22,7 @@ export const paths = {
   pricing: '/pricing',
   payment: '/payment',
   about: '/about-us',
+  about_orvibo: '/about-orvibo',
   contact: '/contact-us',
   privacy: '/privacy',
   terms: '/terms',

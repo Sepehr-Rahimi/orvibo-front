@@ -8,7 +8,7 @@ export function createShadowColor(colorChannel) {
 }
 
 export function customShadows(colorScheme) {
-  const colorChannel = colorScheme === 'light' ? grey['800Channel'] : common.blackChannel;
+  const colorChannel = colorScheme === 'light' ? common.blackChannel : common.whiteChannel;
 
   return {
     z1: `0 1px 2px 0 ${varAlpha(colorChannel, 0.16)}`,

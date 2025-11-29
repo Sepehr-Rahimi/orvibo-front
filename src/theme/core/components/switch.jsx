@@ -15,13 +15,13 @@ const MuiSwitch = {
       transform: 'translateX(6px)',
       [`&.${switchClasses.checked}`]: {
         [`& .${switchClasses.thumb}`]: {
-          ...(ownerState.color === 'default' && {
+          ...(ownerState.color === 'primary' && {
             [stylesMode.dark]: { color: theme.vars.palette.grey[800] },
           }),
         },
         [`&+.${switchClasses.track}`]: {
           opacity: 1,
-          ...(ownerState.color === 'default' && {
+          ...(ownerState.color === 'primary' && {
             backgroundColor: theme.vars.palette.text.primary,
           }),
         },

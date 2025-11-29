@@ -50,6 +50,13 @@ export function fCurrency(inputValue, options) {
 }
 // ----------------------------------------------------------------------
 
+export function fIrr(inputValue) {
+  const fm = `${fNumber(inputValue)} تومان`;
+
+  return fm;
+}
+// ----------------------------------------------------------------------
+
 export function fCurrencyPrice(inputValue) {
   const fm = `${inputValue} دلار`;
 

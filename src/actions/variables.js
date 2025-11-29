@@ -14,7 +14,7 @@ const swrOptions = {
 export const updateCurrency = async (newCurrency) => {
   if (!newCurrency) return;
   try {
-    const res = await axiosInstance.post(endpoints.currency.update, { newCurrency });
+    const res = await axiosInstance.post(endpoints.variables.updateCurrency, { newCurrency });
     if (res.status === 200) toast.success(res.data.message);
     else toast.error(res.data?.message || 'somthing went wrong');
   } catch (error) {
@@ -22,8 +22,23 @@ export const updateCurrency = async (newCurrency) => {
   }
 };
 
+export const useGetIrrExchange = () => {
+  const { data, error, isLoading } = useSWR(endpoints.variables.getUsdToIrr, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      exchange: data?.data,
+      error,
+      dataLoading: isLoading,
+    }),
+    [data?.data, error, isLoading]
+  );
+
+  return memoizedValue;
+};
+
 export const useGetCurrency = () => {
-  const { data, error, isLoading } = useSWR(endpoints.currency.get, fetcher);
+  const { data, error, isLoading } = useSWR(endpoints.variables.getCurrency, fetcher);
   //   console.log(data);
 
   const memoizedValue = useMemo(

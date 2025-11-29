@@ -75,7 +75,7 @@ export const CheckoutProductCard = ({
             {product.name}
           </Link>
 
-          <ColorPreview colors={[product.colors]} />
+          <ColorPreview colors={[product.color]} />
 
           {product.discount_price > 0 ? (
             <Stack direction="row" spacing={1} alignItems="center">
@@ -110,8 +110,8 @@ export const CheckoutProductCard = ({
         <Stack direction="row" alignItems="center" spacing={1}>
           <IncrementerButton
             quantity={product.quantity}
-            onDecrease={() => onDecreaseQuantity(product.cartItemId)}
-            onIncrease={() => onIncreaseQuantity(product.cartItemId)}
+            onDecrease={() => onDecreaseQuantity(product.variant_id)}
+            onIncrease={() => onIncreaseQuantity(product.variant_id)}
             disabledDecrease={product.quantity <= 1}
             disabledIncrease={product.quantity >= product.stock}
           />
@@ -122,7 +122,7 @@ export const CheckoutProductCard = ({
               //   productName: product.name,
               //   productId: product.id,
               // });
-              onDelete(product.cartItemId);
+              onDelete(product.variant_id);
             }}
             size="small"
             sx={{

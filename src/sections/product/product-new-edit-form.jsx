@@ -106,7 +106,7 @@ export function ProductNewEditForm({ currentProduct }) {
         content: currentProduct?.label || '',
         enabled: !!currentProduct?.label,
       },
-      weight: currentProduct?.weight || '',
+      weight: +(currentProduct?.weight || 0),
       variants:
         currentProduct?.variants ||
         [

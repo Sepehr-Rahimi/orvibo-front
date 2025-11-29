@@ -35,7 +35,7 @@ export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
 
           <Stack spacing={0.5}>
             <Link href={`${paths.product.details(row?.slug)}`}>
-              <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
+              <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }} color="black">
                 {row.name}
               </Typography>
             </Link>
@@ -51,7 +51,7 @@ export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
                   <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
                 </>
               )}
-              <ColorPreview colors={[row.colors]} />
+              <ColorPreview colors={[row.color]} />
             </Stack>
           </Stack>
         </Stack>

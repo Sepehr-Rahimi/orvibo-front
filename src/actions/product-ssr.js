@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import axiosInstance, { endpoints } from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
@@ -49,3 +50,18 @@ export async function getSimilarProducts(productId) {
   }
   return [];
 }
+
+export const getCategoryAndProducts = async (includeVariants = false) => {
+  try {
+    const url = `${endpoints.product.getProduct_Categories}`;
+    const res = await axiosInstance.get(url, { params: { includeVariants } });
+    if (res.status !== 200) {
+      toast.error('متاسفانه مشکلی پیش اومده');
+      return [];
+    }
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+  return [];
+};

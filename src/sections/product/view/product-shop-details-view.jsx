@@ -128,8 +128,8 @@ export function ProductShopDetailsView({ product, similarProducts }) {
               items={checkout.items}
               onAddCart={checkout.onAddToCart}
               onGotoStep={checkout.onGotoStep}
-              // disableActions={!product?.stock}
-              disableVariant={(variant) => !variant?.stock}
+              // disableActions={(quantity) => quantity === 0}
+              // disableVariant={(variant) => !variant?.stock}
               disabled
             />
           )}

@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { getStorage, useLocalStorage } from 'src/hooks/use-local-storage';
 
-import { getCurrentPrice } from 'src/utils/helper';
+import { calculatePercentage, getCurrentPrice } from 'src/utils/helper';
 
 import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
 
@@ -27,6 +27,7 @@ const initialState = {
   total: 0,
   discount: 0,
   shipping: 0,
+  businessProfit: 0,
   typeOfShipping: 1,
   typeOfPayment: 1,
   billing: null,
@@ -71,9 +72,16 @@ function Container({ children }) {
 
     setField('subtotal', subtotal);
     setField('totalItems', totalItems);
+    setField('businessProfit', calculatePercentage(10, state.subtotal));
+    setField('shipping', calculatePercentage(40, state.subtotal));
     setField(
       'total',
-      state.subtotal - state.discount + state.shipping + state.guarantee + state.services
+      state.subtotal -
+        state.discount +
+        state.shipping +
+        state.guarantee +
+        state.services +
+        state.businessProfit
     );
   }, [
     setField,
@@ -83,6 +91,7 @@ function Container({ children }) {
     state.subtotal,
     state.guarantee,
     state.services,
+    state.businessProfit,
   ]);
 
   useEffect(() => {
@@ -147,8 +156,8 @@ function Container({ children }) {
   );
 
   const onDeleteCart = useCallback(
-    (cartItemId) => {
-      const updatedItems = state.items.filter((item) => item.cartItemId !== cartItemId);
+    (variant_id) => {
+      const updatedItems = state.items.filter((item) => item.variant_id !== variant_id);
 
       setField('items', updatedItems);
     },
@@ -156,9 +165,9 @@ function Container({ children }) {
   );
 
   const onIncreaseQuantity = useCallback(
-    (cartItemId) => {
+    (variant_id) => {
       const updatedItems = state.items.map((item) => {
-        if (item.cartItemId === cartItemId) {
+        if (item.variant_id === variant_id) {
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
@@ -170,9 +179,9 @@ function Container({ children }) {
   );
 
   const onDecreaseQuantity = useCallback(
-    (cartItemId) => {
+    (variant_id) => {
       const updatedItems = state.items.map((item) => {
-        if (item.cartItemId === cartItemId) {
+        if (item.variant_id === variant_id) {
           return { ...item, quantity: item.quantity - 1 };
         }
         return item;
@@ -192,19 +201,19 @@ function Container({ children }) {
     [onNextStep, setField]
   );
 
-  const onAddGuarantee = useCallback(
-    (price) => {
-      setField('guarantee', price);
-    },
-    [setField]
-  );
+  // const onAddGuarantee = useCallback(
+  //   (price) => {
+  //     setField('guarantee', price);
+  //   },
+  //   [setField]
+  // );
 
-  const onAddService = useCallback(
-    (price) => {
-      setField('services', price);
-    },
-    [setField]
-  );
+  // const onAddService = useCallback(
+  //   (price) => {
+  //     setField('services', price);
+  //   },
+  //   [setField]
+  // );
 
   const onApplyDiscount = useCallback(
     (discount, code) => {
@@ -222,12 +231,12 @@ function Container({ children }) {
     [setField]
   );
 
-  const onApplyPayment = useCallback(
-    (typeOfPayment) => {
-      setField('typeOfPayment', typeOfPayment);
-    },
-    [setField]
-  );
+  // const onApplyPayment = useCallback(
+  //   (typeOfPayment) => {
+  //     setField('typeOfPayment', typeOfPayment);
+  //   },
+  //   [setField]
+  // );
 
   const onDeleteField = useCallback(
     (fieldName) => {
@@ -278,7 +287,6 @@ function Container({ children }) {
       onCreateBilling,
       onApplyDiscount,
       onApplyShipping,
-      onApplyPayment,
       //
       activeStep,
       initialStep,
@@ -286,34 +294,33 @@ function Container({ children }) {
       onNextStep,
       onGotoStep,
       //
-      onAddGuarantee,
-      onAddService,
+      // onAddGuarantee,
+      // onAddService,
     }),
     [
       state,
       resetCart,
-      onReset,
       canReset,
-      setField,
-      completed,
+      onReset,
       setState,
-      activeStep,
-      onBackStep,
-      onGotoStep,
-      onNextStep,
-      initialStep,
+      setField,
+      onUpdateItems,
+      completed,
+      onDeleteField,
       onAddToCart,
       onDeleteCart,
-      onApplyDiscount,
-      onApplyShipping,
-      onCreateBilling,
-      onDecreaseQuantity,
       onIncreaseQuantity,
-      onApplyPayment,
-      onUpdateItems,
-      onAddService,
-      onAddGuarantee,
-      onDeleteField,
+      onDecreaseQuantity,
+      onCreateBilling,
+      onApplyDiscount,
+      activeStep,
+      initialStep,
+      onBackStep,
+      onNextStep,
+      onGotoStep,
+      onApplyShipping,
+      // onAddGuarantee,
+      // onAddService,
     ]
   );
 
