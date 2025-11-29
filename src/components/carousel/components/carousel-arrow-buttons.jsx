@@ -194,7 +194,7 @@ export function CarouselArrowProgressButtons({
               borderRadius: 1,
               bgcolor:
                 i === selectedIndex - 1
-                  ? theme.palette.primary.main
+                  ? theme.palette.common.white
                   : varAlpha(theme.vars.palette.grey['500Channel'], 0.5),
               transition: 'all 0.3s ease',
             }}

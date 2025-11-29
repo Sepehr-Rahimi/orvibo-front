@@ -100,7 +100,7 @@ export function AnimateLogo2({ logo, sx, ...other }) {
         sx={{
           width: 1,
           height: 1,
-          opacity: 0.16,
+          // opacity: 0.16,
           borderRadius: '50%',
           position: 'absolute',
           transition: (theme) =>
@@ -109,7 +109,7 @@ export function AnimateLogo2({ logo, sx, ...other }) {
               duration: theme.transitions.duration.shorter,
             }),
           background: (theme) =>
-            `linear-gradient(135deg, ${varAlpha(theme.vars.palette.primary.mainChannel, 0)} 50%, ${theme.vars.palette.primary.main} 100%)`,
+            `linear-gradient(135deg, ${varAlpha(theme.vars.palette.primary.mainChannel, 0)} 16%, ${theme.vars.palette.primary.main} 56%)`,
         }}
       />
     </Box>

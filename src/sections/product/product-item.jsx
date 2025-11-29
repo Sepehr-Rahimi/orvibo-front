@@ -61,7 +61,7 @@ export function ProductItem({ product, sx }) {
   const prices = variants.map((singleVariant) =>
     getCurrentPrice(singleVariant.price, singleVariant.discount_price)
   );
-  // console.log(prices);
+  // console.log(variants);
 
   const priceRange = getPriceRange(prices);
   // console.log(priceRange);
@@ -133,39 +133,23 @@ export function ProductItem({ product, sx }) {
   );
 
   const renderImg = (
-    <Box sx={{ position: 'relative', p: 1 }}>
-      {/* {!!choosedVariant.stock && (
-        <Fab
-          color="warning"
-          size="medium"
-          className="add-to-cart-btn"
-          onClick={handleAddCart}
-          disabled={productStock?.quantity >= choosedVariant.stock}
-          sx={{
-            right: 16,
-            bottom: 16,
-            zIndex: 9,
-            opacity: 0,
-            position: 'absolute',
-            transition: (theme) =>
-              theme.transitions.create('all', {
-                easing: theme.transitions.easing.easeInOut,
-                duration: theme.transitions.duration.shorter,
-              }),
-          }}
-        >
-          <Iconify icon="solar:cart-plus-bold" width={24} />
-        </Fab>
-      )} */}
-
-      {/* <Tooltip title={!choosedVariant.stock && 'ناموجود'} placement="bottom-end"> */}
+    <Box
+      sx={{
+        position: 'relative',
+        p: { xs: 4, md: 8 },
+        bgcolor: 'lightgray',
+        borderRadius: 0.3,
+        '&:hover': { p: { xs: 3.5, md: 7.5 } },
+        transition: '.2s ease',
+      }}
+    >
       {images[0] ? (
         <Image
           alt={name}
           src={images[0]}
           ratio="1/1"
           sx={{
-            borderRadius: 1.5,
+            borderRadius: 0.3,
             // ...(!choosedVariant.stock && { opacity: 0.48, filter: 'grayscale(1)' }),
           }}
         />
@@ -177,7 +161,7 @@ export function ProductItem({ product, sx }) {
   );
 
   const renderContent = (
-    <Stack spacing={{ md: 2.5, xs: 1.5 }} sx={{ p: { md: 3, xs: 2 }, pt: { md: 2, xs: 1 } }}>
+    <Stack spacing={{ md: 2.5, xs: 1.5 }} sx={{ p: { md: 1.2, xs: 1.2 }, pt: { md: 2, xs: 1 } }}>
       <Stack>
         <Link
           component={RouterLink}
@@ -189,9 +173,9 @@ export function ProductItem({ product, sx }) {
         >
           {name}
         </Link>
-        <Typography color="inherit" variant="caption" noWrap sx={{ fontSize: { md: 12, xs: 10 } }}>
+        {/* <Typography color="inherit" variant="caption" noWrap sx={{ fontSize: { md: 12, xs: 10 } }}>
           {brand?.name}
-        </Typography>
+        </Typography> */}
       </Stack>
 
       <Stack
@@ -219,14 +203,23 @@ export function ProductItem({ product, sx }) {
           ) : (
             <Box component="span">{fCurrency(choosedVariant.price)}</Box>
           )} */}
-          <Box component="span">{`${fNumber(priceRange[0])} - ${fNumber(priceRange[1])}`}</Box>
+          <Box component="span">{`${fCurrency(priceRange[0])} - ${fCurrency(priceRange[1])}`}</Box>
         </Stack>
       </Stack>
     </Stack>
   );
 
   return (
-    <Card sx={{ '&:hover .add-to-cart-btn': { opacity: 1 }, width: 1, ...sx }}>
+    <Card
+      sx={{
+        '&:hover .add-to-cart-btn': { opacity: 1 },
+        borderRadius: 0.3,
+        width: 1,
+        bgcolor: 'transparent',
+        boxShadow: 'none !important',
+        ...sx,
+      }}
+    >
       {renderLabels}
 
       {renderImg}

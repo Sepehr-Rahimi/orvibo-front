@@ -43,7 +43,7 @@ const LandingPage = async () => {
   //   limit: 4,
   //   featured: true,
   // });
-  // const banners = await getBanners();
+  const bannersData = await getBanners();
   // const [featureProducts, banners] = await Promise.all([
   //   getProducts({ params: { page: 1, limit: 4, featured: true } }),
   //   getBanners(),
@@ -69,7 +69,7 @@ const LandingPage = async () => {
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
       />
-      <LandingView />{' '}
+      <LandingView banners={bannersData.data} />{' '}
     </>
   );
 };

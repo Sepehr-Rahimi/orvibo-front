@@ -4,40 +4,25 @@ import { useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 import Box from '@mui/material/Box';
-import { Pagination, paginationClasses } from '@mui/material';
+import { Pagination, paginationClasses, Typography } from '@mui/material';
 
 import { ProductItem } from './product-item';
 import { ProductItemSkeleton } from './product-skeleton';
 
 // ----------------------------------------------------------------------
 
-export function ProductList({ products, loading, ...other }) {
+export function ProductList({ data, withCategory = true }) {
   const searchParams = useSearchParams();
 
-  const pathname = usePathname();
+  console.log(withCategory);
 
-  const router = useRouter();
-
-  const page = searchParams.get('page') || '1';
-  const limit = searchParams.get('limit') || other?.pagination?.limit;
-
-  const renderLoading = <ProductItemSkeleton />;
-
-  const renderList = products.map((product) => <ProductItem key={product.id} product={product} />);
-
-  const createQueryString = useCallback(
-    (name, value) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  return (
+  const renderWithCategory = data.map((singleData) => (
     <>
+      <Typography variant="h4" my={3} color="black">
+        {singleData?.categoryName}
+      </Typography>
       <Box
+        mb={4}
         gap={3}
         display="grid"
         gridTemplateColumns={{
@@ -46,12 +31,61 @@ export function ProductList({ products, loading, ...other }) {
           md: 'repeat(3, 1fr)',
           lg: 'repeat(4, 1fr)',
         }}
-        {...other}
+        // {...other}
       >
-        {loading ? renderLoading : renderList}
+        {singleData?.products?.map((product) => (
+          <ProductItem key={product.id} product={product} />
+        ))}
       </Box>
+    </>
+  ));
 
-      {other?.pagination?.total > limit && (
+  const renderWithoutCategory = (
+    <Box
+      mb={4}
+      gap={3}
+      display="grid"
+      gridTemplateColumns={{
+        xs: 'repeat(2, 1fr)',
+        sm: 'repeat(2, 1fr)',
+        md: 'repeat(3, 1fr)',
+        lg: 'repeat(4, 1fr)',
+      }}
+      // {...other}
+    >
+      {data?.map((product) => (
+        <ProductItem key={product.id} product={product} />
+      ))}
+    </Box>
+  );
+
+  // const limit = searchParams.get('limit') || other?.pagination?.limit;
+
+  // const renderLoading = <ProductItemSkeleton />;
+
+  // const renderList = data.map((singleData) => (
+  //   <>
+  //     <Typography>{singleData.categoryName}</Typography>
+  //     {singleData.products.map((product) => (
+  //       <ProductItem key={product.id} product={product} />
+  //     ))}
+  //   </>
+  // ));
+
+  // const createQueryString = useCallback(
+  //   (name, value) => {
+  //     const params = new URLSearchParams(searchParams.toString());
+  //     params.set(name, value);
+
+  //     return params.toString();
+  //   },
+  //   [searchParams]
+  // );
+
+  return (
+    <>
+      {withCategory ? renderWithCategory : renderWithoutCategory}
+      {/* {other?.pagination?.total > limit && (
         <Pagination
           count={Math.ceil(other.pagination.total / limit)}
           page={+page}
@@ -63,7 +97,7 @@ export function ProductList({ products, loading, ...other }) {
             [`& .${paginationClasses.ul}`]: { justifyContent: 'center' },
           }}
         />
-      )}
+      )} */}
     </>
   );
 }

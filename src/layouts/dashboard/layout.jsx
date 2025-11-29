@@ -240,7 +240,7 @@ function useNavColorVars(theme, settings) {
       case 'integrate':
         return {
           layout: {
-            '--layout-nav-bg': palette.background.default,
+            '--layout-nav-bg': palette.grey[900],
             '--layout-nav-horizontal-bg': varAlpha(palette.background.defaultChannel, 0.8),
             '--layout-nav-border-color': varAlpha(palette.grey['500Channel'], 0.12),
             '--layout-nav-text-primary-color': palette.text.primary,
@@ -290,7 +290,6 @@ function useNavColorVars(theme, settings) {
         throw new Error(`Invalid color: ${settings.navColor}`);
     }
   }, [
-    palette.background.default,
     palette.background.defaultChannel,
     palette.common.white,
     palette.grey,

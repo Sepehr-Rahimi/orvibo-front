@@ -25,7 +25,7 @@ const LINKS = [
   {
     headline: `با ${CONFIG.site.name}`,
     children: [
-      // { name: `درباره ${CONFIG.site.name}`, href: paths.about },
+      { name: `درباره ${CONFIG.site.name}`, href: paths.about },
       { name: `ارتباط با ${CONFIG.site.name}`, href: paths.contact },
       // { name: 'باسخ به پرسش های متداول', href: paths.faqs },
     ],
@@ -68,7 +68,7 @@ export function Footer({ layoutQuery, sx }) {
     <Box
       component="footer"
       className="printOff"
-      sx={{ position: 'relative', bgcolor: 'background.default', ...sx }}
+      sx={{ position: 'relative', bgcolor: '#000000', color: 'white', ...sx }}
     >
       <Divider />
 
@@ -101,11 +101,11 @@ export function Footer({ layoutQuery, sx }) {
                 [theme.breakpoints.up(layoutQuery)]: { mx: 'unset' },
               }}
             >
-              <Typography typography="subtitle1" color={theme.palette.primary.main}>
+              <Typography typography="subtitle1" color={theme.palette.primary.light}>
                 {CONFIG.site.name}
               </Typography>
-              مرجع خرید آنلاین انواع گجت، لوازم دیجیتال و تجهیزات هوشمند خانه و محل کار با بهترین
-              قیمت و ضمانت اصالت کالا. ارسال سریع به سراسر ایران.
+              مرجع خرید تجهیزات هوشمند Orvibo با قیمت مستقیم کارخانه، تضمین اصالت کالا و ارائه خدمات
+              نصب و گارانتی معتبر در سراسر ایران.
             </Typography>
 
             <Stack

@@ -28,7 +28,7 @@ export function updateCoreWithSettings(theme, settings) {
           background: {
             ...colorSchemes?.light?.palette?.background,
             default: getBackgroundDefault(settings.contrast),
-            defaultChannel: hexToRgbChannel(getBackgroundDefault(settings.contrast)),
+            defaultChannel: hexToRgbChannel('#000000'),
           },
         },
       },
@@ -105,5 +105,5 @@ function getPalettePrimary(primaryColorName) {
 
 function getBackgroundDefault(contrast) {
   /** [2] */
-  return contrast === 'default' ? '#000000' : coreGreyPalette[200];
+  return '#ffffff';
 }

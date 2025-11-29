@@ -108,8 +108,8 @@ export const Logo = forwardRef(
           <Box
             component="img"
             alt="logo"
-            src="/logo/logo-orvibo.svg"
-            sx={{ width: 80, height: 48 }}
+            src="/logo/iran-orvibo-logo-white.png"
+            sx={{ width: '100%', height: 'auto' }}
           />
         </Box>
       </NoSsr>

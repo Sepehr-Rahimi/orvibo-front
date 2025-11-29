@@ -46,6 +46,8 @@ export function CheckoutBillingAddress() {
 
   const [addressInfo, setAddressInfo] = useState({});
 
+  const [selectedAddress, setSelectedAddress] = useState(checkout?.billing);
+
   // useEffect(() => addressForm.onToggle(), [addressInfo]);
 
   return (
@@ -76,18 +78,19 @@ export function CheckoutBillingAddress() {
                           addressForm.onTrue();
                         }}
                         size="small"
-                        color="secondary"
+                        color="primary"
                         variant="text"
                         sx={{ mx: 1 }}
                       >
                         ویرایش
                       </Button>
                       <Button
+                        disabled={address?.id === selectedAddress?.id}
                         variant="outlined"
                         size="small"
-                        onClick={() => checkout.onCreateBilling(address)}
+                        onClick={() => setSelectedAddress(address)}
                       >
-                        تحویل به این آدرس
+                        {address?.id === selectedAddress?.id ? 'انتخاب شده' : 'انتخاب آدرس'}
                       </Button>
                     </Stack>
                   }
@@ -153,11 +156,23 @@ export function CheckoutBillingAddress() {
         </Grid>
 
         <Grid xs={12} md={4}>
-          <CheckoutSummary
-            total={checkout.total}
-            subtotal={checkout.subtotal}
-            discount={checkout.discount}
-          />
+          <CheckoutSummary checkout={checkout} />
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            // disabled={!selectedAddress || !selectedAddress?.id}
+            onClick={() => {
+              if (!selectedAddress || !selectedAddress?.id) {
+                toast.error('لطفا ابتدا آدرس خود را مشخص کنید');
+                return;
+              }
+              checkout.onCreateBilling(selectedAddress);
+            }}
+          >
+            مرحله بعد
+          </Button>
         </Grid>
       </Grid>
 

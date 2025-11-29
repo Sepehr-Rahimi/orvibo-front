@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
 
-import { updateCurrency, useGetCurrency } from 'src/actions/currency';
+import { updateCurrency, useGetCurrency } from 'src/actions/variables';
 
 import { Field, Form } from 'src/components/hook-form';
 

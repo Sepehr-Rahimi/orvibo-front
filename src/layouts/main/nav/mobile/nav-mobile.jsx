@@ -36,11 +36,13 @@ export function NavMobile({ data, open, onClose, slots, sx }) {
     <Drawer
       open={open}
       onClose={onClose}
+      data-mui-color-scheme="dark"
       PaperProps={{
         sx: {
           display: 'flex',
           flexDirection: 'column',
           width: 'var(--layout-nav-mobile-width)',
+          bgcolor: '#000000',
           ...sx,
         },
       }}

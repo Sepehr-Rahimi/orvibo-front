@@ -89,10 +89,10 @@ const MuiButton = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              color: theme.vars.palette.grey[900],
-              backgroundColor: '#E5E5E5', // slightly darker white
+              color: theme.vars.palette.common.white,
+              backgroundColor: '#000000',
               '&:hover': {
-                backgroundColor: '#CCCCCC',
+                backgroundColor: '#2b2b2b',
                 boxShadow: theme.customShadows.z8,
               },
             }),
@@ -100,7 +100,7 @@ const MuiButton = {
         base: {
           ...(ownerState.color !== 'inherit' &&
             !ownerState.disabled && {
-              backgroundColor: '#E5E5E5', // slightly darker white
+              backgroundColor: '#E5E5E5',
               color: theme.vars.palette.grey[900],
               '&:hover': {
                 backgroundColor: '#CCCCCC',
@@ -120,23 +120,64 @@ const MuiButton = {
             backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.12),
             boxShadow: theme.customShadows[color],
           },
+
+          // Dark background adjustments
+          [stylesMode.dark]: {
+            borderColor: varAlpha(theme.vars.palette[color].mainChannel, 0.32),
+            '&:hover': {
+              backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.2),
+            },
+          },
         })),
+
+        // Inherit color (used mostly in headers)
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              borderColor: '#CCCCCC', // slightly darker than white
-              color: '#CCCCCC',
+              // Light background (white mode)
+              borderColor: '#5c5c5c',
+              color: '#333333',
+
               '&:hover': {
-                backgroundColor: '#E5E5E5',
+                backgroundColor: '#f1f1f1',
                 boxShadow: theme.customShadows.z8,
-                color: '#7d7d7d',
+                color: '#000000',
+              },
+
+              // Black background (dark mode)
+              [stylesMode.dark]: {
+                borderColor: '#dbdbdb',
+                color: '#dbdbdb',
+                '&:hover': {
+                  backgroundColor: '#2e2e2e',
+                  boxShadow: theme.customShadows.z8,
+                  color: '#bfbfbf',
+                },
               },
             }),
         },
+
+        // Base fallback for uncolored outlined button
         base: {
-          '&:hover': { boxShadow: '0 0 0 0.75px currentColor' },
+          borderColor: theme.vars.palette.grey[500],
+          color: theme.vars.palette.grey[900],
+
+          '&:hover': {
+            boxShadow: '0 0 0 0.75px currentColor',
+            backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.12),
+          },
+
+          // Base on dark background
+          [stylesMode.dark]: {
+            borderColor: theme.vars.palette.grey[300],
+            color: theme.vars.palette.grey[100],
+            '&:hover': {
+              backgroundColor: varAlpha(theme.vars.palette.grey['50Channel'], 0.2),
+            },
+          },
         },
       };
+
       return { ...styled.base, ...styled.inheritColor, ...styled.colors };
     },
 
@@ -145,8 +186,8 @@ const MuiButton = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              color: '#E5E5E5',
-              '&:hover': { backgroundColor: '#333333' },
+              color: '#4d4d4d',
+              '&:hover': { backgroundColor: '#ebebeb' },
             }),
         },
       };

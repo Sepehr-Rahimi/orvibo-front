@@ -37,7 +37,7 @@ export const NavDesktopPortal = memo(({ handleOpenMenu, handleCloseMenu, clientR
             }}
           >
             <NavDesktopPortalTitle
-              titles={data.map((item) => item.subheader)}
+              data={data.map((item) => ({ title: item.subheader, path: item.path }))}
               handleTitleActive={(title) => setActiveItems(title)}
               isActive={(title) => activeItems === title}
             />

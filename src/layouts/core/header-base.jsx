@@ -27,7 +27,7 @@ const StyledDivider = styled('span')(({ theme }) => ({
   flexDirection: 'column',
   marginLeft: theme.spacing(2.5),
   marginRight: theme.spacing(2.5),
-  backgroundColor: 'currentColor',
+  backgroundColor: '#000000',
   color: theme.vars.palette.divider,
   '&::before, &::after': {
     top: -5,
@@ -37,7 +37,7 @@ const StyledDivider = styled('span')(({ theme }) => ({
     flexShrink: 0,
     borderRadius: '50%',
     position: 'absolute',
-    backgroundColor: 'currentColor',
+    backgroundColor: '#000000',
   },
   '&::after': { bottom: -5, top: 'auto' },
 }));
@@ -73,7 +73,7 @@ export function HeaderBase({
 
   return (
     <HeaderSection
-      sx={sx}
+      sx={{ ...sx }}
       layoutQuery={layoutQuery}
       slots={{
         ...slots,
@@ -88,7 +88,7 @@ export function HeaderBase({
               }}
               style={{ marginLeft: '40px' }}
             >
-              <Logo data-slot="logo" />
+              <Logo data-slot="logo" width={100} />
             </Box>
 
             {slots?.leftAreaStart}
@@ -130,6 +130,7 @@ export function HeaderBase({
 
             <Box
               data-area="right"
+              data-theme="dark"
               sx={{
                 display: 'flex',
                 alignItems: 'center',

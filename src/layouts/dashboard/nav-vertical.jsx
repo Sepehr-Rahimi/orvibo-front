@@ -67,6 +67,7 @@ export function NavVertical({ sx, data, slots, isNavMini, layoutQuery, onToggleN
         zIndex: 'var(--layout-nav-zIndex)',
         width: isNavMini ? 'var(--layout-nav-mini-width)' : 'var(--layout-nav-vertical-width)',
         borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)})`,
+        // bgcolor: 'black',
         transition: theme.transitions.create(['width'], {
           easing: 'var(--layout-transition-easing)',
           duration: 'var(--layout-transition-duration)',

@@ -41,7 +41,7 @@ export function MainLayout({ sx, data, children, cartIcon, productInfo }) {
   return (
     <Box>
       {/* {cartIcon && <CartIcon />} */}
-      <MatomoTracker product={productInfo} />
+      {/* <MatomoTracker product={productInfo} /> */}
 
       <NavMobile data={navData} open={mobileNavOpen.value} onClose={mobileNavOpen.onFalse} />
 

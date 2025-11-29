@@ -138,4 +138,11 @@ export const getPriceRange = (prices) => [Math.min(...prices), Math.max(...price
 
 // ----------------------------------------------------------------------
 
-export const getCurrentPrice = (prices) => Math.max(Math.min(prices), 0);
+export const getCurrentPrice = (...prices) => {
+  const valid = prices.filter((p) => (typeof p === 'number' || +p) && p > 0);
+  return valid.length > 0 ? Math.min(...valid) : 0;
+};
+
+// ----------------------------------------------------------------------
+
+export const calculatePercentage = (percentage, price) => (percentage / 100) * price;

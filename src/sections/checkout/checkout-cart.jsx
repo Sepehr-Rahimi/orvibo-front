@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -18,8 +16,8 @@ import { EmptyContent } from 'src/components/empty-content';
 
 import { useCheckoutContext } from './context';
 import { CheckoutSummary } from './checkout-summary';
-import { CheckoutCartProductList } from './checkout-cart-product-list';
 import { CheckoutProductListWrapper } from './checkout-product-list-wrapper';
+import { CheckoutCartServiceOptions } from './checkout-cart-service-options';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +62,7 @@ export function CheckoutCart() {
             // />
           )}
         </Card>
+        <CheckoutCartServiceOptions checkout={checkout} />
 
         <Button
           component={RouterLink}
@@ -77,12 +76,7 @@ export function CheckoutCart() {
       </Grid>
 
       <Grid xs={12} md={4}>
-        <CheckoutSummary
-          total={checkout.total}
-          discount={checkout.discount}
-          subtotal={checkout.subtotal}
-          onApplyDiscount={checkout.onApplyDiscount}
-        />
+        <CheckoutSummary checkout={checkout} />
 
         <Button
           fullWidth

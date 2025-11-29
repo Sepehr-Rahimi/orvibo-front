@@ -37,6 +37,7 @@ export function AuthCenteredLayout({ sx, children }) {
             localization: false,
             notifications: false,
             settings: false,
+            checkout: false,
           }}
           slotProps={{ container: { maxWidth: false } }}
           sx={{ position: { [layoutQuery]: 'fixed' } }}
@@ -58,13 +59,14 @@ export function AuthCenteredLayout({ sx, children }) {
           height: 1,
           zIndex: 1,
           content: "''",
-          opacity: 0.24,
+          // opacity: 0.9,
           position: 'fixed',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
-          backgroundImage: `url(${CONFIG.site.basePath}/assets/background/background-3-blur.webp)`,
-          [stylesMode.dark]: { opacity: 0.08 },
+          // backgroundImage: `url(${CONFIG.site.basePath}/assets/background/background-3-blur.webp)`,
+          backgroundColor: 'black',
+          // [stylesMode.dark]: { opacity: 0.9 },
         },
         ...sx,
       }}

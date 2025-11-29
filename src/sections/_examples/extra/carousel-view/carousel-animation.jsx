@@ -31,7 +31,7 @@ export function CarouselAnimation({ data }) {
         position: 'relative',
       }}
     >
-      <Carousel carousel={carousel} sx={{ borderRadius: 2 }}>
+      <Carousel carousel={carousel}>
         {data.map((item, index) => (
           <CarouselItem
             key={item.id}
@@ -47,7 +47,7 @@ export function CarouselAnimation({ data }) {
         options={carousel.options}
         totalSlides={carousel.dots.dotCount}
         selectedIndex={carousel.dots.selectedIndex + 1}
-        sx={{ bottom: 16, right: '45%', position: 'absolute' }}
+        sx={{ bottom: 16, left: '50%', transform: 'translateX(-50%)', position: 'absolute' }}
       />
     </Box>
   );
@@ -58,21 +58,21 @@ function CarouselItem({ item, index, selected }) {
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <IndexLabel index={index + 1} />
+      {/* <IndexLabel index={index + 1} /> */}
 
       <Image
         visibleByDefault
         priority={index === 0}
         alt={item.title}
         src={item.cover}
-        ratio={{ xs: '4/3', sm: '16/8' }}
+        ratio={{ xs: '16/8', sm: '16/7' }}
       />
 
       <Box
         sx={{
-          ...bgGradient({
-            color: `to top, ${theme.vars.palette.grey[900]}, ${varAlpha(theme.vars.palette.grey['900Channel'], 0)}`,
-          }),
+          // ...bgGradient({
+          //   color: `to top, ${theme.vars.palette.grey[900]}, ${varAlpha(theme.vars.palette.grey['900Channel'], 0)}`,
+          // }),
           top: 0,
           width: 1,
           height: 1,
@@ -94,41 +94,47 @@ function CarouselItem({ item, index, selected }) {
         }}
         dir="rtl"
       >
-        <m.div variants={varFade().inRight}>
-          <Typography
-            noWrap
-            sx={{
-              mb: 1,
-              typography: { xs: 'subtitle1', md: 'h3' },
-            }}
-            style={{ textAlign: 'right' }}
-          >
-            {item.title}
-          </Typography>
-        </m.div>
+        {item?.title && (
+          <m.div variants={varFade().inRight}>
+            <Typography
+              noWrap
+              sx={{
+                mb: 1,
+                typography: { xs: 'subtitle1', md: 'h3' },
+              }}
+              style={{ textAlign: 'right' }}
+            >
+              {item.title}
+            </Typography>
+          </m.div>
+        )}
 
-        <m.div variants={varFade().inRight}>
-          <Typography noWrap variant="body2" style={{ textAlign: 'right' }}>
-            {item.description}
-          </Typography>
-        </m.div>
+        {item?.description && (
+          <m.div variants={varFade().inRight}>
+            <Typography noWrap variant="body2" style={{ textAlign: 'right' }}>
+              {item.description}
+            </Typography>
+          </m.div>
+        )}
 
-        <m.div variants={varFade().inRight}>
-          <Button
-            color="primary"
-            variant="contained"
-            sx={{
-              mt: { md: 3, xs: 1 },
-              display: 'block',
-              width: 'max-content',
-              fontSize: { xs: 10, md: 14 },
-            }}
-            target="_blank"
-            href={item.link}
-          >
-            {item.button_text}
-          </Button>
-        </m.div>
+        {item?.button_text && (
+          <m.div variants={varFade().inRight}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{
+                mt: { md: 3, xs: 1 },
+                display: 'block',
+                width: 'max-content',
+                fontSize: { xs: 10, md: 14 },
+              }}
+              target="_blank"
+              href={item.link}
+            >
+              {item.button_text}
+            </Button>
+          </m.div>
+        )}
       </Box>
     </Box>
   );

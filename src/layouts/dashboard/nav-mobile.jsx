@@ -26,6 +26,7 @@ export function NavMobile({ data, open, onClose, slots, sx, topNavData, ...other
 
   return (
     <Drawer
+      data-mui-color-scheme="dark"
       open={open}
       onClose={onClose}
       sx={{

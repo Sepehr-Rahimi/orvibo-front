@@ -30,13 +30,13 @@ export const common = createPaletteChannel(COLORS.common);
 // Text
 export const text = {
   light: createPaletteChannel({
-    primary: grey[100],
-    secondary: grey[200],
-    disabled: grey[500],
-  }),
-  dark: createPaletteChannel({
     primary: '#000000',
     secondary: grey[800],
+    disabled: grey[400],
+  }),
+  dark: createPaletteChannel({
+    primary: '#ffffff',
+    secondary: grey[100],
     disabled: grey[600],
   }),
 };
@@ -44,31 +44,31 @@ export const text = {
 // Background
 export const background = {
   light: createPaletteChannel({
-    paper: '#212121',
-    default: '#1a1a1a',
-    neutral: grey[600],
+    paper: '#ffffff',
+    default: '#f0f0f0',
+    neutral: grey[50],
   }),
   dark: createPaletteChannel({
-    paper: grey[800],
-    default: grey[900],
-    neutral: '#28323D',
+    paper: '#000000',
+    default: '#1f1f1f',
+    neutral: grey[900],
   }),
 };
 
 // Action
 export const baseAction = {
-  hover: varAlpha(grey['900Channel'], 0.92),
-  selected: varAlpha(grey['900Channel'], 0.84),
-  focus: varAlpha(grey['900Channel'], 0.76),
-  disabled: varAlpha(grey['900Channel'], 0.2),
-  disabledBackground: varAlpha(grey['900Channel'], 0.76),
+  hover: varAlpha(grey['900Channel'], 0.08),
+  selected: varAlpha(grey['900Channel'], 0.12),
+  focus: varAlpha(grey['900Channel'], 0.3),
+  disabled: varAlpha(grey['900Channel'], 0.1),
+  disabledBackground: varAlpha(grey['900Channel'], 0.12),
   hoverOpacity: 0.08,
   disabledOpacity: 0.48,
 };
 
 export const action = {
-  light: { ...baseAction, active: grey[500] },
   dark: { ...baseAction, active: grey[500] },
+  light: { ...baseAction, active: grey[500] },
 };
 
 /*
@@ -87,18 +87,18 @@ export const basePalette = {
   action,
 };
 
-export const lightPalette = {
-  ...basePalette,
-  text: text.light,
-  background: background.light,
-  action: action.light,
-};
-
 export const darkPalette = {
   ...basePalette,
   text: text.dark,
   background: background.dark,
   action: action.dark,
+};
+
+export const lightPalette = {
+  ...basePalette,
+  text: text.light,
+  background: background.light,
+  action: action.light,
 };
 
 // ----------------------------------------------------------------------

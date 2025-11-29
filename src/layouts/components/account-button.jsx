@@ -35,7 +35,6 @@ export function AccountButton({ open, photoURL, displayName, sx, ...other }) {
     <Button
       href={`${paths.dashboard.root}`}
       variant="outlined" // minimal style
-      color="inherit"
       sx={{
         minWidth: 0,
         padding: 1,

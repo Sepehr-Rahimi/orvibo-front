@@ -19,6 +19,7 @@ import TimeCountdown from 'src/components/time-countdown/timeCountdown';
 import { useAuthContext } from 'src/auth/hooks';
 // import { trackMatomoEvent } from 'src/utils/helper';
 import { AiSearchInput } from '../home-ai-search';
+import { HomeShowProductInfo } from '../components/home-show-info';
 // import HomeNewProducts from '../home-new-products';
 
 const HomeHotDeals = dynamic(() => import('../home-hot-deals'), {
@@ -68,16 +69,19 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
     // const { products, productsLoading } = useGetProducts();
 
     <Box sx={{ mt: 4, mb: 4, overflow: 'hidden', p: '0 !important', m: '0 !important', width: 1 }}>
-      <Box sx={{ aspectRatio: { xs: '4/3', sm: '16/8' }, width: '100%' }}>
+      <Box sx={{ aspectRatio: { xs: '16/8', sm: '16/7' }, mb: 2, width: '100%' }}>
         {/* Hero Section - Carousel Banner */}
         <CarouselAnimation data={banners} />
       </Box>
 
-      <Box sx={{ mt: 4, height: 70 }}>
+      <Box sx={{ height: 'auto' }}>
         <HomeAutoScroll />
       </Box>
       {/* <AiSearchInput /> */}
-      <Stack spacing={2} sx={{ mt: 6, mx: 2 }}>
+      <Box>
+        <HomeShowProductInfo />
+      </Box>
+      {/* <Stack spacing={2} sx={{ mt: 6, mx: 2 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography
             variant="h4"
@@ -100,7 +104,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
           </Button>
         </Stack>
         <HomeCategories />
-      </Stack>
+      </Stack> */}
 
       {/* {featureProducts && featureProducts.length > 0 && (
         <Stack spacing={2} sx={{ mt: 6 }} overflow="visible">

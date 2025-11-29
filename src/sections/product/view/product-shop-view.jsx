@@ -14,7 +14,7 @@ import { useSetState } from 'src/hooks/use-set-state';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
 import { PRODUCT_SORT_OPTIONS } from 'src/_mock';
-import { useSearchProducts } from 'src/actions/product';
+import { useGetProductsAndCategory, useSearchProducts } from 'src/actions/product';
 
 import { EmptyContent } from 'src/components/empty-content';
 
@@ -26,7 +26,7 @@ import { ProductFiltersResult } from '../product-filters-result';
 
 // ----------------------------------------------------------------------
 
-export function ProductShopView({ products, ...params }) {
+export function ProductShopView({ products, categoryName }) {
   // console.log(products);
   // useEffect(() =>
   //   trackMatomoEvent('ecommerce-info', {
@@ -40,153 +40,153 @@ export function ProductShopView({ products, ...params }) {
   //     },
   //   })
   // );
-  const checkout = useCheckoutContext();
+  // const checkout = useCheckoutContext();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
-  const pathName = usePathname();
+  // const pathName = usePathname();
 
-  const createQueryString = useCallback(
-    (array) => {
-      const newParams = new URLSearchParams(searchParams.toString());
-      array.map(([name, value]) => {
-        newParams.set(name, value);
-        return null;
-      });
+  // const createQueryString = useCallback(
+  //   (array) => {
+  //     const newParams = new URLSearchParams(searchParams.toString());
+  //     array.map(([name, value]) => {
+  //       newParams.set(name, value);
+  //       return null;
+  //     });
 
-      return newParams.toString();
-    },
-    [searchParams]
-  );
-  const openFilters = useBoolean();
+  //     return newParams.toString();
+  //   },
+  //   [searchParams]
+  // );
+  // const openFilters = useBoolean();
 
-  const [sortBy, setSortBy] = useState('newest');
+  // const [sortBy, setSortBy] = useState('newest');
 
-  const [searchQuery, setSearchQuery] = useState(searchParams?.get('search') ?? '');
+  // const [searchQuery, setSearchQuery] = useState(searchParams?.get('search') ?? '');
 
-  const debouncedQuery = useDebounce(searchQuery);
+  // const debouncedQuery = useDebounce(searchQuery);
 
-  const categoryName = decodeURIComponent(pathName.split('/')[3]);
+  // const categoryName = decodeURIComponent(pathName.split('/')[3]);
 
   // console.log(categoryName);
 
-  useEffect(() => {
-    // if (searchParams.get('sort') !== sortBy && searchParams.get('order')!==) {
-    switch (sortBy) {
-      case 'newest':
-        router.replace(
-          `${pathName}?${createQueryString([
-            ['sort', 'created_at'],
-            ['order', 'desc'],
-          ])}`
-        );
+  // useEffect(() => {
+  //   // if (searchParams.get('sort') !== sortBy && searchParams.get('order')!==) {
+  //   switch (sortBy) {
+  //     case 'newest':
+  //       router.replace(
+  //         `${pathName}?${createQueryString([
+  //           ['sort', 'created_at'],
+  //           ['order', 'desc'],
+  //         ])}`
+  //       );
 
-        break;
-      case 'priceAsc':
-        router.replace(
-          `${pathName}?${createQueryString([
-            ['sort', 'price'],
-            ['order', 'asc'],
-          ])}`
-        );
+  //       break;
+  //     case 'priceAsc':
+  //       router.replace(
+  //         `${pathName}?${createQueryString([
+  //           ['sort', 'price'],
+  //           ['order', 'asc'],
+  //         ])}`
+  //       );
 
-        break;
-      case 'priceDesc':
-        router.replace(
-          `${pathName}?${createQueryString([
-            ['sort', 'price'],
-            ['order', 'desc'],
-          ])}`
-        );
+  //       break;
+  //     case 'priceDesc':
+  //       router.replace(
+  //         `${pathName}?${createQueryString([
+  //           ['sort', 'price'],
+  //           ['order', 'desc'],
+  //         ])}`
+  //       );
 
-        break;
+  //       break;
 
-      default:
-        // router.replace(`${pathName}?${searchParams.toString()}`);
-        break;
-    }
-    // }
-  }, [createQueryString, pathName, router, searchParams, sortBy]);
+  //     default:
+  //       // router.replace(`${pathName}?${searchParams.toString()}`);
+  //       break;
+  //   }
+  //   // }
+  // }, [createQueryString, pathName, router, searchParams, sortBy]);
 
-  const filters = useSetState({
-    // gender: [],
-    // colors: [],
-    // rating: '',
-    category: 'همه',
-    priceRange: [0, 0],
-  });
+  // const filters = useSetState({
+  //   // gender: [],
+  //   // colors: [],
+  //   // rating: '',
+  //   category: 'همه',
+  //   priceRange: [0, 0],
+  // });
 
-  const { searchResults, searchLoading } = useSearchProducts({
-    params: {
-      sort: searchParams.get('sort'),
-      order: searchParams.get('order'),
-      // category:searchParams.get('category'),
-      category_name: categoryName,
-      search: debouncedQuery,
-    },
-  });
+  // const { searchResults, searchLoading } = useSearchProducts({
+  //   params: {
+  //     sort: searchParams.get('sort'),
+  //     order: searchParams.get('order'),
+  //     // category:searchParams.get('category'),
+  //     category_name: categoryName,
+  //     search: debouncedQuery,
+  //   },
+  // });
 
   // const { treeCategories } = useGetTreeCategories();
 
   // const dataFiltered = applyFilter({ inputData: products, filters: filters.state, sortBy });
 
-  const canReset =
-    // filters.state.gender.length > 0 ||
-    // filters.state.colors.length > 0 ||
-    // filters.state.rating !== '' ||
-    filters.state.category !== 'همه' ||
-    filters.state.priceRange[0] !== 0 ||
-    filters.state.priceRange[1] !== 0;
+  // const canReset =
+  //   // filters.state.gender.length > 0 ||
+  //   // filters.state.colors.length > 0 ||
+  //   // filters.state.rating !== '' ||
+  //   filters.state.category !== 'همه' ||
+  //   filters.state.priceRange[0] !== 0 ||
+  //   filters.state.priceRange[1] !== 0;
 
-  const notFound = !products?.length && canReset;
+  const notFound = !products?.length;
 
-  const handleSortBy = useCallback((newValue) => {
-    setSortBy(newValue);
-  }, []);
+  // const handleSortBy = useCallback((newValue) => {
+  //   setSortBy(newValue);
+  // }, []);
 
-  const handleSearch = useCallback((inputValue) => {
-    setSearchQuery(inputValue);
-  }, []);
+  // const handleSearch = useCallback((inputValue) => {
+  //   setSearchQuery(inputValue);
+  // }, []);
 
-  const productsEmpty = !products.length;
+  const productsEmpty = !products?.length;
 
-  const renderFilters = (
-    <Stack
-      spacing={3}
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-end', sm: 'center' }}
-      direction={{ xs: 'column', sm: 'row' }}
-    >
-      <ProductSearch
-        query={searchQuery}
-        results={searchResults}
-        onSearch={handleSearch}
-        loading={searchLoading}
-      />
+  // const renderFilters = (
+  //   <Stack
+  //     spacing={3}
+  //     justifyContent="space-between"
+  //     alignItems={{ xs: 'flex-end', sm: 'center' }}
+  //     direction={{ xs: 'column', sm: 'row' }}
+  //   >
+  //     <ProductSearch
+  //       query={searchQuery}
+  //       results={searchResults}
+  //       onSearch={handleSearch}
+  //       loading={searchLoading}
+  //     />
 
-      <Stack direction="row" spacing={1} flexShrink={0}>
-        {/* <ProductFilters
-          filters={filters}
-          canReset={canReset}
-          open={openFilters.value}
-          onOpen={openFilters.onTrue}
-          onClose={openFilters.onFalse}
-          options={{
-            // colors: PRODUCT_COLOR_OPTIONS,
-            // ratings: PRODUCT_RATING_OPTIONS,
-            // genders: PRODUCT_GENDER_OPTIONS,
-            categories: [{ label: 'همه' }, ...treeCategories],
-          }}
-        /> */}
+  //     <Stack direction="row" spacing={1} flexShrink={0}>
+  //       {/* <ProductFilters
+  //         filters={filters}
+  //         canReset={canReset}
+  //         open={openFilters.value}
+  //         onOpen={openFilters.onTrue}
+  //         onClose={openFilters.onFalse}
+  //         options={{
+  //           // colors: PRODUCT_COLOR_OPTIONS,
+  //           // ratings: PRODUCT_RATING_OPTIONS,
+  //           // genders: PRODUCT_GENDER_OPTIONS,
+  //           categories: [{ label: 'همه' }, ...treeCategories],
+  //         }}
+  //       /> */}
 
-        <ProductSort sort={sortBy} onSort={handleSortBy} sortOptions={PRODUCT_SORT_OPTIONS} />
-      </Stack>
-    </Stack>
-  );
+  //       <ProductSort sort={sortBy} onSort={handleSortBy} sortOptions={PRODUCT_SORT_OPTIONS} />
+  //     </Stack>
+  //   </Stack>
+  // );
 
-  const renderResults = <ProductFiltersResult filters={filters} totalResults={products.length} />;
+  // const renderResults = <ProductFiltersResult filters={filters} totalResults={products.length} />;
 
   const renderNotFound = <EmptyContent filled sx={{ py: 10 }} />;
 
@@ -195,22 +195,18 @@ export function ProductShopView({ products, ...params }) {
       {/* <CartIcon totalItems={checkout.totalItems} /> */}
 
       <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>
-        {params?.categoryName
-          ? `محصولات ${decodeURIComponent(params.categoryName)}`
-          : params?.brandName
-            ? `محصولات برند ${decodeURIComponent(params.brandName)}`
-            : `فروشگاه`}
+        {categoryName ? `محصولات ${decodeURIComponent(categoryName)}` : `ایران ارویبو`}
       </Typography>
 
-      <Stack spacing={2.5} sx={{ mb: { xs: 3, md: 5 } }}>
+      {/* <Stack spacing={2.5} sx={{ mb: { xs: 3, md: 5 } }}>
         {renderFilters}
 
         {canReset && renderResults}
-      </Stack>
+      </Stack> */}
 
       {(notFound || productsEmpty) && renderNotFound}
 
-      <ProductList products={products} pagination={params?.pagination} />
+      <ProductList data={products} withCategory={!categoryName} />
       {/* {true && (
         <Stack alignItems="center" sx={{ mt: 8, mb: { xs: 10, md: 15 } }}>
           <Button

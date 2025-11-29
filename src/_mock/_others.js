@@ -125,12 +125,12 @@ export const _socials = [
   {
     value: 'instagram',
     name: 'Instagram',
-    path: 'https://www.instagram.com/noyanstore.ir',
+    path: 'https://www.instagram.com/iranorvibo',
   },
   {
     value: 'whatsApp',
     name: 'whatsApp',
-    path: 'https://wa.me/09390629986',
+    path: 'https://wa.me/09362172533',
   },
   // {
   //   value: 'linkedin',

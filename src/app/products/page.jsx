@@ -1,7 +1,7 @@
 import { paths } from 'src/routes/paths';
 
 import { CONFIG } from 'src/config-global';
-import { getProducts } from 'src/actions/product-ssr';
+import { getCategoryAndProducts, getProducts } from 'src/actions/product-ssr';
 
 import { ProductShopView } from 'src/sections/product/view';
 
@@ -15,9 +15,11 @@ export const metadata = {
 export default async function Page(params, ...p) {
   const searchParams = params?.searchParams;
 
-  const response = await getProducts({
-    params: { ...searchParams, page: searchParams?.page || '1' },
-  });
+  // const response = await getProducts({
+  //   params: { ...searchParams, page: searchParams?.page || '1' },
+  // });
 
-  return <ProductShopView products={response?.products} pagination={response?.pagination} />;
+  const data = await getCategoryAndProducts(true);
+
+  return <ProductShopView products={data.data} />;
 }

@@ -1,5 +1,5 @@
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -11,8 +11,10 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency, fIrr } from 'src/utils/format-number';
+import { calculatePercentage } from 'src/utils/helper';
 
+import { useGetIrrExchange } from 'src/actions/variables';
 import { validateDiscountCode } from 'src/actions/discountCodes';
 
 import { Iconify } from 'src/components/iconify';
@@ -21,12 +23,22 @@ import { useCheckoutContext } from './context';
 
 // ----------------------------------------------------------------------
 
-export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, onApplyDiscount }) {
+const other_payments = (checkout) => [
+  { title: 'جمع تجهیزات', value: fCurrency(checkout.subtotal) },
+  { title: 'هزینه حمل و ترخیص', value: fCurrency(checkout.shipping) },
+  { title: 'گارانتی تجهیزات', value: fCurrency(checkout.guarantee) },
+  { title: 'خدمات نصب و راه اندازی', value: fCurrency(checkout.services) },
+  { title: 'سود بازرگانی', value: fCurrency(checkout.businessProfit) },
+];
+
+export function CheckoutSummary({ checkout }) {
+  const { shipping, subtotal, onApplyDiscount, discount, onEdit, total } = checkout;
   const displayShipping = shipping !== null ? '-' : '-';
 
-  const checkout = useCheckoutContext();
-
   const [discount_code, setDiscount_code] = useState(checkout.discount_code);
+  const [irrExchange, setIrrExchange] = useState(0);
+
+  const { exchange, dataLoading } = useGetIrrExchange();
 
   const handleApplyDiscount = async () => {
     try {
@@ -56,18 +68,20 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
       />
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Box display="flex">
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{ flexGrow: 1, color: 'text.secondary' }}
-          >
-            جمع جزء
-          </Typography>
-          <Typography component="span" variant="subtitle2">
-            {fCurrency(subtotal)}
-          </Typography>
-        </Box>
+        {other_payments(checkout).map((item) => (
+          <Box display="flex">
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ flexGrow: 1, color: 'text.secondary' }}
+            >
+              {item.title}
+            </Typography>
+            <Typography component="span" variant="subtitle2">
+              {item.value}
+            </Typography>
+          </Box>
+        ))}
 
         <Box display="flex">
           <Typography
@@ -82,19 +96,6 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
           </Typography>
         </Box>
 
-        <Box display="flex">
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{ flexGrow: 1, color: 'text.secondary' }}
-          >
-            هزینه ارسال
-          </Typography>
-          <Typography component="span" variant="subtitle2">
-            {shipping ? fCurrency(shipping) : displayShipping}
-          </Typography>
-        </Box>
-
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box display="flex">
@@ -103,18 +104,26 @@ export function CheckoutSummary({ total, onEdit, discount, subtotal, shipping, o
           </Typography>
 
           <Box sx={{ textAlign: 'right' }}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              sx={{ display: 'block', color: 'error.main' }}
-            >
+            <Typography component="span" variant="subtitle1" sx={{ display: 'block' }}>
               {fCurrency(total)}
             </Typography>
-            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+            {/* <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
               (در صورت وجود مالیات بر ارزش افزوده شامل می شود)
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
+        {exchange && !dataLoading && (
+          <Box display="flex">
+            <Typography component="span" variant="subtitle2" sx={{ flexGrow: 1 }}>
+              معادل تومانی
+            </Typography>
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography component="span" variant="subtitle2" sx={{ display: 'block' }}>
+                <Typography>{fIrr(total * exchange)}</Typography>
+              </Typography>
+            </Box>
+          </Box>
+        )}
 
         {onApplyDiscount && (
           <TextField

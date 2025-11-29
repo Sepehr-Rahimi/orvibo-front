@@ -5,7 +5,7 @@ import { paths } from 'src/routes/paths';
 
 import { fCurrency } from 'src/utils/format-number';
 
-const ProductResultItem = ({ product, onClickItem, showPrice = true }) => (
+const ProductResultItem = ({ product, onClickItem, showPrice = false }) => (
   <Stack
     direction="row"
     alignItems="center"

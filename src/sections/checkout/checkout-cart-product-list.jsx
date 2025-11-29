@@ -16,7 +16,7 @@ export function CheckoutCartProductList({
 }) {
   const TABLE_HEAD = [
     { id: 'product', label: 'محصول' },
-    // { id: 'kind', label: 'نوع' },
+    // { id: 'kind', label: 'نوع' }
     { id: 'price', label: 'قیمت' },
     { id: 'quantity', label: 'تعداد' },
     { id: 'totalAmount', label: 'قیمت کل', align: 'right' },
@@ -43,9 +43,9 @@ export function CheckoutCartProductList({
                 current_price:
                   row?.discount_price && row?.discount_price > 0 ? row?.discount_price : row?.price,
               }}
-              onDelete={() => onDelete(row.cartItemId)}
-              onDecrease={() => onDecreaseQuantity(row.cartItemId)}
-              onIncrease={() => onIncreaseQuantity(row.cartItemId)}
+              onDelete={() => onDelete(row.variant_id)}
+              onDecrease={() => onDecreaseQuantity(row.variant_id)}
+              onIncrease={() => onIncreaseQuantity(row.variant_id)}
             />
           ))}
         </TableBody>

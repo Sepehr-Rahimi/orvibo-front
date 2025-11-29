@@ -77,7 +77,7 @@ export function OrderListView() {
 
   useEffect(() => {
     if (orders.length) setTableData(orders);
-    console.log(orders);
+    // console.log(orders);
   }, [orders]);
 
   const filters = useSetState({
@@ -363,7 +363,7 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   if (!dateError) {
     if (startDate && endDate) {
-      console.log(inputData);
+      // console.log(inputData);
       inputData = inputData.filter((order) => fIsBetween(order.created_at, startDate, endDate));
     }
   }

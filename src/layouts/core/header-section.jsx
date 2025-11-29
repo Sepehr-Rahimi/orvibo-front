@@ -58,7 +58,7 @@ export function HeaderSection({
     },
     offset: {
       ...bgBlur({
-        color: varAlpha(theme.vars.palette.background.defaultChannel, 0.8),
+        // color: varAlpha(theme.vars.palette.background.defaultChannel, 0.8),
       }),
     },
   };
@@ -66,11 +66,14 @@ export function HeaderSection({
   return (
     <AppBar
       position="sticky"
+      color="success"
       className={layoutClasses.header}
       sx={{
         zIndex: 'var(--layout-header-zIndex)',
+        backgroundColor: '#000000',
         ...sx,
       }}
+      data-mui-color-scheme="dark"
       {...other}
     >
       {slots?.topArea}

@@ -48,6 +48,7 @@ export const NewProductSchema = zod.object({
   is_published: zod.boolean(),
   summary: zod.string(),
   label: zod.object({ enabled: zod.boolean(), content: zod.string() }),
+  weight: zod.number(),
   variants: zod
     .array(
       zod.object({
@@ -105,6 +106,7 @@ export function ProductNewEditForm({ currentProduct }) {
         content: currentProduct?.label || '',
         enabled: !!currentProduct?.label,
       },
+      weight: +(currentProduct?.weight || 0),
       variants:
         currentProduct?.variants ||
         [
@@ -312,6 +314,15 @@ export function ProductNewEditForm({ currentProduct }) {
             ))}
           </Field.Select>
 
+          <Field.Text
+            label="وزن"
+            name="weight"
+            sx={{ width: 1 }}
+            // placeHolder="0"
+            type="number"
+            // InputLabelProps={{ shrink: true }}
+          />
+
           {/* <Field.MultiSelect
             checkbox
             name="colors"
@@ -490,7 +501,14 @@ export function ProductNewEditForm({ currentProduct }) {
                 </MenuItem>
               ))}
             </Field.Select>
-            <MultiValueTextField label="سایز" name={`variants.${index}.size`} sx={{ width: 1 }} />
+            {/* <MultiValueTextField
+              label="وزن"
+              name={`variants.${index}.weight`}
+              sx={{ width: 1 }}
+              placeHolder="0"
+              type="number"
+              InputLabelProps={{ shrink: true }}
+            /> */}
           </Stack>
           <Stack gap={2} direction={{ md: 'row', xs: 'column' }}>
             <Field.Text

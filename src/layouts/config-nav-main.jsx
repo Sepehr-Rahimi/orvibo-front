@@ -87,14 +87,30 @@ export const navData = [
   //   icon: <Iconify width={22} icon="solar:bill-list-bold" />,
   //   path: paths.blogs,
   // },
+  {
+    title: CONFIG.site.name,
+    path: paths.about,
+    icon: <Iconify width={22} icon="solar:info-circle-bold" />,
+    children: [
+      {
+        subheader: `درباره ارویبو`,
+        path: paths.about_orvibo,
+      },
+      { subheader: `سفارش مستقیم به ارویبو`, path: paths.about },
+      {
+        subheader: `ارتباط با ${CONFIG.site.name}`,
+        path: paths.contact,
+      },
+    ],
+  },
   // {
-  //   title: `درباره ${CONFIG.site.name}`,
+  //   title: `سفارش مستقیم به ارویبو`,
   //   path: paths.about,
   //   icon: <Iconify width={22} icon="solar:info-circle-bold" />,
   // },
-  {
-    title: `ارتباط با ${CONFIG.site.name}`,
-    path: paths.contact,
-    icon: <Iconify width={22} icon="solar:call-chat-rounded-bold" />,
-  },
+  // {
+  //   title: `ارتباط با ${CONFIG.site.name}`,
+  //   path: paths.contact,
+  //   icon: <Iconify width={22} icon="solar:call-chat-rounded-bold" />,
+  // },
 ];

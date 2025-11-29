@@ -63,6 +63,7 @@ const StyledNavItem = styled(ButtonBase, {
   const baseStyles = {
     item: {
       ...theme.typography.body2,
+      color: theme.vars.palette.text.secondary,
       fontWeight: theme.typography.fontWeightMedium,
       transition: theme.transitions.create(['all'], {
         duration: theme.transitions.duration.shorter,
@@ -79,7 +80,7 @@ const StyledNavItem = styled(ButtonBase, {
       backgroundColor: theme.vars.palette.text.disabled,
       ...(active && {
         opacity: 1,
-        backgroundColor: theme.vars.palette.primary.main,
+        backgroundColor: theme.vars.palette.text.primary,
       }),
     },
   };
@@ -93,7 +94,7 @@ const StyledNavItem = styled(ButtonBase, {
       height: '100%',
       '&:hover': { opacity: 0.64, '&::before': baseStyles.dot },
       ...(active && {
-        color: theme.vars.palette.primary.main,
+        color: theme.vars.palette.text.primary,
         fontWeight: theme.typography.fontWeightSemiBold,
         '&::before': baseStyles.dot,
       }),

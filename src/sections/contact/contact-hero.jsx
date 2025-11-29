@@ -18,7 +18,7 @@ const CONTACTS = [
     address: ' نیاوران سه راه یاسر جنب بانک پاسارگاد پلاک 234 واحد 104 ',
     // phoneNumber: '021-26152998',
     secondPhoneNumber: '021-26152998',
-    phoneNumber: '0939-062-9986',
+    phoneNumber: '0936-217-2533',
   },
   // {
   //   country: 'London',
@@ -67,7 +67,7 @@ export function ContactHero() {
             sx={{
               color: 'common.white',
               [`& .${animateTextClasses.line}[data-index="0"]`]: {
-                [`& .${animateTextClasses.word}[data-index="0"]`]: { color: 'primary.main' },
+                [`& .${animateTextClasses.word}[data-index="0"]`]: { color: 'primary.light' },
               },
             }}
           />

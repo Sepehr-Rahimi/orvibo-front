@@ -154,9 +154,10 @@ export const endpoints = {
   recommend: {
     get: '/api/recommend',
   },
-  currency: {
-    update: '/api/currency/update',
-    get: '/api/currency/get',
+  variables: {
+    updateCurrency: '/api/variables/currency/update',
+    getCurrency: '/api/variables/currency/get',
+    getUsdToIrr: '/api/variables/irrExchange/get',
   },
   bankAccount: {
     get: '/api/bank_accounts',

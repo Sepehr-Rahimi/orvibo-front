@@ -21,6 +21,9 @@ export const createOrder = async ({
   // delivery_cost,
   type_of_delivery,
   type_of_payment,
+  services,
+  guarantee,
+  businessProfit,
   items,
 }) => {
   try {
@@ -35,6 +38,9 @@ export const createOrder = async ({
       // delivery_cost,
       type_of_delivery,
       type_of_payment: type_of_payment.toString(),
+      services,
+      guarantee,
+      businessProfit,
       items,
       description,
       callback_url,

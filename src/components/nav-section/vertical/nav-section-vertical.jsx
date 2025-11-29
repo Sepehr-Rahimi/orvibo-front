@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { useState, useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
@@ -27,12 +28,18 @@ export function NavSectionVertical({
   };
 
   return (
-    <Stack component="nav" className={navSectionClasses.vertical.root} sx={{ ...cssVars, ...sx }}>
+    <Stack
+      component="nav"
+      className={navSectionClasses.vertical.root}
+      data-mui-color-scheme="dark"
+      sx={{ ...cssVars, ...sx }}
+    >
       <NavUl sx={{ flex: '1 1 auto', gap: 'var(--nav-item-gap)' }}>
-        {data.map((group) => (
+        {data?.map((group) => (
           <Group
             key={group.subheader ?? group.items[0].title}
             subheader={group.subheader}
+            subheaderPath={group.path}
             items={group.items}
             render={render}
             slotProps={slotProps}
@@ -46,16 +53,20 @@ export function NavSectionVertical({
 
 // ----------------------------------------------------------------------
 
-function Group({ items, render, subheader, slotProps, enabledRootRedirect }) {
+function Group({ items, render, subheader, slotProps, enabledRootRedirect, subheaderPath }) {
   const [open, setOpen] = useState(true);
 
+  const router = useRouter();
+
   const handleToggle = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
+    if (items?.length) setOpen((prev) => !prev);
+    else router.push(subheaderPath);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items?.length, subheaderPath]);
 
   const renderContent = (
     <NavUl sx={{ gap: 'var(--nav-item-gap)' }}>
-      {items.map((list) => (
+      {items?.map((list) => (
         <NavList
           key={list.title}
           data={list}
