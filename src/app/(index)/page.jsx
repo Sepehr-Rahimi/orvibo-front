@@ -9,11 +9,11 @@ export const metadata = () => {
 
   const siteName = CONFIG.site.name;
 
-  const image = `${CONFIG.site.baseURL}/logo/logo-full.png`;
+  const image = `${CONFIG.site.baseURL}/logo/iran-orvibo-logo-white.png`;
 
-  const description = `${siteName}، مرجع خرید آنلاین انواع گجت، لوازم دیجیتال و تجهیزات هوشمند خانه و محل کار با بهترین قیمت و ضمانت اصالت کالا. ارسال سریع به سراسر ایران.`;
+  const description = `${siteName} مرجع خرید تجهیزات هوشمند Orvibo با قیمت مستقیم کارخانه، تضمین اصالت کالا و ارائه خدمات نصب و گارانتی معتبر در سراسر ایران.`;
 
-  const title = `فروشگاه ${siteName} | خرید آنلاین گجت، لوازم دیجیتال و تجهیزات هوشمند با بهترین قیمت`;
+  const title = `${siteName} | مرجع سفارش مستقیم به کارخانه ارویبو در چین`;
 
   return {
     title,
@@ -56,9 +56,10 @@ const LandingPage = async () => {
     '@type': 'Organization',
     name: CONFIG.site.name,
     url: CONFIG.site.baseURL,
-    logo: `${CONFIG.site.baseURL}/logo/logo-full.png`,
-    sameAs: ['https://www.instagram.com/noyanstore.ir'],
-    description: 'نویان استور مرجع خرید آنلاین انواع گجت و لوازم دیجیتال با قیمت مناسب و پشتیبانی.',
+    logo: `${CONFIG.site.baseURL}/logo/iran-orvibo-logo-white.png`,
+    sameAs: ['https://www.instagram.com/iranorvibo'],
+    description:
+      ' مرجع خرید تجهیزات هوشمند Orvibo با قیمت مستقیم کارخانه، تضمین اصالت کالا و ارائه خدمات نصب و گارانتی معتبر در سراسر ایران.',
   };
   return (
     <>

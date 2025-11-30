@@ -325,8 +325,8 @@ export function ProductDetailsSummary({
         fullWidth
         disabled={buyDisableCases}
         size="large"
-        color="warning"
-        variant="contained"
+        color="inherit"
+        variant="outlined"
         startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
         onClick={handleAddCart}
         sx={{ whiteSpace: 'nowrap' }}
@@ -401,9 +401,9 @@ export function ProductDetailsSummary({
             <Typography variant="h5">
               {name} | {model}
             </Typography>
-            <Link component={RouterLink} href={paths.product.byBrand(brand?.name)}>
+            {/* <Link component={RouterLink} href={paths.product.byBrand(brand?.name)}>
               {brand?.name}
-            </Link>
+            </Link> */}
             {renderProperties}
           </Stack>
 
