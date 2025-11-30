@@ -10,14 +10,14 @@ import { Carousel, useCarousel } from 'src/components/carousel';
 export function HomeAutoScroll() {
   const workswithImages = [
     { logo_url: '/assets/images/landing/workswith/applehome.png', name: 'appleHome' },
-    { logo_url: '/assets/images/landing/workswith/alexa.png', name: 'alexa' },
+    { logo_url: '/assets/images/landing/workswith/Alexa.png', name: 'alexa' },
     { logo_url: '/assets/images/landing/workswith/googlehome.png', name: 'googleHome' },
     { logo_url: '/assets/images/landing/workswith/Matter_logo.jpg', name: 'matter' },
     {
       logo_url: '/assets/images/landing/workswith/smartthing-wwst_vertical.webp',
       name: 'smartthings',
     },
-    { logo_url: '/assets/images/landing/workswith/alexa.png', name: 'alexa' },
+    { logo_url: '/assets/images/landing/workswith/Alexa.png', name: 'alexa' },
     { logo_url: '/assets/images/landing/workswith/applehome.png', name: 'appleHome' },
     { logo_url: '/assets/images/landing/workswith/googlehome.png', name: 'googleHome' },
     { logo_url: '/assets/images/landing/workswith/Matter_logo.jpg', name: 'matter' },
