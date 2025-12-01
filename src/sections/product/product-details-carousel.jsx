@@ -10,6 +10,7 @@ import {
   CarouselThumb,
   CarouselThumbs,
   CarouselArrowNumberButtons,
+  CarouselArrowProgressButtons,
 } from 'src/components/carousel';
 
 // ----------------------------------------------------------------------
@@ -35,12 +36,12 @@ export function ProductDetailsCarousel({ images }) {
     <>
       <div>
         <Box sx={{ mb: 2.5, position: 'relative' }}>
-          <CarouselArrowNumberButtons
+          <CarouselArrowProgressButtons
             {...carousel.arrows}
             options={carousel.options}
             totalSlides={carousel.dots.dotCount}
             selectedIndex={carousel.dots.selectedIndex + 1}
-            sx={{ right: 16, bottom: 16, position: 'absolute' }}
+            sx={{ left: '50%', transform: 'translateX(-50%)', bottom: 16, position: 'absolute' }}
           />
 
           <Carousel carousel={carousel} sx={{ borderRadius: 2 }}>
@@ -52,7 +53,7 @@ export function ProductDetailsCarousel({ images }) {
                 src={slide.src}
                 ratio="1/1"
                 onClick={() => lightbox.onOpen(slide.src)}
-                sx={{ cursor: 'zoom-in', minWidth: 320 }}
+                sx={{ cursor: 'zoom-in', minWidth: 320, maxHeight: 600 }}
               />
             ))}
           </Carousel>

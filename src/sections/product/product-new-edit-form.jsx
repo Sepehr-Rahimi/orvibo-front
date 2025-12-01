@@ -64,7 +64,8 @@ export const NewProductSchema = zod.object({
             message: 'Must be a number or numeric string',
           }),
         discount_percentage: zod.number().optional(),
-        isPublished: zod.boolean().optional(),
+        kind: zod.string().optional(),
+        is_published: zod.boolean().optional(),
       })
     )
     .min(1, 'حداقل یک ورژن محصول لازم است'),
@@ -96,7 +97,7 @@ export function ProductNewEditForm({ currentProduct }) {
       slug: currentProduct?.slug || '',
       main_features: currentProduct?.main_features || [],
       description: currentProduct?.description || '',
-      kinds: currentProduct?.kinds || [],
+      // kinds: currentProduct?.kinds || [],
       model: currentProduct?.model || '',
       category_id: currentProduct?.category_id || '',
       brand_id: currentProduct?.brand_id?.toString() || '',
@@ -509,6 +510,7 @@ export function ProductNewEditForm({ currentProduct }) {
               type="number"
               InputLabelProps={{ shrink: true }}
             /> */}
+            <Field.Text label="نوع" name={`variants.${index}.kind`} />
           </Stack>
           <Stack gap={2} direction={{ md: 'row', xs: 'column' }}>
             <Field.Text
@@ -582,6 +584,7 @@ export function ProductNewEditForm({ currentProduct }) {
             append({
               color: '',
               size: '',
+              kind: '',
               stock: 0,
               currency_price: 0,
               discount_percentage: 0,

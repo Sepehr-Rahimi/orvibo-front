@@ -1,9 +1,19 @@
 import React from 'react';
+
 import { Box, Stack, Typography, useTheme, alpha } from '@mui/material';
+
+import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
+
+import { ColorOption } from '../settings/drawer/nav-options';
 
 export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  // console.log(variants);
+
+  const colorName = (variantColor) =>
+    PRODUCT_COLOR_NAME_OPTIONS.find((option) => option.value === variantColor).label;
 
   return (
     <Stack direction="row" spacing={2} flexWrap="wrap">
@@ -47,9 +57,9 @@ export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) =
                 border: `1px solid ${isDark ? theme.palette.grey[800] : theme.palette.grey[300]}`,
               }}
             />
-
+            <Typography>{colorName(variant.color)}</Typography>
             {/* Label (if any) */}
-            {variant.label && (
+            {variant.kind && (
               <Typography
                 variant="body2"
                 sx={{
@@ -57,7 +67,7 @@ export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) =
                   fontWeight: isActive ? 600 : 400,
                 }}
               >
-                {variant.label}
+                - {variant.kind}
               </Typography>
             )}
           </Box>

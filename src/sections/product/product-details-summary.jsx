@@ -61,7 +61,7 @@ export function ProductDetailsSummary({
     label,
     slug,
     is_published,
-    weight,
+    // weight,
     variants,
   } = product;
 
@@ -171,7 +171,7 @@ export function ProductDetailsSummary({
             >
               {fCurrency(choosedVariant.price)}
             </Box>
-            {fCurrency(choosedVariant.discount_price)}
+            {` - ${fCurrency(choosedVariant.discount_price)}`}
           </>
         ) : (
           fCurrency(choosedVariant.price)
@@ -211,7 +211,7 @@ export function ProductDetailsSummary({
 
   const renderColorOptions = (
     <Stack direction="row">
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+      <Typography variant="subtitle2" sx={{ flexGrow: 1, mr: 2 }}>
         رنگ
       </Typography>
 
@@ -311,9 +311,9 @@ export function ProductDetailsSummary({
           onDecrease={() => setValue('quantity', values.quantity - 1)}
         />
 
-        <Typography variant="caption" component="div" sx={{ textAlign: 'right' }}>
+        {/* <Typography variant="caption" component="div" sx={{ textAlign: 'right' }}>
           موجود: {choosedVariant.stock}
-        </Typography>
+        </Typography> */}
       </Stack>
     </Stack>
   );
@@ -385,9 +385,9 @@ export function ProductDetailsSummary({
     </Box>
   );
 
-  const renderProperties = (
-    <Box my={2}>{weight && <Typography variant="subtitle2">وزن : {weight}kg</Typography>}</Box>
-  );
+  // const renderProperties = (
+  //   <Box my={2}>{weight && <Typography variant="subtitle2">وزن : {weight}kg</Typography>}</Box>
+  // );
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
@@ -404,7 +404,7 @@ export function ProductDetailsSummary({
             {/* <Link component={RouterLink} href={paths.product.byBrand(brand?.name)}>
               {brand?.name}
             </Link> */}
-            {renderProperties}
+            {/* {renderProperties} */}
           </Stack>
 
           {/* {renderRating} */}

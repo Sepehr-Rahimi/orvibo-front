@@ -48,12 +48,12 @@ const LINKS = [
 
 const enamad = (
   <Link
-    href="https://trustseal.enamad.ir/?id=596519&Code=YSI7zHJipvXsIRjGk5ux7IQ4rX40wk36"
+    href="https://trustseal.enamad.ir/?id=679734&Code=4bLHvGnh5RBLzSWgOXPrwEWKTDCIbP69"
     target="_blank"
     referrerPolicy="origin"
   >
     <img
-      src="https://trustseal.enamad.ir/logo.aspx?id=596519&Code=YSI7zHJipvXsIRjGk5ux7IQ4rX40wk36"
+      src="https://trustseal.enamad.ir/logo.aspx?id=679734&Code=4bLHvGnh5RBLzSWgOXPrwEWKTDCIbP69"
       alt="e-namad"
     />
   </Link>

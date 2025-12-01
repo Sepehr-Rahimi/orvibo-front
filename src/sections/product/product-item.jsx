@@ -64,6 +64,7 @@ export function ProductItem({ product, sx }) {
   // console.log(variants);
 
   const priceRange = getPriceRange(prices);
+  const haveRange = priceRange[0] < priceRange[1];
   // console.log(priceRange);
 
   const colors = [...new Set(variants.map((v) => v.color))];
@@ -203,7 +204,11 @@ export function ProductItem({ product, sx }) {
           ) : (
             <Box component="span">{fCurrency(choosedVariant.price)}</Box>
           )} */}
-          <Box component="span">{`${fCurrency(priceRange[0])} - ${fCurrency(priceRange[1])}`}</Box>
+          <Box component="span">
+            {haveRange
+              ? `${fCurrency(priceRange[0])} - ${fCurrency(priceRange[1])}`
+              : fCurrency(priceRange[0])}
+          </Box>
         </Stack>
       </Stack>
     </Stack>

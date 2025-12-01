@@ -30,7 +30,7 @@ function colorVars(theme, variant) {
     '--nav-item-sub-open-bg': palette.action.hover,
     ...(variant === 'vertical' && {
       '--nav-item-sub-active-bg': palette.action.hover,
-      '--nav-subheader-color': palette.text.disabled,
+      '--nav-subheader-color': palette.text.secondary,
       '--nav-subheader-hover-color': palette.text.primary,
     }),
   };
