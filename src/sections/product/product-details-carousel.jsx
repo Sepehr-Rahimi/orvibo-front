@@ -46,15 +46,17 @@ export function ProductDetailsCarousel({ images }) {
 
           <Carousel carousel={carousel} sx={{ borderRadius: 2 }}>
             {slides.map((slide, index) => (
-              <Image
-                priority={index === 0}
-                key={slide.src}
-                alt={slide.src}
-                src={slide.src}
-                ratio="1/1"
-                onClick={() => lightbox.onOpen(slide.src)}
-                sx={{ cursor: 'zoom-in', minWidth: 320, maxHeight: 600 }}
-              />
+              <Box width={1} height={1} bgcolor="#eee" position="relative">
+                <Image
+                  priority={index === 0}
+                  key={slide.src}
+                  alt={slide.src}
+                  src={slide.src}
+                  ratio="1/1"
+                  onClick={() => lightbox.onOpen(slide.src)}
+                  sx={{ cursor: 'zoom-in', minWidth: 320, maxHeight: 600 }}
+                />
+              </Box>
             ))}
           </Carousel>
         </Box>

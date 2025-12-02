@@ -33,8 +33,8 @@ export const NewProductSchema = zod.object({
   name: zod.string().min(1, { message: 'نام محصول الزامی است!' }),
   description: schemaHelper.editor({ message: { required_error: 'توضیحات الزامی است!' } }),
   images: schemaHelper.files({ message: { required_error: 'عکس الزامی است!' } }),
-  code: zod.string().min(1, { message: 'کد محصول الزامی است!' }),
-  model: zod.string().min(1, { message: 'مدل محصول الزامی است!' }),
+  // code: zod.string().min(1, { message: 'کد محصول الزامی است!' }),
+  model: zod.string(),
   // stock: zod.number().min(0, { message: 'موجودی الزامی است!' }),
   slug: zod.string().min(1, { message: 'اسلاگ محصول الزامی است' }),
   category_id: zod.number().min(1, { message: 'دسته بندی الزامی است!' }),
@@ -53,6 +53,7 @@ export const NewProductSchema = zod.object({
     .array(
       zod.object({
         color: zod.string().min(1, 'رنگ نباید خالی باشد'),
+        sku: zod.string().min(1, 'مدل الزامی است'),
         // size: zod.string(),
         stock: zod
           .number()
@@ -64,7 +65,7 @@ export const NewProductSchema = zod.object({
             message: 'Must be a number or numeric string',
           }),
         discount_percentage: zod.number().optional(),
-        kind: zod.string().optional(),
+        kind: zod.nullable(zod.string()).optional(),
         is_published: zod.boolean().optional(),
       })
     )
@@ -101,7 +102,7 @@ export function ProductNewEditForm({ currentProduct }) {
       model: currentProduct?.model || '',
       category_id: currentProduct?.category_id || '',
       brand_id: currentProduct?.brand_id?.toString() || '',
-      code: currentProduct?.code || '',
+      // code: currentProduct?.code || '',
       images: currentProduct?.images || [],
       label: {
         content: currentProduct?.label || '',
@@ -278,7 +279,7 @@ export function ProductNewEditForm({ currentProduct }) {
           display="grid"
           gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
         >
-          <Field.Text name="code" label="کد محصول" />
+          {/* <Field.Text name="code" label="کد محصول" /> */}
 
           <Field.Text name="model" label="مدل" />
 
@@ -556,6 +557,9 @@ export function ProductNewEditForm({ currentProduct }) {
               type="number"
               InputLabelProps={{ shrink: true }}
             />
+            <Field.Text name={`variants.${index}.sku`} label="مدل" type="string" />
+          </Stack>
+          <Stack direction={{ md: 'row', xs: 'column' }} gap={2}>
             <FormControlLabel
               control={
                 <Switch
@@ -570,10 +574,10 @@ export function ProductNewEditForm({ currentProduct }) {
               label="نشان دادن در سایت"
               sx={{ pl: 3, flexGrow: 1 }}
             />
+            <Button variant="outlined" onClick={() => remove(index)}>
+              حذف
+            </Button>
           </Stack>
-          <Button variant="outlined" onClick={() => remove(index)}>
-            حذف
-          </Button>
         </Stack>
       ))}
       <Box sx={{ px: 2, my: 2 }}>
@@ -585,6 +589,7 @@ export function ProductNewEditForm({ currentProduct }) {
               color: '',
               size: '',
               kind: '',
+              sku: '',
               stock: 0,
               currency_price: 0,
               discount_percentage: 0,

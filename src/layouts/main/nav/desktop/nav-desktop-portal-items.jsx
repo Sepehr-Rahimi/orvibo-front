@@ -88,7 +88,7 @@ export const NavDesktopPortalItems = ({ items = [] }) => {
                     height: 150,
                     overflow: 'hidden',
                     mb: 1,
-                    bgcolor: theme.palette.background.default,
+                    bgcolor: '#eee',
                   }}
                 >
                   <Image
