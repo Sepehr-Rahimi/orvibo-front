@@ -399,7 +399,7 @@ export function ProductDetailsSummary({
 
           <Stack>
             <Typography variant="h5">
-              {name} {model && `| ${model}`}
+              {name} {model?.trim()?.length > 0 && `| ${model}`}
             </Typography>
             {/* <Link component={RouterLink} href={paths.product.byBrand(brand?.name)}>
               {brand?.name}

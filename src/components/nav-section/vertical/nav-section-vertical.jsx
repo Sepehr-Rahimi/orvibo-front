@@ -92,7 +92,7 @@ function Group({ items, render, subheader, slotProps, enabledRootRedirect, subhe
             {subheader}
           </Subheader>
 
-          <Collapse in={open}>{renderContent}</Collapse>
+          {items && <Collapse in={open}>{renderContent}</Collapse>}
         </>
       ) : (
         renderContent

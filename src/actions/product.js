@@ -289,8 +289,8 @@ export function useGetSimilarProducts(productId) {
 
 // ----------------------------------------------------------------------
 
-export const useGetProductsAndCategory = () => {
-  const url = endpoints.product.getProduct_Categories;
+export const useGetProductsAndCategory = (includeVariants = false, includeProducts = true) => {
+  const url = `${endpoints.product.getProduct_Categories}?includeVariants=${includeVariants}&includeProducts=${includeProducts}`;
   const { data, isLoading, error, isValidating } = useSWR(url, fetcher, swrOptions);
 
   const memoizedValue = useMemo(

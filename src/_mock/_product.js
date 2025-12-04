@@ -67,6 +67,7 @@ export const PRODUCT_COLOR_NAME_OPTIONS = [
   { value: '#FFC107', label: 'زرد' },
   { value: '#FFA000', label: 'زرد تیره' },
   { value: '#FFF9C4', label: 'زرد روشن' },
+  { value: '#d6a202', label: 'طلایی' },
   { value: '#7F00FF', label: 'بنفش' },
   { value: '#4A148C', label: 'بنفش تیره' },
   { value: '#E1BEE7', label: 'بنفش روشن' },

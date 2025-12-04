@@ -41,7 +41,7 @@ const LINKS = [
     headline: 'ایمیل',
     children: [
       // { name: 'info@smartnoyan.com', href: 'mailto:info@smartnoyan.com' }
-      { name: 'store@smartnoyan.com', href: 'mailto:store@smartnoyan.com' },
+      { name: 'iiranorvibo@gmail.com', href: 'mailto:iiranorvibo@gmail.com' },
     ],
   },
 ];

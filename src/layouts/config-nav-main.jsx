@@ -6,7 +6,7 @@ import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export const navData = [
+export const navData = (categoryData) => [
   { title: 'خانه', path: '/', icon: <Iconify width={22} icon="solar:home-2-bold" /> },
   {
     title: 'محصولات',
@@ -28,6 +28,7 @@ export const navData = [
     title: 'دسته بندی',
     path: paths.category,
     icon: <Iconify width={22} icon="solar:align-left-bold" />,
+    ...categoryData,
     // children: [
     //   {
     //     subheader: 'Other',

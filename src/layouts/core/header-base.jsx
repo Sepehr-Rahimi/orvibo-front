@@ -102,6 +102,7 @@ export function HeaderBase({
                   mr: 1,
                   ml: -1,
                   [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
+                  color: '#c9c9c9',
                 }}
               />
             )}

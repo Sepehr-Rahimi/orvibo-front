@@ -51,10 +51,10 @@ export async function getSimilarProducts(productId) {
   return [];
 }
 
-export const getCategoryAndProducts = async (includeVariants = false) => {
+export const getCategoryAndProducts = async (includeVariants = false, includeProducts = true) => {
   try {
     const url = `${endpoints.product.getProduct_Categories}`;
-    const res = await axiosInstance.get(url, { params: { includeVariants } });
+    const res = await axiosInstance.get(url, { params: { includeVariants, includeProducts } });
     if (res.status !== 200) {
       toast.error('متاسفانه مشکلی پیش اومده');
       return [];

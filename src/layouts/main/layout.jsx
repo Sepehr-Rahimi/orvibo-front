@@ -1,11 +1,14 @@
 'use client';
 
-import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Box, useMediaQuery } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
 import { usePathname } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+
+import { useGetProductsAndCategory } from 'src/actions/product';
 
 import { MatomoTracker } from 'src/components/matomo/matomoTracker';
 
@@ -25,6 +28,7 @@ import { navData as mainNavData } from '../config-nav-main';
 
 export function MainLayout({ sx, data, children, cartIcon, productInfo }) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const pathname = usePathname();
 
@@ -34,7 +38,32 @@ export function MainLayout({ sx, data, children, cartIcon, productInfo }) {
 
   const layoutQuery = 'md';
 
-  const navData = data?.nav ?? mainNavData;
+  const { data: productsAndCat, dataLoading } = useGetProductsAndCategory(false, !isMobile);
+
+  let displayMainNav = mainNavData();
+
+  if (!dataLoading && productsAndCat) {
+    const newItem = {
+      title: 'دسته بندی',
+      path: paths.category,
+      children: [
+        ...productsAndCat.map((navItem) =>
+          navItem?.products
+            ? {
+                subheader: navItem?.categoryName,
+                path: paths.product.byCategory(navItem.categoryName),
+                items: [...navItem.products],
+              }
+            : {
+                subheader: navItem?.categoryName,
+                path: paths.product.byCategory(navItem.categoryName),
+              }
+        ),
+      ],
+    };
+    displayMainNav = mainNavData(newItem);
+  }
+  const navData = data?.nav ?? displayMainNav;
 
   const { user } = useAuthContext();
 
