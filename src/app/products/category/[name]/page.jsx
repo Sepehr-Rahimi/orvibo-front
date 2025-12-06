@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function Page(params, ...p) {
+export default async function Page(params) {
   const searchParams = params?.searchParams;
 
   const response = await getProducts({

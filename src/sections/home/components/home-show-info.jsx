@@ -3,15 +3,18 @@ import React from 'react';
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { Image } from 'src/components/image';
+import { paths } from 'src/routes/paths';
 
 const banners = [
   {
     path: '/assets/images/landing/secondarybanners/secondarybanner.png',
     text: 'Smart Central Control Panel',
+    link: paths.product.byCategory('پنل های کنترل مرکزی هوشمند'),
   },
   {
     path: '/assets/images/landing/secondarybanners/secondarybanner2.png',
     text: 'Smart Switches',
+    link: paths.product.byCategory('کلیدهای هوشمند'),
   },
 ];
 
@@ -38,8 +41,8 @@ export const HomeShowProductInfo = () => {
             <Typography my={2} color="white" sx={{ typography: { xs: 'h5', sm: 'h4' } }}>
               {singleBanner.text}
             </Typography>
-            <Button variant="outlined" sx={{ mx: 'auto' }}>
-              learn more
+            <Button variant="outlined" href={singleBanner.link} sx={{ mx: 'auto' }}>
+              دیدن محصولات
             </Button>
           </Box>
         </Box>

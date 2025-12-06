@@ -2,14 +2,18 @@
 
 import { useMemo } from 'react';
 
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
+
+import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { allLangs } from 'src/locales';
 import { _contacts, _notifications } from 'src/_mock';
 import { varAlpha, stylesMode } from 'src/theme/styles';
+import { useGetProductsAndCategory } from 'src/actions/product';
 
 import { bulletColor } from 'src/components/nav-section';
 import { useSettingsContext } from 'src/components/settings';
@@ -34,6 +38,7 @@ import { navData as dashboardNavData } from '../config-nav-dashboard';
 
 export function DashboardLayout({ sx, children, data }) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const mobileNavOpen = useBoolean();
 
@@ -45,7 +50,34 @@ export function DashboardLayout({ sx, children, data }) {
 
   const navData = data?.nav ?? dashboardNavData;
 
-  const mainNavData = data?.mainNav ?? dashboardMainNavData;
+  // const mainNavData = data?.mainNav ?? dashboardMainNavData();
+
+  const { data: productsAndCat, dataLoading } = useGetProductsAndCategory(false, !isMobile);
+
+  let displayMainNav = mainNavData();
+
+  if (!dataLoading && productsAndCat) {
+    const newItem = {
+      title: 'دسته بندی',
+      path: paths.category,
+      children: [
+        ...productsAndCat.map((navItem) =>
+          navItem?.products
+            ? {
+                subheader: navItem?.categoryName,
+                path: paths.product.byCategory(navItem.categoryName),
+                items: [...navItem.products],
+              }
+            : {
+                subheader: navItem?.categoryName,
+                path: paths.product.byCategory(navItem.categoryName),
+              }
+        ),
+      ],
+    };
+    displayMainNav = mainNavData(newItem);
+  }
+  const mainNavData = data?.nav ?? displayMainNav;
 
   const isNavMini = settings.navLayout === 'mini';
 

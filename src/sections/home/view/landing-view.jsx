@@ -20,6 +20,7 @@ import { useAuthContext } from 'src/auth/hooks';
 // import { trackMatomoEvent } from 'src/utils/helper';
 import { AiSearchInput } from '../home-ai-search';
 import { HomeShowProductInfo } from '../components/home-show-info';
+import { HomeCarouselCategory } from '../home-carousel-categorys';
 // import HomeNewProducts from '../home-new-products';
 
 const HomeHotDeals = dynamic(() => import('../home-hot-deals'), {
@@ -80,6 +81,9 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
       {/* <AiSearchInput /> */}
       <Box>
         <HomeShowProductInfo />
+      </Box>
+      <Box my={4} mb={8}>
+        <HomeCarouselCategory />
       </Box>
       {/* <Stack spacing={2} sx={{ mt: 6, mx: 2 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
