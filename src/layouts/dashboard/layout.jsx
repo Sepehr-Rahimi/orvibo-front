@@ -54,7 +54,7 @@ export function DashboardLayout({ sx, children, data }) {
 
   const { data: productsAndCat, dataLoading } = useGetProductsAndCategory(false, !isMobile);
 
-  let displayMainNav = mainNavData();
+  let displayMainNav = dashboardMainNavData();
 
   if (!dataLoading && productsAndCat) {
     const newItem = {
@@ -75,7 +75,7 @@ export function DashboardLayout({ sx, children, data }) {
         ),
       ],
     };
-    displayMainNav = mainNavData(newItem);
+    displayMainNav = dashboardMainNavData(newItem);
   }
   const mainNavData = data?.nav ?? displayMainNav;
 
