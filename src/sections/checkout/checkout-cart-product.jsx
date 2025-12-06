@@ -13,6 +13,8 @@ import { paths } from 'src/routes/paths';
 import { fCurrency } from 'src/utils/format-number';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
+import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
+
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
@@ -22,6 +24,9 @@ import { IncrementerButton } from '../product/components/incrementer-button';
 // ----------------------------------------------------------------------
 
 export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
+  const rowColorName = PRODUCT_COLOR_NAME_OPTIONS.find(
+    (option) => option.value === row.color
+  ).label;
   return (
     <TableRow>
       <TableCell>
@@ -51,7 +56,14 @@ export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
                   <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
                 </>
               )}
+              {row.kind && (
+                <>
+                  <Label sx={{ ml: 0.5 }}> {row.kind} </Label>
+                  <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
+                </>
+              )}
               <ColorPreview colors={[row.color]} />
+              <Typography variant="caption">{rowColorName}</Typography>
             </Stack>
           </Stack>
         </Stack>
@@ -75,9 +87,9 @@ export function CheckoutCartProduct({ row, onDelete, onDecrease, onIncrease }) {
             disabledIncrease={row.quantity >= row.stock}
           />
 
-          <Typography variant="caption" component="div" sx={{ color: 'text.secondary', mt: 1 }}>
+          {/* <Typography variant="caption" component="div" sx={{ color: 'text.secondary', mt: 1 }}>
             موجود: {row.stock}
-          </Typography>
+          </Typography> */}
         </Box>
       </TableCell>
 

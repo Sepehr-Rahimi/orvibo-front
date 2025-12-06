@@ -16,7 +16,7 @@ export function CheckoutCartProductList({
 }) {
   const TABLE_HEAD = [
     { id: 'product', label: 'محصول' },
-    // { id: 'kind', label: 'نوع' }
+    // { id: 'kind', label: 'نوع' },
     { id: 'price', label: 'قیمت' },
     { id: 'quantity', label: 'تعداد' },
     { id: 'totalAmount', label: 'قیمت کل', align: 'right' },

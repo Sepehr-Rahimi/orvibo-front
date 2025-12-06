@@ -8,6 +8,10 @@ import { RouterLink } from 'src/routes/components';
 import { fCurrency } from 'src/utils/format-number';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
+import { getCurrentPrice } from 'src/utils/helper';
+
+import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
+
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
@@ -20,8 +24,11 @@ export const CheckoutProductCard = ({
   onDecreaseQuantity,
   onIncreaseQuantity,
 }) => {
-  const productCurrentPrice =
-    product.discount_price && product.discount_price > 0 ? product.discount_price : product.price;
+  const productCurrentPrice = getCurrentPrice(product.discount_price, product.price);
+
+  const productColorName = PRODUCT_COLOR_NAME_OPTIONS.find(
+    (option) => option.value === product.color
+  ).label;
 
   return (
     <Box
@@ -74,8 +81,14 @@ export const CheckoutProductCard = ({
           >
             {product.name}
           </Link>
-
-          <ColorPreview colors={[product.color]} />
+          <Stack direction="row">
+            <ColorPreview colors={[product.color]} />
+            <Typography variant="caption" mx="2px">
+              {' '}
+              {productColorName}{' '}
+            </Typography>
+            <Typography variant="subtitle2"> - {product.kind}</Typography>
+          </Stack>
 
           {product.discount_price > 0 ? (
             <Stack direction="row" spacing={1} alignItems="center">
@@ -102,7 +115,7 @@ export const CheckoutProductCard = ({
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="body2">
           قیمت کل:{' '}
-          <Typography component="span" fontWeight={300} color="text.primary">
+          <Typography component="span" fontWeight={400} color="text.primary" dir="ltr">
             {fCurrency(productCurrentPrice * product.quantity)}
           </Typography>
         </Typography>
