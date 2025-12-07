@@ -65,6 +65,10 @@ export const createAdminOrder = async ({
   type_of_delivery,
   type_of_payment,
   items,
+  servicesPercentage,
+  guaranteePercentage,
+  businessProfitPercentage,
+  shippingPercentage,
 }) => {
   try {
     const description = items.map((item) => ` ${item.product_id} * ${item.quantity} `).toString();
@@ -80,6 +84,10 @@ export const createAdminOrder = async ({
       type_of_payment: type_of_payment.toString(),
       items,
       description,
+      servicesPercentage,
+      guaranteePercentage,
+      businessProfitPercentage,
+      shippingPercentage,
       // callback_url,
     };
 

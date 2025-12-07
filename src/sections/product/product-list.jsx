@@ -14,7 +14,7 @@ import { ProductItemSkeleton } from './product-skeleton';
 export function ProductList({ data, withCategory = true }) {
   const searchParams = useSearchParams();
 
-  console.log(withCategory);
+  // console.log(withCategory);
 
   const renderWithCategory = data.map((singleData) => (
     <>

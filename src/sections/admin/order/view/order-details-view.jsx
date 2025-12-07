@@ -50,11 +50,14 @@ export function OrderDetailsView({ order, orderMutate, userRole }) {
           <Stack spacing={3} direction={{ xs: 'column-reverse', md: 'column' }}>
             <OrderDetailsItems
               items={order?.order_items}
-              // taxes={order?.taxes}
-              shipping={order?.delivery_cost}
-              discount={order?.discount_amount}
-              // subtotal={order?.subtotal}
-              totalAmount={order?.total_cost}
+              costs={{
+                shippingCost: order.shipping_cost,
+                discountAmount: order.discount_amount,
+                totalAmount: order.total_cost,
+                businessProfit: order.business_profit,
+                guaranteeCost: order.guarantee_cost,
+                servicesCost: order.service_cost,
+              }}
             />
 
             {/* <OrderDetailsHistory history={order?.history} /> */}

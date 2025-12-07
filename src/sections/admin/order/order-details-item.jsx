@@ -11,8 +11,17 @@ import { OrderItemsWrapper } from './order-items-wrapper';
 
 // ----------------------------------------------------------------------
 
-export function OrderDetailsItems({ taxes, shipping, discount, items = [], totalAmount }) {
+export function OrderDetailsItems({
+  taxes,
+  shipping,
+  discount,
+  items = [],
+
+  costs,
+}) {
   const subtotal = items.reduce((total, current) => +current.price * +current.quantity + +total, 0);
+  const { shippingCost, discountAmount, totalAmount, businessProfit, guaranteeCost, servicesCost } =
+    costs;
 
   const renderTotal = (
     <Stack
@@ -27,25 +36,38 @@ export function OrderDetailsItems({ taxes, shipping, discount, items = [], total
       </Stack>
 
       <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>خدمات نصب و راه اندازی</Box>
+        <Box sx={{ width: 160 }}>{servicesCost ? `${fCurrency(servicesCost)}` : '-'}</Box>
+      </Stack>
+
+      <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>گارانتی تجهیزات</Box>
+        <Box sx={{ width: 160 }}>{guaranteeCost ? `${fCurrency(guaranteeCost)}` : '-'}</Box>
+      </Stack>
+
+      <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>هزینه حمل و نقل</Box>
-        <Box sx={{ width: 160, ...(shipping && { color: 'error.main' }) }}>
-          {shipping ? `- ${fCurrency(shipping)}` : '-'}
-        </Box>
+        <Box sx={{ width: 160 }}>{shippingCost ? `${fCurrency(shippingCost)}` : '-'}</Box>
+      </Stack>
+
+      <Stack direction="row">
+        <Box sx={{ color: 'text.secondary' }}>سود بازرگانی</Box>
+        <Box sx={{ width: 160 }}>{businessProfit ? `${fCurrency(businessProfit)}` : '-'}</Box>
       </Stack>
 
       <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>تخفیف</Box>
-        <Box sx={{ width: 160, ...(discount && { color: 'error.main' }) }}>
-          {discount ? `- ${fCurrency(discount)}` : '-'}
+        <Box sx={{ width: 160, ...(discountAmount && { color: 'error.main' }) }}>
+          {discountAmount ? `- ${fCurrency(discountAmount)}` : '-'}
         </Box>
       </Stack>
 
-      {taxes && (
+      {/* {taxes && (
         <Stack direction="row">
           <Box sx={{ color: 'text.secondary' }}>مالیات</Box>
           <Box sx={{ width: 160 }}>{taxes ? fCurrency(taxes) : '-'}</Box>
         </Stack>
-      )}
+      )} */}
 
       <Stack direction="row" sx={{ typography: 'subtitle1' }}>
         <div>جمع کل</div>

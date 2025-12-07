@@ -36,9 +36,9 @@ export function CheckoutSummary({ checkout }) {
   const displayShipping = shipping !== null ? '-' : '-';
 
   const [discount_code, setDiscount_code] = useState(checkout.discount_code);
-  const [irrExchange, setIrrExchange] = useState(0);
 
   const { exchange, dataLoading } = useGetIrrExchange();
+  const irrExchange = fIrr(Math.round(total * exchange));
 
   const handleApplyDiscount = async () => {
     try {
@@ -119,7 +119,7 @@ export function CheckoutSummary({ checkout }) {
             </Typography>
             <Box sx={{ textAlign: 'right' }}>
               <Typography component="span" variant="subtitle2" sx={{ display: 'block' }}>
-                <Typography>{fIrr(total * exchange)}</Typography>
+                <Typography>{irrExchange}</Typography>
               </Typography>
             </Box>
           </Box>

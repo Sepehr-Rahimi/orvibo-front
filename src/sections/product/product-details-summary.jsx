@@ -211,7 +211,7 @@ export function ProductDetailsSummary({
     </Stack>
   );
 
-  const renderColorOptions = (
+  const renderVariantOptions = (
     <Stack direction="row">
       <Typography variant="subtitle2" sx={{ flexGrow: 1, mr: 2 }}>
         رنگ
@@ -221,12 +221,6 @@ export function ProductDetailsSummary({
         name="color"
         control={control}
         render={({ field }) => (
-          // <ColorPicker
-          //   colors={colors}
-          //   selected={field.value}
-          //   onSelectColor={(color) => field.onChange(color)}
-          //   limit={4}
-          // />
           <VariantPickup
             choosedVariant={choosedVariant}
             setChoosedVariant={(variant) => {
@@ -416,7 +410,7 @@ export function ProductDetailsSummary({
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {renderColorOptions}
+        {renderVariantOptions}
 
         {/* {kinds?.length ? renderKindOptions : null} */}
 

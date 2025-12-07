@@ -1,5 +1,6 @@
 import { Box, Divider, Link, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
 import { ColorPreview } from 'src/components/color-utils';
 import { Image } from 'src/components/image';
 import { RouterLink } from 'src/routes/components';
@@ -8,7 +9,10 @@ import { IncrementerButton } from 'src/sections/product/components/incrementer-b
 import { fCurrency } from 'src/utils/format-number';
 
 export const OrderItemCard = ({ item }) => {
-  const i = 0;
+  const itemVariant = item.variant;
+  const itemColorName = PRODUCT_COLOR_NAME_OPTIONS.find(
+    (option) => option.value === itemVariant.color
+  ).label;
   // const itemCurrentPrice = item.discount_price > 0 ? item.discount_price : item.price
   return (
     <Box
@@ -62,8 +66,14 @@ export const OrderItemCard = ({ item }) => {
             {item.product.name}
           </Link>
 
-          <ColorPreview colors={[item.color]} />
-
+          <Stack direction="row">
+            <ColorPreview colors={[itemVariant.color]} />
+            <Typography variant="caption" mx="2px">
+              {' '}
+              {itemColorName}{' '}
+            </Typography>
+            {itemVariant.kind && <Typography variant="subtitle2"> - {itemVariant.kind}</Typography>}
+          </Stack>
           <Stack justifyContent="space-between" direction="row" width={1}>
             {item.discount_price > 0 ? (
               <Stack direction="row" spacing={1} alignItems="center">

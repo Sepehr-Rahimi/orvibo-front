@@ -1,204 +1,287 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from 'src/hooks/use-debounce';
 
 import { searchProducts } from 'src/actions/product';
-import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
 import { searchAddressess } from 'src/actions/addresses-ssr';
+import { calculatePercentage } from 'src/utils/helper';
+import { useGetIrrExchange } from 'src/actions/variables';
+
+/* -------------------------------------------------------------------------- */
+/*  Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+// selects the first variant not used by other rows of the same product
+const findFirstAvailableVariant = (productId, variants, items) => {
+  const usedVariants = new Set(
+    items
+      .filter((it) => it.product_id === productId && it.selectedVariantId)
+      .map((it) => it.selectedVariantId)
+  );
+  return variants.find((v) => !usedVariants.has(v.id)) || variants[0] || null;
+};
+
+// pick correct variant for initial server item
+const resolveSelectedVariant = (item) => {
+  const variants = item.product?.variants || [];
+  if (!variants.length) return null;
+
+  // 1) match by variant.id provided by server
+  if (item.variant) {
+    const v = variants.find((x) => x.id === item.variant.id);
+    if (v) return v;
+  }
+
+  // 2) match by color from server
+  if (item.color) {
+    const v = variants.find((x) => x.color === item.color);
+    if (v) return v;
+  }
+
+  // 3) match by price
+  const byPrice = variants.find((x) => x.price === item.price);
+  if (byPrice) return byPrice;
+
+  return variants[0];
+};
+
+// convert factorInfo.order_items → items state format
+const buildInitialItems = (factorInfo) => {
+  if (!factorInfo?.order_items) return [];
+
+  return factorInfo.order_items.map((item) => {
+    const product = item.product;
+    const variants = product?.variants || [];
+    const selected = resolveSelectedVariant(item);
+
+    return {
+      name: product.name,
+      price: item.price,
+      quantity: item.quantity,
+      stock: product.stock,
+      product_id: product.id,
+      variants,
+      selectedVariantId: selected ? selected.id : null,
+    };
+  });
+};
+
+// compute pricing summary
+const computePrices = (items) =>
+  items.reduce((acc, it) => acc + (it.price || 0) * (it.quantity || 0), 0);
+
+/* -------------------------------------------------------------------------- */
+/*  HOOK                                                                        */
+/* -------------------------------------------------------------------------- */
 
 export const useFactorForm = (factorInfo) => {
-  // const { address, order_items, discount_amount } = factorInfo;
+  /* ------------------------------- INIT DATA ------------------------------ */
+  const initialItems = useMemo(() => buildInitialItems(factorInfo), [factorInfo]);
 
-  let totalProductsCost = 0;
-  if (factorInfo?.order_items) {
-    totalProductsCost = factorInfo.order_items.reduce(
-      (price, item) => price + item.price * item.quantity,
-      0
-    );
-  }
+  const totalProductsCost = useMemo(() => computePrices(initialItems), [initialItems]);
 
-  let prevItems = [];
-  if (factorInfo?.order_items) {
-    // console.log(factorInfo?.order_items);
-    prevItems = [
-      ...factorInfo.order_items.map((item) => {
-        const { product } = item;
-        const colorsName = product.colors.map(
-          (colorHex) =>
-            PRODUCT_COLOR_NAME_OPTIONS.find((option) => option.value === colorHex)?.label
-        );
-        const colorName = PRODUCT_COLOR_NAME_OPTIONS.find(
-          (option) => option.value === item.color
-        )?.label;
-        return {
-          name: product.name,
-          price: item.price,
-          quantity: item.quantity,
-          stock: product.stock,
-          product_id: product.id,
-          colors: product.colors,
-          colorsName,
-          colorName,
-        };
-      }),
-    ];
-  }
+  const { exchange, dataLoading } = useGetIrrExchange();
 
-  // console.log(totalProductsCost);
+  /* ------------------------------- STATE ---------------------------------- */
+  const [items, setItems] = useState(initialItems);
 
-  const [items, setItems] = useState([...prevItems]);
-
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const [searchItems, setSearchItems] = useState([]);
+  // product search
   const [searchInput, setSearchInput] = useState('');
   const debouncedInput = useDebounce(searchInput, 1000);
+  const [searchItems, setSearchItems] = useState([]);
 
+  // address search
   const [searchAddressInput, setSearchAddressInput] = useState('');
+  const debouncedAddressInput = useDebounce(searchAddressInput, 800);
   const [addressResult, setAddressResult] = useState([]);
   const [addressEmpty, setAddressEmpty] = useState(false);
-  const debouncedAddressInput = useDebounce(searchAddressInput, 800);
 
+  // pricing + discount
   const [discountPercentage, setDiscount] = useState(
     factorInfo?.discount_amount
       ? Math.round((factorInfo.discount_amount / totalProductsCost) * 100)
       : 0
   );
   const [discountAmount, setDiscountAmount] = useState(0);
-  const [selectedAddress, setSelectedAddress] = useState(factorInfo?.address ?? null);
-
   const [productsPrice, setProductsPrice] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
+  const [irrPrice, setIrrPrice] = useState(0);
+
+  const [selectedAddress, setSelectedAddress] = useState(factorInfo?.address ?? null);
 
   const [checkRevalidatePrice, setCheckRevalidatePrice] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // fetch products
+  const [factorCosts, setFactorCost] = useState({
+    shipping: 0,
+    businessProfit: 0,
+    guarantee: 0,
+    services: 0,
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*  EFFECTS: FETCHING                                                          */
+  /* -------------------------------------------------------------------------- */
+
+  // product search
   useEffect(() => {
     if (debouncedInput.length < 2) {
       setSearchItems([]);
       return;
     }
-    searchProducts({ search: debouncedInput }).then((res) => setSearchItems(res.data.products));
+
+    searchProducts({ search: debouncedInput }).then((res) => {
+      setSearchItems(res.data.products);
+    });
   }, [debouncedInput]);
 
-  // fetch addresses
+  // address search
   useEffect(() => {
     setAddressEmpty(false);
+
     if (debouncedAddressInput.length < 2) {
       setAddressResult([]);
       return;
     }
+
     searchAddressess({ search: debouncedAddressInput }).then((res) => {
-      setAddressResult(res?.addresses);
-      if (res?.addresses < 1) {
-        setAddressEmpty(true);
-      }
+      const addresses = res?.addresses || [];
+      setAddressResult(addresses);
+      setAddressEmpty(addresses.length === 0);
     });
   }, [debouncedAddressInput]);
 
+  /* -------------------------------------------------------------------------- */
+  /*  EFFECTS: PRICING                                                           */
+  /* -------------------------------------------------------------------------- */
+
+  // recalc products price
   useEffect(() => {
-    // let price = 0;
-    // items.map((item) => {
-    //   price += item.price * item.quantity;
-    //   return price;
-    // });
-    const allProductsPrice =
-      items.reduce((price, item) => price + item.price * item.quantity, 0) || 0;
-    // console.log(allProductsPrice);
-    setProductsPrice(allProductsPrice);
-  }, [items, setProductsPrice]);
+    setProductsPrice(computePrices(items));
+  }, [items]);
 
-  // useEffect(() => {
-  //   if (discount_amount && Number(discount_amount) !== 0) {
-  //     console.log(productsPrice);
-  //     const test = (productsPrice / Number(discount_amount)) * 100;
-  //     // console.log(test);
-  //   }
-  //   console.log('excuted');
-  // }, []);
-
-  useEffect(
-    () =>
-      setDiscountAmount(
-        discountPercentage && discountPercentage > 0
-          ? Math.ceil((productsPrice * discountPercentage) / 100 / 10000) * 10000
-          : 0
-      ),
-
-    [discountPercentage, productsPrice]
-  );
-
+  // recalc discount amount
   useEffect(() => {
-    setFinalPrice(
-      discountAmount && discountAmount > 0 ? productsPrice - discountAmount : productsPrice
+    setDiscountAmount(calculatePercentage(discountPercentage, productsPrice));
+  }, [productsPrice, discountPercentage]);
+
+  // recalc final price
+  useEffect(() => {
+    const additionalCosts = Object.keys(factorCosts).reduce(
+      (cost, singleCost) => cost + calculatePercentage(+factorCosts[singleCost], productsPrice),
+      0
     );
-  }, [discountAmount, productsPrice]);
+    const price =
+      discountAmount > 0
+        ? productsPrice + additionalCosts - discountAmount
+        : productsPrice + additionalCosts;
+    setFinalPrice(price);
+    const IrrExchange = price * exchange;
+    setIrrPrice(IrrExchange);
+  }, [discountAmount, productsPrice, factorCosts, exchange]);
+
+  /* -------------------------------------------------------------------------- */
+  /*  EFFECTS: PRICE REVALIDATION                                                */
+  /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    // console.log(checkRevalidatePrice);
-    setItems((prev) => [
-      ...prev.map((item) => {
-        const orderItemInfo = factorInfo?.order_items.find(
+    if (!factorInfo?.order_items) return;
+
+    if (!checkRevalidatePrice) return;
+
+    setItems((prev) =>
+      prev.map((item) => {
+        const orderItemInfo = factorInfo.order_items.find(
           (orderItem) => orderItem.product.id === item.product_id
         );
-        // console.log(orderItemInfo);
-        // console.log(item);
-        if (!orderItemInfo) return { ...item };
-        if (checkRevalidatePrice) {
-          const { product } = orderItemInfo;
-          return { ...item, price: product.price };
-        }
-        return { ...item, price: orderItemInfo.price };
-      }),
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkRevalidatePrice]);
+        if (!orderItemInfo) return item;
 
-  const handleRemoveItem = (itemIndex) => {
-    setItems((prev) => prev.filter((_, index) => index !== itemIndex));
-  };
+        const serverProduct = orderItemInfo.product;
+        const serverVariant =
+          serverProduct?.variants?.find((v) => v.id === item.selectedVariantId) ||
+          serverProduct?.variants?.[0];
 
-  const handleAddItem = (name, price, stock, id, colors) => {
-    const colorsName = colors.map(
-      (colorHex) => PRODUCT_COLOR_NAME_OPTIONS.find((option) => option.value === colorHex)?.label
+        if (!serverVariant) return item;
+
+        return {
+          ...item,
+          price: serverVariant.price,
+        };
+      })
     );
-    const isExists = items.find((item) => item.product_id === id);
-    if (isExists) {
-      setErrorMessage('این محصول در فاکتور موجود است');
+  }, [checkRevalidatePrice, factorInfo]);
+
+  /* -------------------------------------------------------------------------- */
+  /*  ACTION HANDLERS                                                            */
+  /* -------------------------------------------------------------------------- */
+
+  const handleAddItemFromProduct = (product) => {
+    const variants = product.variants || [];
+
+    if (!variants.length) {
+      setErrorMessage('این محصول واریانت ندارد');
       return;
     }
-    if (stock < 1) {
-      setErrorMessage('محصول مورد نظر موجودی نداره');
-      return;
-    }
-    setItems((prev) => [
-      ...prev,
-      {
-        name,
-        quantity: 1,
-        price,
-        stock,
-        product_id: id,
-        colors,
-        colorsName,
-        colorName: colorsName[0],
-      },
-    ]);
+
+    setItems((prev) => {
+      const chosenVariant = findFirstAvailableVariant(product.id, variants, prev);
+      return [
+        ...prev,
+        {
+          name: product.name,
+          quantity: 1,
+          price: chosenVariant.price,
+          stock: chosenVariant.stock || 0,
+          product_id: product.id,
+          variants,
+          selectedVariantId: chosenVariant.id,
+        },
+      ];
+    });
+
     setSearchItems([]);
     setSearchInput('');
     setErrorMessage('');
   };
 
-  const handleChangeQuantity = (index, newQuantity) => {
-    if (newQuantity > items[index].stock) {
-      setErrorMessage(`مقدار وارد شده بیشتر از موجودی محصول است. موجودی : ${items[index].stock}`);
+  const handleRemoveItem = (index) => {
+    setItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleChangeQuantity = (index, newQty) => {
+    if (newQty < 1) {
+      setErrorMessage('تعداد باید بزرگتر از صفر باشد');
       return;
     }
-    setItems((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, quantity: newQuantity } : item))
-    );
+
+    setItems((prev) => prev.map((item, i) => (i === index ? { ...item, quantity: newQty } : item)));
     setErrorMessage('');
   };
+
+  const handleChangeVariant = (index, variantId) => {
+    setItems((prev) =>
+      prev.map((item, i) => {
+        if (i !== index) return item;
+
+        const variant = item.variants.find((v) => v.id === variantId);
+        if (!variant) return item;
+
+        return {
+          ...item,
+          selectedVariantId: variant.id,
+          price: variant.price,
+          stock: variant.stock,
+        };
+      })
+    );
+
+    setErrorMessage('');
+  };
+
+  const isVariantUsedElsewhere = (productId, variantId, index) =>
+    items.some(
+      (it, idx) =>
+        idx !== index && it.product_id === productId && it.selectedVariantId === variantId
+    );
 
   const isValidForSubmit = () => {
     if (items.length === 0) {
@@ -216,39 +299,30 @@ export const useFactorForm = (factorInfo) => {
       return false;
     }
 
-    const isQtyAndStockValid = !items.some((item) => {
-      if (item.quantity <= 0) {
+    const qtyValid = items.every((item) => {
+      if (!item.quantity || item.quantity <= 0) {
         setErrorMessage(`تعداد محصول ${item.name} باید بیشتر از صفر باشد`);
-        return true;
+        return false;
       }
-      if (item.quantity > item.stock) {
-        setErrorMessage(`تعداد محصول ${item.name} از موجودی بیشتر است`);
-        return true;
-      }
-      return false;
+      return true;
     });
 
-    if (!isQtyAndStockValid) {
-      // console.log(isQtyAndStockValid);
-      // console.log('is called');
-      return false;
-    }
-
-    // const isValidItems = items.forEach((item) => {
-    //   if (item.quantity <= 0) {
-    //     setErrorMessage(`تعداد محصول ${item.name} باید بیشتر از صفر باشد`);
-    //   }
-    //   if (item.quantity > item.stock) {
-    //     setErrorMessage(`تعداد محصول ${item.name} از موجودی بیشتر است`);
-    //   }
-    // });
+    if (!qtyValid) return false;
 
     setErrorMessage('');
     return true;
   };
 
+  const handleChangeFactorCosts = (name, value) => {
+    setFactorCost((prev) => ({ ...prev, [name]: value }));
+  };
+
+  /* -------------------------------------------------------------------------- */
+
   return {
     items,
+    factorCosts,
+    irrPrice,
     searchItems,
     searchInput,
     setSearchInput,
@@ -262,14 +336,17 @@ export const useFactorForm = (factorInfo) => {
     setSelectedAddress,
     errorMessage,
     setErrorMessage,
-    handleAddItem,
+    handleAddItemFromProduct,
     handleRemoveItem,
     handleChangeQuantity,
+    handleChangeVariant,
+    handleChangeFactorCosts,
     productsPrice,
     discountAmount,
     finalPrice,
     isValidForSubmit,
     checkRevalidatePrice,
     setCheckRevalidatePrice,
+    isVariantUsedElsewhere,
   };
 };
