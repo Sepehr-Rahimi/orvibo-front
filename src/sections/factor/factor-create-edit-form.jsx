@@ -390,6 +390,10 @@ export const FactorCreateEditForm = ({ order, userId }) => {
               address_id: factorState.selectedAddress.id.toString(),
               type_of_delivery: 0,
               discount_amount: factorState.discountAmount,
+              servicesPercentage: factorCosts.services,
+              guaranteePercentage: factorCosts.guarantee,
+              businessProfitPercentage: factorCosts.businessProfit,
+              shippingPercentage: factorCosts.shipping,
             })
               .then((res) => {
                 setLoading(false);

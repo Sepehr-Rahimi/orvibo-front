@@ -115,6 +115,10 @@ export const updateOrder = async ({
   payment_status,
   items,
   status,
+  servicesPercentage,
+  guaranteePercentage,
+  businessProfitPercentage,
+  shippingPercentage,
 }) => {
   try {
     const params = {
@@ -127,6 +131,10 @@ export const updateOrder = async ({
       type_of_payment,
       payment_status,
       items,
+      servicesPercentage,
+      guaranteePercentage,
+      businessProfitPercentage,
+      shippingPercentage,
       status,
     };
 
@@ -191,8 +199,14 @@ export function useGetOrdersAdmin() {
 
   return memoizedValue;
 }
-export function useGetorder(orderId) {
-  const url = orderId ? `${endpoints.orders.one}/${orderId}` : '';
+export function useGetorder(orderId, params) {
+  const base = orderId ? `${endpoints.orders.one}/${orderId}` : '';
+
+  const url = useMemo(() => {
+    if (!base) return null;
+    const qs = params ? `?${new URLSearchParams(params).toString()}` : '';
+    return base + qs;
+  }, [base, params]);
 
   const { data, isLoading, error, isValidating, mutate } = useSWR(url, fetcher, {
     ...swrOptions,

@@ -13,11 +13,8 @@ import { FactorCreateEditForm } from 'src/sections/factor/factor-create-edit-for
 import { useAuthContext } from 'src/auth/hooks';
 
 export const OrderEditView = ({ orderId }) => {
-  // console.log(orderId);
-  const { order, orderLoading } = useGetorder(orderId);
-  // console.log(order);
+  const { order, orderLoading } = useGetorder(orderId, { includeProductVariants: true });
   const { user } = useAuthContext();
-  // console.log(user);
 
   return (
     <DashboardContent>

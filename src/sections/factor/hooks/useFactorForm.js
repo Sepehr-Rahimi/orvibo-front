@@ -3,7 +3,7 @@ import { useDebounce } from 'src/hooks/use-debounce';
 
 import { searchProducts } from 'src/actions/product';
 import { searchAddressess } from 'src/actions/addresses-ssr';
-import { calculatePercentage } from 'src/utils/helper';
+import { calculatePercentage, calculatePercentageByAmount } from 'src/utils/helper';
 import { useGetIrrExchange } from 'src/actions/variables';
 
 /* -------------------------------------------------------------------------- */
@@ -49,7 +49,7 @@ const buildInitialItems = (factorInfo) => {
   if (!factorInfo?.order_items) return [];
 
   return factorInfo.order_items.map((item) => {
-    const product = item.product;
+    const product = item?.product;
     const variants = product?.variants || [];
     const selected = resolveSelectedVariant(item);
 
@@ -65,9 +65,23 @@ const buildInitialItems = (factorInfo) => {
   });
 };
 
+const buildInitialCosts = (factorInfo) => {
+  const defaultValues = { shipping: 0, businessProfit: 0, guarantee: 0, services: 0 };
+  if (!factorInfo) return defaultValues;
+
+  const items_cost = computePrices(factorInfo.order_items);
+
+  return {
+    shipping: calculatePercentageByAmount(factorInfo.shipping_cost, items_cost),
+    businessProfit: calculatePercentageByAmount(factorInfo.business_profit, items_cost),
+    guarantee: calculatePercentageByAmount(factorInfo.guarantee_cost, items_cost),
+    services: calculatePercentageByAmount(factorInfo.service_cost, items_cost),
+  };
+};
+
 // compute pricing summary
 const computePrices = (items) =>
-  items.reduce((acc, it) => acc + (it.price || 0) * (it.quantity || 0), 0);
+  items?.reduce((acc, it) => acc + (it.price || 0) * (it.quantity || 0), 0);
 
 /* -------------------------------------------------------------------------- */
 /*  HOOK                                                                        */
@@ -76,6 +90,7 @@ const computePrices = (items) =>
 export const useFactorForm = (factorInfo) => {
   /* ------------------------------- INIT DATA ------------------------------ */
   const initialItems = useMemo(() => buildInitialItems(factorInfo), [factorInfo]);
+  const initialCosts = useMemo(() => buildInitialCosts(factorInfo), [factorInfo]);
 
   const totalProductsCost = useMemo(() => computePrices(initialItems), [initialItems]);
 
@@ -111,12 +126,7 @@ export const useFactorForm = (factorInfo) => {
   const [checkRevalidatePrice, setCheckRevalidatePrice] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [factorCosts, setFactorCost] = useState({
-    shipping: 0,
-    businessProfit: 0,
-    guarantee: 0,
-    services: 0,
-  });
+  const [factorCosts, setFactorCost] = useState(initialCosts);
 
   /* -------------------------------------------------------------------------- */
   /*  EFFECTS: FETCHING                                                          */
@@ -218,7 +228,7 @@ export const useFactorForm = (factorInfo) => {
     const variants = product.variants || [];
 
     if (!variants.length) {
-      setErrorMessage('این محصول واریانت ندارد');
+      setErrorMessage('این محصول نوع ندارد');
       return;
     }
 
@@ -314,7 +324,7 @@ export const useFactorForm = (factorInfo) => {
   };
 
   const handleChangeFactorCosts = (name, value) => {
-    setFactorCost((prev) => ({ ...prev, [name]: value }));
+    setFactorCost((prev) => ({ ...prev, [name]: Math.round(value) }));
   };
 
   /* -------------------------------------------------------------------------- */

@@ -146,3 +146,7 @@ export const getCurrentPrice = (...prices) => {
 // ----------------------------------------------------------------------
 
 export const calculatePercentage = (percentage, price) => (percentage / 100) * price;
+
+// ----------------------------------------------------------------------
+
+export const calculatePercentageByAmount = (piece, fullAmount) => (piece / fullAmount) * 100;
