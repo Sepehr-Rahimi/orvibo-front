@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
 
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency, fIrr } from 'src/utils/format-number';
 
 import { Scrollbar } from 'src/components/scrollbar';
 
@@ -20,8 +20,15 @@ export function OrderDetailsItems({
   costs,
 }) {
   const subtotal = items.reduce((total, current) => +current.price * +current.quantity + +total, 0);
-  const { shippingCost, discountAmount, totalAmount, businessProfit, guaranteeCost, servicesCost } =
-    costs;
+  const {
+    shippingCost,
+    discountAmount,
+    totalAmount,
+    businessProfit,
+    guaranteeCost,
+    servicesCost,
+    irr_total_cost,
+  } = costs;
 
   const renderTotal = (
     <Stack
@@ -73,25 +80,27 @@ export function OrderDetailsItems({
         <div>جمع کل</div>
         <Box sx={{ width: 160 }}>{fCurrency(totalAmount) || '-'}</Box>
       </Stack>
+      <Stack direction="row" sx={{ typography: 'subtitle1' }}>
+        <div>معادل تومانی</div>
+        <Box sx={{ width: 160 }}>{fIrr(irr_total_cost) || '-'}</Box>
+      </Stack>
     </Stack>
   );
 
   return (
     <Card>
-      <Scrollbar>
-        <CardHeader
-          // className="print-safe-card-header"
-          className="print-avoid-break"
-          title="جزئیات"
-          // action={
-          //   <IconButton>
-          //     <Iconify icon="solar:pen-bold" />
-          //   </IconButton>
-          // }
-        />
+      <CardHeader
+        // className="print-safe-card-header"
+        className="print-avoid-break"
+        title="جزئیات"
+        // action={
+        //   <IconButton>
+        //     <Iconify icon="solar:pen-bold" />
+        //   </IconButton>
+        // }
+      />
 
-        <OrderItemsWrapper items={items} />
-      </Scrollbar>
+      <OrderItemsWrapper items={items} />
 
       {renderTotal}
     </Card>

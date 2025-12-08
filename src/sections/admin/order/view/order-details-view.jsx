@@ -57,6 +57,7 @@ export function OrderDetailsView({ order, orderMutate, userRole }) {
                 businessProfit: order.business_profit,
                 guaranteeCost: order.guarantee_cost,
                 servicesCost: order.service_cost,
+                irr_total_cost: order.irr_total_cost,
               }}
             />
 
