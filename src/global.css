@@ -150,6 +150,11 @@ input[type='number']::-webkit-inner-spin-button {
 }
 
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
   /* مخفی کردن بخش‌های اضافی */
   .layout__header,
   .printOff,
@@ -159,7 +164,18 @@ input[type='number']::-webkit-inner-spin-button {
   }
 
   .mnl__scrollbar__root {
-    display: contents;
+    display: block;
+  }
+
+  .print-safe-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-safe-card-header {
+    display: block !important; /* prevent flex collapse */
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   /* .layout__main__content {
@@ -167,10 +183,10 @@ input[type='number']::-webkit-inner-spin-button {
   } */
 
   .print-user {
-    order: -1; /* bring user info above */
+    order: -1;
   }
   .print-items {
-    order: 0;
+    order: 1;
   }
 
   /* .print-only {

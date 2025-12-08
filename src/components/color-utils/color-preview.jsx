@@ -30,7 +30,7 @@ export const ColorPreview = forwardRef(({ colors, limit = 3, sx, ...other }, ref
             ml: { md: -0.75, xs: -0.5 },
             width: { md: 16, xs: 14 },
             height: { md: 16, xs: 14 },
-            bgcolor: color,
+            backgroundColor: color,
             borderRadius: '50%',
             border: (theme) => ({
               md: `solid 2px ${theme.vars.palette.background.paper}`,

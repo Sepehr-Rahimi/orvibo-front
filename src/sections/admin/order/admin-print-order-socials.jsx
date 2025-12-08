@@ -10,11 +10,11 @@ const socials = [
     name: '021-26152998',
     name2: '09362172533',
   },
-  { title: 'Website', path: 'https://www.noyanstore.com', name: 'noyanstore.com' },
+  { title: 'Website', path: 'https://www.iranorvibo.com', name: 'iranorvibo.com' },
   {
     title: 'Instagram',
-    path: 'https://www.instagram.com/noyanstore.ir',
-    name: 'noyanstore.ir',
+    path: 'https://www.instagram.com/iranorvibo',
+    name: 'iranorvibo',
   },
 ];
 export const AdminPrintOrderSocials = () => (

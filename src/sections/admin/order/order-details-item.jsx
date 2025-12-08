@@ -78,16 +78,18 @@ export function OrderDetailsItems({
 
   return (
     <Card>
-      <CardHeader
-        title="جزئیات"
-        // action={
-        //   <IconButton>
-        //     <Iconify icon="solar:pen-bold" />
-        //   </IconButton>
-        // }
-      />
-
       <Scrollbar>
+        <CardHeader
+          // className="print-safe-card-header"
+          className="print-avoid-break"
+          title="جزئیات"
+          // action={
+          //   <IconButton>
+          //     <Iconify icon="solar:pen-bold" />
+          //   </IconButton>
+          // }
+        />
+
         <OrderItemsWrapper items={items} />
       </Scrollbar>
 

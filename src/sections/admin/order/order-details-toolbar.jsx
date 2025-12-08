@@ -17,6 +17,7 @@ import { blockedTransitions, ORDER_PAYMENT_STATUS, ORDER_STATUS_OPTIONS } from '
 
 import { Logo } from 'src/components/logo';
 import { Iconify } from 'src/components/iconify';
+import { LogoBlack } from 'src/components/logo/logoBlack';
 import { usePopover } from 'src/components/custom-popover';
 
 import { OrderStatusSelect } from './order-status-select';
@@ -89,7 +90,7 @@ export function OrderDetailsToolbar({
             </Typography>
           </Stack>
         </Stack>
-        <Logo className="print-only" />
+        <LogoBlack className="print-only" />
 
         <Stack
           flexGrow={1}

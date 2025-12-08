@@ -46,7 +46,7 @@ export function OrderDetailsView({ order, orderMutate, userRole }) {
       />
 
       <Grid container spacing={3}>
-        <Grid xs={12} md={8} className="prind-items">
+        <Grid xs={12} md={8} className="print-items">
           <Stack spacing={3} direction={{ xs: 'column-reverse', md: 'column' }}>
             <OrderDetailsItems
               items={order?.order_items}

@@ -26,9 +26,10 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { fCurrency, fIrr } from 'src/utils/format-number';
 import { calculatePercentage } from 'src/utils/helper';
+import { fCurrency, fIrr } from 'src/utils/format-number';
 
+import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
 import { updateOrder, createAdminOrder } from 'src/actions/orders';
 import ProductResultItem from 'src/layouts/components/searchbar/product-result-item';
 
@@ -44,6 +45,9 @@ export const FactorCreateEditForm = ({ order, userId }) => {
   const factorState = useFactorForm(order);
   const { factorCosts } = factorState;
   const addressForm = useBoolean();
+
+  const colorName = (hex) =>
+    PRODUCT_COLOR_NAME_OPTIONS.find((option) => option.value === hex).label;
 
   const handleSetDiscountPercentage = (value) => {
     if (value > 100 || (!Number(value) && value)) {
