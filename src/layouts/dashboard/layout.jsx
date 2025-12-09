@@ -48,9 +48,7 @@ export function DashboardLayout({ sx, children, data }) {
 
   const layoutQuery = 'lg';
 
-  const navData = data?.nav ?? dashboardNavData;
-
-  // const mainNavData = data?.mainNav ?? dashboardMainNavData();
+  const navData = dashboardNavData;
 
   const { data: productsAndCat, dataLoading } = useGetProductsAndCategory(false, !isMobile);
 

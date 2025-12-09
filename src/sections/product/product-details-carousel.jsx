@@ -40,7 +40,7 @@ export function ProductDetailsCarousel({ images }) {
             {...carousel.arrows}
             options={carousel.options}
             totalSlides={carousel.dots.dotCount}
-            selectedIndex={carousel.dots.selectedIndex + 1}
+            selectedIndex={carousel.dots.selectedIndex}
             sx={{ left: '50%', transform: 'translateX(-50%)', bottom: 16, position: 'absolute' }}
           />
 

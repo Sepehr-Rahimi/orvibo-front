@@ -15,9 +15,12 @@ export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) =
 
   const kinds = variants
     .filter((singleVariant) => singleVariant.color === activeColor)
+    .filter((singleVariant) => singleVariant?.kind?.trim()?.length > 0)
     .map((singleVariant) => singleVariant.kind);
 
-  const hasKind = kinds.length;
+  const hasKind = kinds.length > 0;
+
+  console.log(hasKind);
 
   // console.log(variants);
 
@@ -107,6 +110,7 @@ export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) =
       {hasKind &&
         kinds.map((singleKind) => {
           const isActive = choosedVariant.kind === singleKind;
+          console.log(singleKind);
 
           return (
             <Box

@@ -79,6 +79,8 @@ function Group({ items, render, subheader, slotProps, enabledRootRedirect, subhe
     </NavUl>
   );
 
+  // console.log(items);
+
   return (
     <NavLi>
       {subheader ? (
@@ -92,7 +94,7 @@ function Group({ items, render, subheader, slotProps, enabledRootRedirect, subhe
             {subheader}
           </Subheader>
 
-          {items && <Collapse in={open}>{renderContent}</Collapse>}
+          {items && items[0]?.path && <Collapse in={open}>{renderContent}</Collapse>}
         </>
       ) : (
         renderContent

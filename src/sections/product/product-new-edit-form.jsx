@@ -52,6 +52,7 @@ export const NewProductSchema = zod.object({
   variants: zod
     .array(
       zod.object({
+        id: zod.any().optional(),
         color: zod.string().min(1, 'رنگ نباید خالی باشد'),
         sku: zod.string().min(1, 'مدل الزامی است'),
         // size: zod.string(),
@@ -83,6 +84,8 @@ export function ProductNewEditForm({ currentProduct }) {
   const { treeCategories } = useGetTreeCategories();
 
   const { brands } = useGetBrands();
+
+  console.log(currentProduct?.variants);
 
   // console.log(currentProduct?.images);
   const defaultValues = useMemo(

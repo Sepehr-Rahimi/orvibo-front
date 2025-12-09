@@ -123,7 +123,7 @@ export function CheckoutPayment() {
           color: i.color,
           quantity: i.quantity,
           size: i.size,
-          type: i.kind,
+          kind: i.kind,
           price: i.price,
           discount_price: +i.discount_price,
         })),

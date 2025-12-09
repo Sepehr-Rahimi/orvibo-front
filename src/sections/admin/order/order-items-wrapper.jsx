@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { Box } from '@mui/material';
+
 import { OrderItemsMobileList } from './order-items-mobile-list';
 import { OrderItemsDesktopList } from './order-items-desktop-list';
 
@@ -17,8 +19,8 @@ export const OrderItemsWrapper = ({ items }) => {
   }, []);
 
   return (
-    <>
+    <Box sx={{ overflowX: 'auto' }}>
       {isMobile ? <OrderItemsMobileList items={items} /> : <OrderItemsDesktopList items={items} />}
-    </>
+    </Box>
   );
 };
