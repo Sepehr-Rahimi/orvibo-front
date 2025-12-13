@@ -46,7 +46,7 @@ export function ProductDetailsCarousel({ images }) {
 
           <Carousel carousel={carousel} sx={{ borderRadius: 2 }}>
             {slides.map((slide, index) => (
-              <Box width={1} height={1} bgcolor="#eee" position="relative">
+              <Box width={1} height={1} key={index} bgcolor="#eee" position="relative">
                 <Image
                   priority={index === 0}
                   key={slide.src}

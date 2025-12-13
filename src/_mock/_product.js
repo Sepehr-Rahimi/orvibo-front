@@ -84,6 +84,49 @@ export const PRODUCT_COLOR_NAME_OPTIONS = [
   { value: '#FFFFFF', label: 'سفید' },
 ];
 
+export const PRODUCT_COLOR_NAME_OPTIONS_EN = [
+  { value: '#FF4842', label: 'Red' },
+  { value: '#D32F2F', label: 'Dark Red' },
+  { value: '#FFCDD2', label: 'Light Red' },
+
+  { value: '#1890FF', label: 'Blue' },
+  { value: '#0D47A1', label: 'Dark Blue' },
+  { value: '#BBDEFB', label: 'Light Blue' },
+
+  { value: '#FFC0CB', label: 'Pink' },
+  { value: '#C2185B', label: 'Dark Pink' },
+  { value: '#F8BBD0', label: 'Light Pink' },
+
+  { value: '#00AB55', label: 'Green' },
+  { value: '#2E7D32', label: 'Dark Green' },
+  { value: '#C8E6C9', label: 'Light Green' },
+
+  { value: '#FFC107', label: 'Yellow' },
+  { value: '#FFA000', label: 'Dark Yellow' },
+  { value: '#FFF9C4', label: 'Light Yellow' },
+
+  { value: '#d6a202', label: 'Gold' },
+
+  { value: '#7F00FF', label: 'Purple' },
+  { value: '#4A148C', label: 'Dark Purple' },
+  { value: '#E1BEE7', label: 'Light Purple' },
+
+  { value: '#FF9800', label: 'Orange' },
+  { value: '#E65100', label: 'Dark Orange' },
+  { value: '#FFE0B2', label: 'Light Orange' },
+
+  { value: '#795548', label: 'Brown' },
+  { value: '#3E2723', label: 'Dark Brown' },
+  { value: '#D7CCC8', label: 'Light Brown' },
+
+  { value: '#000000', label: 'Black' },
+  { value: '#424242', label: 'Dark Gray' },
+  { value: '#BDBDBD', label: 'Gray' },
+  { value: '#F5F5F5', label: 'Light Gray' },
+
+  { value: '#FFFFFF', label: 'White' },
+];
+
 export const PRODUCT_SIZE_OPTIONS = [
   { value: '7', label: '7' },
   { value: '8', label: '8' },

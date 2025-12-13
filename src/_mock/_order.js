@@ -77,6 +77,68 @@ export const ORDER_PAYMENT_STATUS = [
   },
 ];
 
+export const ORDER_STATUS_OPTIONS_EN = [
+  {
+    value: '1',
+    label: 'Order Placed',
+    theme: {
+      backgroundColor: '#E3F2FD',
+      color: '#1976D2',
+    },
+  },
+  {
+    value: '2',
+    label: 'Order Delivered',
+    theme: {
+      backgroundColor: '#E8F5E9',
+      color: '#2E7D32',
+    },
+  },
+  {
+    value: '3',
+    label: 'Order Canceled',
+    theme: {
+      backgroundColor: '#FFEBEE',
+      color: '#C62828',
+    },
+  },
+  {
+    value: '4',
+    label: 'Order Returned',
+    theme: {
+      backgroundColor: '#FFF8E1',
+      color: '#F9A825',
+    },
+  },
+];
+
+export const ORDER_PAYMENT_STATUS_EN = [
+  {
+    value: 0,
+    label: 'Unpaid',
+    theme: {
+      backgroundColor: '#FFEBEE',
+      color: '#C62828',
+    },
+  },
+  {
+    value: 1,
+    label: 'Paid',
+    theme: {
+      backgroundColor: '#E8F5E9',
+      color: '#2E7D32',
+    },
+  },
+  {
+    value: 2,
+    label: 'Refunded',
+    theme: {
+      backgroundColor: '#FFF8E1',
+      color: '#F9A825',
+    },
+  },
+];
+
 export const blockedTransitions = {
   1: ['2', '3'],
   2: ['4'],

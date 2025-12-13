@@ -12,12 +12,11 @@ import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { fDateTime } from 'src/utils/format-time';
+import { fDateTime, fENDateTime } from 'src/utils/format-time';
 import axiosInstance, { endpoints } from 'src/utils/axios';
 
-import { blockedTransitions, ORDER_PAYMENT_STATUS, ORDER_STATUS_OPTIONS } from 'src/_mock';
+import { blockedTransitions, ORDER_PAYMENT_STATUS_EN, ORDER_STATUS_OPTIONS_EN } from 'src/_mock';
 
-import { Logo } from 'src/components/logo';
 import { Iconify } from 'src/components/iconify';
 import { LogoBlack } from 'src/components/logo/logoBlack';
 import { usePopover } from 'src/components/custom-popover';
@@ -27,7 +26,7 @@ import { DeleteConfirmDialog } from './delete-confirm-dialog';
 
 // ----------------------------------------------------------------------
 
-export function OrderDetailsToolbar({
+export function OrderDetailsToolbarEn({
   status,
   paymentStatus,
   typeOfPayment,
@@ -49,13 +48,14 @@ export function OrderDetailsToolbar({
   // console.log(paymentStatus);
   // console.log(paymentStatusFull);
 
-  const [printLoading, setPrintLoading] = useState(false);
+  const [printLoadint, setPrintLoading] = useState(false);
 
   const handlePrintRequest = async () => {
     setPrintLoading(true);
     try {
       const requestParams = new URLSearchParams({
         bank: choosedAccount,
+        en: true,
       });
       const res = await axiosInstance.get(
         `${endpoints.orders.pdf(orderNumber)}?${requestParams.toString()}`,
@@ -102,7 +102,7 @@ export function OrderDetailsToolbar({
 
           <Stack spacing={0.5}>
             <Stack spacing={1} direction="row" alignItems="center">
-              <Typography variant="h4"> سفارش {orderNumber} </Typography>
+              <Typography variant="h4"> order {orderNumber} </Typography>
               {/* <Label
                 variant="soft"
                 color={
@@ -123,9 +123,11 @@ export function OrderDetailsToolbar({
               </Typography>
             </Stack>
 
-            <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-              {fDateTime(createdAt)}
-            </Typography>
+            <Box width="fit-content">
+              <Typography variant="body2" sx={{ color: 'text.disabled', direction: 'rtl' }}>
+                {fENDateTime(createdAt)}
+              </Typography>
+            </Box>
           </Stack>
         </Stack>
         <LogoBlack className="print-only" />
@@ -159,7 +161,7 @@ export function OrderDetailsToolbar({
                       menuItemDisabled={(option) =>
                         !blockedTransitions[statusFull.value].includes(option.value)
                       }
-                      options={ORDER_STATUS_OPTIONS}
+                      options={ORDER_STATUS_OPTIONS_EN}
                       selectedStatus={statusFull}
                     />
                   )}
@@ -171,7 +173,7 @@ export function OrderDetailsToolbar({
                       menuItemDisabled={(option) =>
                         typeOfPayment === '1' && [0, 1].includes(option.value)
                       }
-                      options={ORDER_PAYMENT_STATUS}
+                      options={ORDER_PAYMENT_STATUS_EN}
                       selectedStatus={paymentStatusFull}
                     />
                     // <FormControl variant="outlined" sx={{ width: 170, height: 40 }} size="small">
@@ -199,18 +201,16 @@ export function OrderDetailsToolbar({
                   )}
                 </Stack>
                 <Stack direction="row" gap={1} justifyContent="space-between">
-                  <Box>
-                    <Button
-                      color="inherit"
-                      variant="contained"
-                      startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
-                      sx={{ height: 40 }}
-                      onClick={handlePrintRequest}
-                      disabled={printLoading}
-                    >
-                      پرینت
-                    </Button>
-                  </Box>
+                  <Button
+                    color="inherit"
+                    variant="contained"
+                    startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
+                    sx={{ height: 40 }}
+                    onClick={handlePrintRequest}
+                    disabled={printLoadint}
+                  >
+                    print
+                  </Button>
                   <Button
                     sx={{ height: 40 }}
                     color="primary"
@@ -218,7 +218,7 @@ export function OrderDetailsToolbar({
                     startIcon={<Iconify icon="solar:pen-bold" />}
                     onClick={() => router.push(paths.adminDashboard.factor.edit(orderNumber))}
                   >
-                    ویرایش
+                    edit
                   </Button>
                   {statusFull && paymentStatusFull && (
                     <Button
@@ -229,12 +229,12 @@ export function OrderDetailsToolbar({
                       disabled={!(statusFull.value === '1' && paymentStatusFull.value === 0)}
                       onClick={dialog.onTrue}
                     >
-                      حذف
+                      delete
                     </Button>
                   )}
                   <Box>
                     <Link
-                      href="./en"
+                      href="../"
                       underline="none"
                       sx={{
                         fontWeight: 'bold',
@@ -246,7 +246,7 @@ export function OrderDetailsToolbar({
                         },
                       }}
                     >
-                      EN
+                      FA
                     </Link>
                   </Box>
                 </Stack>

@@ -29,6 +29,7 @@ export function OrderDetailsItems({
     servicesCost,
     irr_total_cost,
   } = costs;
+  console.log(items);
 
   const renderTotal = (
     <Stack

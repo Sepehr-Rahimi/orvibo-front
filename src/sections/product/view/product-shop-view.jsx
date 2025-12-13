@@ -1,28 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-
-import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useDebounce } from 'src/hooks/use-debounce';
-import { useSetState } from 'src/hooks/use-set-state';
-
 // import { trackMatomoEvent } from 'src/utils/helper';
-
-import { PRODUCT_SORT_OPTIONS } from 'src/_mock';
-import { useGetProductsAndCategory, useSearchProducts } from 'src/actions/product';
 
 import { EmptyContent } from 'src/components/empty-content';
 
 import { ProductList } from '../product-list';
-import { ProductSort } from '../product-sort';
-import { ProductSearch } from '../product-search';
-import { useCheckoutContext } from '../../checkout/context';
-import { ProductFiltersResult } from '../product-filters-result';
 
 // ----------------------------------------------------------------------
 

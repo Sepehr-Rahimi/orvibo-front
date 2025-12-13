@@ -47,6 +47,16 @@ export function fDateTime(date, format) {
     : 'Invalid time value'; // تبدیل به شمسی
 }
 
+export function fENDateTime(date, format) {
+  if (!date) {
+    return null;
+  }
+
+  const isValid = dayjs(date).isValid();
+
+  return isValid ? jMoment(date).locale('en').format('DD MMM YYYY') : 'Invalid time value';
+}
+
 // ----------------------------------------------------------------------
 
 /** output: 17 Apr 2022

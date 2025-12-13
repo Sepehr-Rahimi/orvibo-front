@@ -89,6 +89,7 @@ export const endpoints = {
     list: '/api/orders/list',
     listAdmin: '/api/orders/list/admin',
     one: '/api/orders/one',
+    pdf: (orderId) => `/api/orders/${orderId}/pdf`,
     update: '/api/orders/update',
     delete: '/api/orders/delete',
     verify: '/api/orders/verify-payment',

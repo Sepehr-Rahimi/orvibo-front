@@ -64,6 +64,30 @@ export const PAYMENT_OPTIONS = [
   // },
 ];
 
+export const PAYMENT_OPTIONS_EN = [
+  // {
+  //   value: 'paypal',
+  //   label: 'Pay with Paypal',
+  //   description: 'You will be redirected to the PayPal website to complete your purchase securely.',
+  // },
+  {
+    value: 1,
+    label: 'Payment Gateway',
+    description: 'Online payment with credit card',
+  },
+  {
+    value: 0,
+    label: 'Card to Card',
+    description: 'Payment via card-to-card transfer',
+    checkoutDisabled: true,
+  },
+  // {
+  //   value: 'cash',
+  //   label: 'Cash on Delivery',
+  //   description: 'Pay the amount in cash when your order is delivered.',
+  // },
+];
+
 const CARDS_OPTIONS = [
   // { value: 'ViSa1', label: '**** **** **** 1212 - Jimmy Holland' },
   // { value: 'ViSa2', label: '**** **** **** 2424 - Shawn Stokes' },

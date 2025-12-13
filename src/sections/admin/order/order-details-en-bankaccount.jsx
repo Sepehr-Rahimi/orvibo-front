@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-
 import { Box, Button, Card, Divider, Typography } from '@mui/material';
-
 import { getBankAccount } from 'src/actions/bankAccounts';
 import { useSearchParams } from 'next/navigation';
 
-export const OrderDetailsBankAccounts = ({ setChoosedAccount, choosedAccount }) => {
+export const OrderDetailsBankAccountsEn = ({ setChoosedAccount, choosedAccount }) => {
   const params = useSearchParams();
   const showAccountForPrint = params.get('bank');
   const [bankAccounts, setBankAccounts] = useState([]);
@@ -15,22 +13,32 @@ export const OrderDetailsBankAccounts = ({ setChoosedAccount, choosedAccount }) 
   }, []);
 
   return (
-    <Card className={`print-avoid-break ${showAccountForPrint === 'false' && 'printOff'}`}>
+    <Card
+      className={`print-avoid-break ${showAccountForPrint === 'false' && 'printOff'}`}
+      dir="ltr"
+    >
       <Typography sx={{ px: 1, py: 1 }} variant="body1">
-        اطلاعات حساب بانکی
+        Bank Account Information
       </Typography>
+
       <Box maxHeight={400} sx={{ overflowY: 'auto' }}>
         {bankAccounts.map((account) => {
-          const showAccoutn = +showAccountForPrint === +account.id;
+          const showAccount = +showAccountForPrint === +account.id;
           return (
-            <Box key={account.card_number} className={`${showAccoutn ? '' : 'printOff'}`}>
+            <Box key={account.card_number} className={`${showAccount ? '' : 'printOff'}`}>
               <Divider sx={{ borderStyle: 'dashed' }} />
+
               <Box display="flex" flexDirection="column" gap={2} px={3} py={2}>
-                <Typography variant="body2">به نام : {account.name}</Typography>
+                <Typography variant="body2">Account Holder: {account.name}</Typography>
+
                 <Typography variant="body2">
-                  شماره کارت : <span dir="ltr">{account.card_number} </span>
+                  Card Number: <span dir="ltr">{account.card_number}</span>
                 </Typography>
-                <Typography variant="body2">شماره شبا : {account.sheba_number}</Typography>
+
+                <Typography variant="body2">
+                  IBAN: <span dir="ltr">{account.sheba_number}</span>
+                </Typography>
+
                 <Button
                   className="printOff"
                   variant={choosedAccount === account.id ? 'outlined' : 'contained'}
@@ -38,7 +46,7 @@ export const OrderDetailsBankAccounts = ({ setChoosedAccount, choosedAccount }) 
                     setChoosedAccount((prev) => (prev === account.id ? false : account.id))
                   }
                 >
-                  انتخاب
+                  Select
                 </Button>
               </Box>
             </Box>

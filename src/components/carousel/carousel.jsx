@@ -42,7 +42,7 @@ export function Carousel({ carousel, children, sx, slotProps }) {
 
   const axis = options?.axis ?? 'x';
 
-  const slideSpacing = options?.slideSpacing ?? '0px';
+  const slideSpacing = options?.slideSpacing ?? '12px';
 
   const direction = options?.direction ?? 'ltr';
 
