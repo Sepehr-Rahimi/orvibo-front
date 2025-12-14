@@ -69,6 +69,7 @@ export const createAdminOrder = async ({
   guaranteePercentage,
   businessProfitPercentage,
   shippingPercentage,
+  irr_calculate_mode,
 }) => {
   try {
     const description = items.map((item) => ` ${item.product_id} * ${item.quantity} `).toString();
@@ -88,6 +89,7 @@ export const createAdminOrder = async ({
       guaranteePercentage,
       businessProfitPercentage,
       shippingPercentage,
+      irr_calculate_mode,
       // callback_url,
     };
 
@@ -119,6 +121,7 @@ export const updateOrder = async ({
   guaranteePercentage,
   businessProfitPercentage,
   shippingPercentage,
+  irr_calculate_mode,
 }) => {
   try {
     const params = {
@@ -126,6 +129,7 @@ export const updateOrder = async ({
       total_cost,
       discount_code,
       discount_amount,
+      irr_calculate_mode,
       delivery_cost,
       type_of_delivery,
       type_of_payment,

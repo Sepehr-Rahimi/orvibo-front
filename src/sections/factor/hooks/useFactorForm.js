@@ -72,10 +72,10 @@ const buildInitialCosts = (factorInfo) => {
   const items_cost = computePrices(factorInfo.order_items);
 
   return {
-    shipping: calculatePercentageByAmount(factorInfo.shipping_cost, items_cost),
-    businessProfit: calculatePercentageByAmount(factorInfo.business_profit, items_cost),
-    guarantee: calculatePercentageByAmount(factorInfo.guarantee_cost, items_cost),
-    services: calculatePercentageByAmount(factorInfo.service_cost, items_cost),
+    shipping: Math.round(calculatePercentageByAmount(factorInfo.shipping_cost, items_cost)),
+    businessProfit: Math.round(calculatePercentageByAmount(factorInfo.business_profit, items_cost)),
+    guarantee: Math.round(calculatePercentageByAmount(factorInfo.guarantee_cost, items_cost)),
+    services: Math.round(calculatePercentageByAmount(factorInfo.service_cost, items_cost)),
   };
 };
 
@@ -94,7 +94,11 @@ export const useFactorForm = (factorInfo) => {
 
   const totalProductsCost = useMemo(() => computePrices(initialItems), [initialItems]);
 
-  const { exchange, dataLoading } = useGetIrrExchange();
+  const { exchange: storedExchange, dataLoading } = useGetIrrExchange();
+  const currentExchange =
+    factorInfo && factorInfo.irr_total_cost
+      ? Math.round(factorInfo.irr_total_cost / factorInfo.total_cost)
+      : null;
 
   /* ------------------------------- STATE ---------------------------------- */
   const [items, setItems] = useState(initialItems);
@@ -120,6 +124,11 @@ export const useFactorForm = (factorInfo) => {
   const [productsPrice, setProductsPrice] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
   const [irrPrice, setIrrPrice] = useState(0);
+
+  const [irrCalculation, setIrrCalculation] = useState({
+    mode: 'stored',
+    value: storedExchange,
+  });
 
   const [selectedAddress, setSelectedAddress] = useState(factorInfo?.address ?? null);
 
@@ -174,6 +183,18 @@ export const useFactorForm = (factorInfo) => {
     setDiscountAmount(calculatePercentage(discountPercentage, productsPrice));
   }, [productsPrice, discountPercentage]);
 
+  // handle currency exchange value
+  useEffect(() => {
+    console.log('called');
+    if (irrCalculation.mode === 'stored') {
+      console.log('stored');
+      setIrrCalculation((prev) => ({ ...prev, value: storedExchange }));
+    } else if (irrCalculation.mode === 'current') {
+      console.log('current');
+      setIrrCalculation((prev) => ({ ...prev, value: currentExchange }));
+    }
+  }, [irrCalculation.mode, storedExchange, currentExchange]);
+
   // recalc final price
   useEffect(() => {
     const additionalCosts = Object.keys(factorCosts).reduce(
@@ -185,9 +206,9 @@ export const useFactorForm = (factorInfo) => {
         ? productsPrice + additionalCosts - discountAmount
         : productsPrice + additionalCosts;
     setFinalPrice(price);
-    const IrrExchange = price * exchange;
+    const IrrExchange = Math.round(price * irrCalculation.value);
     setIrrPrice(IrrExchange);
-  }, [discountAmount, productsPrice, factorCosts, exchange]);
+  }, [discountAmount, productsPrice, factorCosts, irrCalculation]);
 
   /* -------------------------------------------------------------------------- */
   /*  EFFECTS: PRICE REVALIDATION                                                */
@@ -327,12 +348,19 @@ export const useFactorForm = (factorInfo) => {
     setFactorCost((prev) => ({ ...prev, [name]: Math.round(value) }));
   };
 
+  const handleChangeIrrCalculation = (name, value) => {
+    if (name === 'value' && irrCalculation.mode !== 'manual') return;
+
+    setIrrCalculation((prev) => ({ ...prev, [name]: value }));
+  };
+
   /* -------------------------------------------------------------------------- */
 
   return {
     items,
     factorCosts,
     irrPrice,
+    irrCalculation,
     searchItems,
     searchInput,
     setSearchInput,
@@ -351,6 +379,7 @@ export const useFactorForm = (factorInfo) => {
     handleChangeQuantity,
     handleChangeVariant,
     handleChangeFactorCosts,
+    handleChangeIrrCalculation,
     productsPrice,
     discountAmount,
     finalPrice,

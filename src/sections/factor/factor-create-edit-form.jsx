@@ -19,6 +19,8 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  FormControl,
+  Select,
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
@@ -66,17 +68,10 @@ export const FactorCreateEditForm = ({ order, userId }) => {
 
   const [addressInfo, setAddressInfo] = useState({});
 
-  const businessProfit = calculatePercentage(
-    factorCosts.businessProfit,
-    factorState.productsPrice
-  ).toFixed(2);
-  const shippingCost = calculatePercentage(factorCosts.shipping, factorState.productsPrice).toFixed(
-    2
-  );
-  const guarantee = calculatePercentage(factorCosts.guarantee, factorState.productsPrice).toFixed(
-    2
-  );
-  const services = calculatePercentage(factorCosts.services, factorState.productsPrice).toFixed(2);
+  const businessProfit = calculatePercentage(factorCosts.businessProfit, factorState.productsPrice);
+  const shippingCost = calculatePercentage(factorCosts.shipping, factorState.productsPrice);
+  const guarantee = calculatePercentage(factorCosts.guarantee, factorState.productsPrice);
+  const services = calculatePercentage(factorCosts.services, factorState.productsPrice);
 
   return (
     <Stack direction="column" gap={3}>
@@ -238,7 +233,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
                               mr: 1,
                             }}
                           />
-                          {variant.kind || variant.color}
+                          {variant.kind || colorName(variant.color)}
                         </MenuItem>
                       );
                     })}
@@ -262,19 +257,30 @@ export const FactorCreateEditForm = ({ order, userId }) => {
         </Table>
       </Scrollbar>
 
-      {order && (
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={(event) => factorState.setCheckRevalidatePrice(event.target.checked)}
-                defaultValue={factorState.checkRevalidatePrice}
-              />
-            }
-            label="بروزرسانی قیمت ها "
-          />
-        </Box>
-      )}
+      <Box>
+        <FormControl sx={{ px: 3 }}>
+          <Select
+            value={factorState.irrCalculation.mode}
+            onChange={(e) => factorState.handleChangeIrrCalculation('mode', e.target.value)}
+          >
+            <MenuItem value="stored">stored</MenuItem>
+            <MenuItem value="manual">manual</MenuItem>
+            {order?.id && <MenuItem value="current">current</MenuItem>}
+          </Select>
+        </FormControl>
+        <FormControlLabel
+          control={
+            <TextField
+              value={factorState.irrCalculation.value}
+              sx={{ mx: 2 }}
+              type="text"
+              disabled={['current', 'stored'].includes(factorState.irrCalculation.mode)}
+              onChange={(e) => factorState.handleChangeIrrCalculation('value', e.target.value)}
+            />
+          }
+          label="مقدار تومان به دلار"
+        />
+      </Box>
 
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>درصد تخفیف</Typography>
@@ -291,6 +297,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>سود بازرگانی</Typography>
         <Input
+          type="number"
           placeholder="0"
           value={factorCosts.businessProfit}
           onChange={(e) => {
@@ -301,6 +308,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>گارانتی</Typography>
         <Input
+          type="number"
           placeholder="0"
           value={factorCosts.guarantee}
           onChange={(e) => {
@@ -311,6 +319,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>خدمات نصب و راه اندازی</Typography>
         <Input
+          type="number"
           placeholder="0"
           value={factorCosts.services}
           onChange={(e) => {
@@ -321,6 +330,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>هزینه حمل و ترخیص</Typography>
         <Input
+          type="number"
           placeholder="0"
           value={factorCosts.shipping}
           onChange={(e) => {
@@ -394,6 +404,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
               address_id: factorState.selectedAddress.id.toString(),
               type_of_delivery: 0,
               discount_amount: factorState.discountAmount,
+              irr_calculate_mode: factorState.irrCalculation,
               servicesPercentage: factorCosts.services,
               guaranteePercentage: factorCosts.guarantee,
               businessProfitPercentage: factorCosts.businessProfit,
@@ -418,6 +429,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
               discount_amount: factorState.discountAmount,
               items: payloadItems,
               servicesPercentage: factorCosts.services,
+              irr_calculate_mode: factorState.irrCalculation,
               guaranteePercentage: factorCosts.guarantee,
               businessProfitPercentage: factorCosts.businessProfit,
               shippingPercentage: factorCosts.shipping,
