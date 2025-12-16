@@ -87,7 +87,7 @@ export const CheckoutProductCard = ({
               {' '}
               {productColorName}{' '}
             </Typography>
-            <Typography variant="subtitle2"> - {product.kind}</Typography>
+            {product.kind && <Typography variant="subtitle2"> - {product.kind}</Typography>}
           </Stack>
 
           {product.discount_price > 0 ? (

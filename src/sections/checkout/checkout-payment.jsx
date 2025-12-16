@@ -1,5 +1,5 @@
 import { z as zod } from 'zod';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +9,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // import { trackMatomoEvent } from 'src/utils/helper';
+
+import { toast } from 'sonner';
 
 import { createOrder } from 'src/actions/orders';
 import { validateDiscountCode } from 'src/actions/discountCodes';
@@ -110,6 +112,7 @@ export function CheckoutPayment() {
 
   const defaultValues = { delivery: checkout.typeOfShipping, payment: checkout.typeOfPayment };
 
+  const [submitOrderLoading, setSubmitOrderLoading] = useState(false);
   const methods = useForm({
     resolver: zodResolver(PaymentSchema),
     defaultValues,
@@ -120,9 +123,50 @@ export function CheckoutPayment() {
     formState: { isSubmitting },
   } = methods;
 
+  const createOrderPayload = (other) => ({
+    address_id: checkout.billing.id,
+    services: checkout.services,
+    guarantee: checkout.guarantee,
+    businessProfit: checkout.businessProfit,
+    // delivery_cost: checkout.shipping,
+    // discount_amount: checkout.discount,
+    discount_code: checkout.discount_code,
+    items: checkout?.items?.map((i) => ({
+      product_id: i.id,
+      variant_id: i.variant_id,
+      color: i.color,
+      quantity: i.quantity,
+      size: i.size,
+      kind: i.kind,
+      price: i.price,
+      discount_price: +i.discount_price,
+    })),
+    ...other,
+  });
+
   // useEffect(() => trackMatomoEvent('checkout-step', { checkoutStep: 'checkout payment' }), []);
 
   // console.log(checkout);
+
+  const handleJustCreate = async () => {
+    setSubmitOrderLoading(true);
+    try {
+      const res = await createOrder({
+        ...createOrderPayload({ type_of_delivery: 0, type_of_payment: 0 }),
+      });
+      if (res.status === 200) {
+        checkout?.resetCart();
+
+        // trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
+        router.push(res?.data?.paymentUrl);
+      }
+    } catch (error) {
+      toast.error('یه مشکلی پیش اومد');
+      console.log(error);
+    } finally {
+      setSubmitOrderLoading(false);
+    }
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -132,36 +176,20 @@ export function CheckoutPayment() {
           total_price: checkout.subtotal,
         });
       const res = await createOrder({
-        address_id: checkout.billing.id,
-        services: checkout.services,
-        guarantee: checkout.guarantee,
-        businessProfit: checkout.businessProfit,
-        // delivery_cost: checkout.shipping,
-        type_of_delivery: data.delivery,
-        type_of_payment: data.payment,
-        // discount_amount: checkout.discount,
-        discount_code: checkout.discount_code,
-        items: checkout?.items?.map((i) => ({
-          product_id: i.id,
-          variant_id: i.variant_id,
-          color: i.color,
-          quantity: i.quantity,
-          size: i.size,
-          kind: i.kind,
-          price: i.price,
-          discount_price: +i.discount_price,
-        })),
+        ...createOrderPayload({ type_of_delivery: data.delivery, type_of_payment: data.payment }),
         // total_cost: checkout.total,
       });
+      if (res.status === 200) {
+        checkout?.resetCart();
 
-      if (data.payment === 1 && res.status === 200) {
         // trackMatomoEvent('checkout-step', { checkoutStep: 'payment gateway' });
-        router.push(res?.data?.paymentUrl);
+        if (data.payment === 1) router.push(res?.data?.paymentUrl);
       }
       // checkout.onNextStep();
 
       console.info('DATA', data);
     } catch (error) {
+      toast.error('یه مشکلی پیش اومد');
       console.error(error);
     }
   });
@@ -193,10 +221,9 @@ export function CheckoutPayment() {
 
         <Grid xs={12} md={4}>
           <CheckoutBillingInfo billing={checkout.billing} onBackStep={checkout.onBackStep} />
-
           <CheckoutSummary checkout={checkout} onEdit={() => checkout.onGotoStep(0)} />
-
           <LoadingButton
+            sx={{ my: 2 }}
             fullWidth
             size="large"
             type="submit"
@@ -204,6 +231,16 @@ export function CheckoutPayment() {
             loading={isSubmitting}
           >
             تکمیل سفارش
+          </LoadingButton>{' '}
+          <LoadingButton
+            fullWidth
+            onClick={handleJustCreate}
+            size="large"
+            type="button"
+            variant="contained"
+            loading={submitOrderLoading}
+          >
+            ثبت سفارش
           </LoadingButton>
         </Grid>
       </Grid>

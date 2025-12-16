@@ -18,6 +18,8 @@ import { RouterLink } from 'src/routes/components';
 import { fCurrency, fIrr } from 'src/utils/format-number';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
+import { toast } from 'sonner';
+
 import { getCurrentPrice } from 'src/utils/helper';
 
 import { Label } from 'src/components/label';
@@ -77,6 +79,10 @@ export function ProductDetailsSummary({
         .filter((item) => item.variant_id === choosedVariant.id)
         .reduce((sum, item) => sum + item.quantity, 0)
     : 0;
+
+  const quantityOfChoosedVariant = items?.find(
+    (singleItem) => singleItem.variant_id === choosedVariant.id
+  )?.quantity;
 
   // console.log(totalQuantity);
   // console.log(items);
@@ -153,6 +159,7 @@ export function ProductDetailsSummary({
       });
 
       // trackMatomoEvent('add-to-cart', { productName: product.name, productId: product.id });
+      toast.info(`${values.quantity} عدد از محصول مورد نظر به سبد خرید شما اضافه شد`);
 
       if (totalQuantity + values.quantity + values.quantity > choosedVariant.stock)
         setValue('quantity', 0);
@@ -212,11 +219,10 @@ export function ProductDetailsSummary({
   );
 
   const renderVariantOptions = (
-    <Stack direction="row">
-      <Typography variant="subtitle2" sx={{ flexGrow: 1, mr: 2 }}>
-        رنگ
-      </Typography>
-
+    <Stack direction="column">
+      {/* <Typography variant="subtitle2" sx={{ flexGrow: 1, mr: 2, mb: 2 }}>
+        انواع
+      </Typography> */}
       <Controller
         name="color"
         control={control}
@@ -312,6 +318,12 @@ export function ProductDetailsSummary({
         </Typography> */}
       </Stack>
     </Stack>
+  );
+
+  const renderCartQuantity = (
+    <Label color="error" width="fit-content" px={2}>
+      {quantityOfChoosedVariant ? ` موجود در سبد خرید شما : ${quantityOfChoosedVariant}` : '-'}
+    </Label>
   );
 
   const renderActions = (
@@ -417,6 +429,8 @@ export function ProductDetailsSummary({
         {/* {sizes?.length ? renderSizeOptions : null} */}
 
         {renderQuantity}
+
+        {renderCartQuantity}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

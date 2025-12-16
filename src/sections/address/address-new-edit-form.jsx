@@ -21,6 +21,10 @@ import { useEffect } from 'react';
 export const NewAddressSchema = zod.object({
   is_home: zod.boolean(),
   full_name: zod.string().min(1, { message: 'نام الزامی است!' }),
+  latin_full_name: zod
+    .string()
+    .regex(/^[A-Za-z ]+$/, 'فقط حروف لاتین مجاز است')
+    .min(1, 'نام لاتین الزامی است'),
   phone_number: zod.string().min(1, { message: 'شماره موبایل الزامی است!' }),
   address: zod.string().min(1, { message: 'آدرس الزامی است!' }),
   city: zod.string().min(1, { message: 'شهر الزامی است!' }),
@@ -34,6 +38,7 @@ export function AddressNewEditForm({ open, onClose, onCreate, addressesMutate, a
   const defaultValues = {
     is_home: true,
     full_name: '',
+    latin_full_name: '',
     phone_number: '',
     address: '',
     city: '',
@@ -91,6 +96,13 @@ export function AddressNewEditForm({ open, onClose, onCreate, addressesMutate, a
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressInfo, reset]);
 
+  // const handleValidation = (e) => {
+  //   const lastIndext = e.target.value.split('')[e.target.value.length - 1];
+  //   const reg = /[a-z]/;
+  //   const isValid = reg.test(lastIndext);
+  //   if (isValid) setValue('latin_full_name', e.target.value);
+  // };
+
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
       <Form methods={methods} onSubmit={onSubmit}>
@@ -124,6 +136,12 @@ export function AddressNewEditForm({ open, onClose, onCreate, addressesMutate, a
 
               <Field.Phone name="phone_number" disableSelect country="IR" label="شماره موبایل" />
             </Box>
+            <Field.Text
+              label="نام و نام خانوادگی با حروف لاتین"
+              // eslint-disable-next-line arrow-body-style
+              // onChange={(e) => handleValidation(e)}
+              name="latin_full_name"
+            />
 
             <Field.Text name="address" label="آدرس" />
 

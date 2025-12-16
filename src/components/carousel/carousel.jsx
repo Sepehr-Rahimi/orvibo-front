@@ -13,6 +13,8 @@ export const StyledRoot = styled(Box, {
   maxWidth: '100%',
   overflow: 'hidden',
   position: 'relative',
+  height: '100%',
+  minHeight: 0,
   ...(axis === 'y' && {
     height: '100%',
   }),
@@ -23,12 +25,14 @@ export const StyledContainer = styled(Box, {
 })(({ axis, slideSpacing }) => ({
   display: 'flex',
   backfaceVisibility: 'hidden',
+  WebkitBackfaceVisibility: 'hidden',
+  height: '100%',
+  minHeight: 0,
   ...(axis === 'x' && {
     touchAction: 'pan-y pinch-zoom',
     marginLeft: `calc(${slideSpacing} * -1)`,
   }),
   ...(axis === 'y' && {
-    height: '100%',
     flexDirection: 'column',
     touchAction: 'pan-x pinch-zoom',
     marginTop: `calc(${slideSpacing} * -1)`,

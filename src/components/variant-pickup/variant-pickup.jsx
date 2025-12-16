@@ -74,51 +74,65 @@ export const VariantPickup = ({ setChoosedVariant, choosedVariant, variants }) =
   });
 
   return (
-    <Stack direction="row" spacing={2} flexWrap="wrap">
-      {colors.map((singleColor) => {
-        const isActive = singleColor === activeColor;
+    <Box width={1}>
+      <Box width={1} borderBottom={1} py={2} borderColor="lightgray">
+        <Typography variant="caption">رنگ</Typography>
+        <Stack direction="row-reverse" spacing={2} flexWrap="wrap">
+          {colors.map((singleColor) => {
+            const isActive = singleColor === activeColor;
 
-        return (
-          <Box
-            key={singleColor}
-            onClick={() => {
-              setActiveColor(singleColor);
-              handleChooseVariant({ color: singleColor });
-            }}
-            sx={{
-              ...variantBoxStyle(isActive),
-            }}
-          >
-            {/* Color Circle */}
-            <Box
-              sx={{
-                width: 20,
-                height: 20,
-                borderRadius: '50%',
-                bgcolor: singleColor,
-                boxShadow: `0 0 4px ${alpha(theme.palette.common.white, 0.2)}`,
-                border: `1px solid ${isDark ? theme.palette.grey[800] : theme.palette.grey[300]}`,
-              }}
-            />
-            <Typography>{colorName(singleColor)}</Typography>
-            {/* Label (if any) */}
-          </Box>
-        );
-      })}
-      {hasKind &&
-        kinds.map((singleKind) => {
-          const isActive = choosedVariant.kind === singleKind;
+            return (
+              <Box
+                key={singleColor}
+                onClick={() => {
+                  setActiveColor(singleColor);
+                  handleChooseVariant({ color: singleColor });
+                }}
+                sx={{
+                  ...variantBoxStyle(isActive),
+                }}
+              >
+                {/* Color Circle */}
+                <Box
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    bgcolor: singleColor,
+                    boxShadow: `0 0 4px ${alpha(theme.palette.common.white, 0.2)}`,
+                    border: `1px solid ${isDark ? theme.palette.grey[800] : theme.palette.grey[300]}`,
+                  }}
+                />
+                <Typography>{colorName(singleColor)}</Typography>
+                {/* Label (if any) */}
+              </Box>
+            );
+          })}
+        </Stack>
+      </Box>
+      <Box>
+        {hasKind && (
+          <>
+            <Typography variant="caption">نوع</Typography>
 
-          return (
-            <Box
-              key={singleKind}
-              onClick={() => handleChooseVariant({ color: activeColor, kind: singleKind })}
-              sx={{ ...variantBoxStyle(isActive) }}
-            >
-              <Typography variant="body1">{singleKind}</Typography>
-            </Box>
-          );
-        })}
-    </Stack>
+            <Stack direction="row-reverse" spacing={2} flexWrap="wrap">
+              {kinds.map((singleKind) => {
+                const isActive = choosedVariant.kind === singleKind;
+
+                return (
+                  <Box
+                    key={singleKind}
+                    onClick={() => handleChooseVariant({ color: activeColor, kind: singleKind })}
+                    sx={{ ...variantBoxStyle(isActive) }}
+                  >
+                    <Typography variant="body1">{singleKind}</Typography>
+                  </Box>
+                );
+              })}
+            </Stack>
+          </>
+        )}
+      </Box>
+    </Box>
   );
 };

@@ -66,7 +66,7 @@ export const NewProductSchema = zod.object({
             message: 'Must be a number or numeric string',
           }),
         discount_percentage: zod.number().optional(),
-        kind: zod.nullable(zod.string()).optional(),
+        kind: zod.string().min(1, 'نوع ورینت الزامی است!'),
         is_published: zod.boolean().optional(),
       })
     )
@@ -85,7 +85,7 @@ export function ProductNewEditForm({ currentProduct }) {
 
   const { brands } = useGetBrands();
 
-  console.log(currentProduct?.variants);
+  // console.log(currentProduct?.variants);
 
   // console.log(currentProduct?.images);
   const defaultValues = useMemo(

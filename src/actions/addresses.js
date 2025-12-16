@@ -12,6 +12,7 @@ const swrOptions = {
 export const createAddress = async ({
   is_home,
   full_name,
+  latin_full_name,
   phone_number,
   address,
   city,
@@ -23,6 +24,7 @@ export const createAddress = async ({
     const params = {
       is_home,
       full_name,
+      latin_full_name,
       phone_number,
       address,
       city,
@@ -42,6 +44,7 @@ export const updateAddress = async ({
   id,
   is_home,
   full_name,
+  latin_full_name,
   phone_number,
   address,
   city,
@@ -53,6 +56,7 @@ export const updateAddress = async ({
     const params = {
       is_home,
       full_name,
+      latin_full_name,
       phone_number,
       address,
       city,

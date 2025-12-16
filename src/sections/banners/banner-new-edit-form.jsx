@@ -30,9 +30,9 @@ export const NewBannerSchema = zod.object({
   cover: schemaHelper.file({
     message: { required_error: 'آپلود کاور الزامی است' },
   }),
-  // title: zod.string().min(1, { message: 'عنوان بنر الزامی است!' }),
-  // button_text: zod.string().min(1, { message: 'متن دکمه الزامی است!' }),
-  // description: zod.string().min(1, { message: 'توضیحات الزامی است!' }),
+  title: zod.string().optional(),
+  button_text: zod.string().optional(),
+  description: zod.string().optional(),
   // link: zod.string().min(1, { message: 'لینک الزامی است!' }),
   is_published: zod.boolean(),
 });
@@ -69,7 +69,7 @@ export function BannerNewEditForm({ currentBanner }) {
     watch,
     control,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
   } = methods;
 
   const handleDelete = async () => {
@@ -81,6 +81,7 @@ export function BannerNewEditForm({ currentBanner }) {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    // console.log(data)
     try {
       if (currentBanner) {
         await updateBanner({

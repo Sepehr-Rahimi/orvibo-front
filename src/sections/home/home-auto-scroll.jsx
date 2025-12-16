@@ -40,9 +40,10 @@ export function HomeAutoScroll() {
       <Carousel
         slotProps={{
           slide: {
-            // height: '100%',
             // maxHeight: '100%',
             flex: '0 0 auto',
+            alignSelf: 'stretch',
+            width: 'auto',
           },
           container: {
             height: 1,
@@ -77,6 +78,7 @@ function CarouselItem({ item, index }) {
         height: '100%',
         display: 'flex',
         alignItems: 'center',
+        minHeight: 0,
         mr: { md: 5, xs: 2 },
       }}
     >
@@ -88,7 +90,10 @@ function CarouselItem({ item, index }) {
         sx={{
           // filter: 'grayscale(100%) brightness(50%)',
           width: 'auto',
-          height: '100%',
+          // height: '100%',
+          height: { xs: 40, sm: 70 },
+          objectFit: 'contain',
+          display: 'block',
         }}
       />
     </Box>

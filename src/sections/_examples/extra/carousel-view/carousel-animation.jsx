@@ -100,7 +100,7 @@ function CarouselItem({ item, index, selected }) {
               noWrap
               sx={{
                 mb: 1,
-                typography: { xs: 'subtitle1', md: 'h3' },
+                typography: { xs: 'subtitle1', md: 'h2' },
               }}
               style={{ textAlign: 'right' }}
             >
@@ -111,7 +111,11 @@ function CarouselItem({ item, index, selected }) {
 
         {item?.description && (
           <m.div variants={varFade().inRight}>
-            <Typography noWrap variant="body2" style={{ textAlign: 'right' }}>
+            <Typography
+              noWrap
+              sx={{ typography: { xs: 'body2', md: 'subtitle1' } }}
+              style={{ textAlign: 'right' }}
+            >
               {item.description}
             </Typography>
           </m.div>

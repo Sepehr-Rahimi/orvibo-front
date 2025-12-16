@@ -7,13 +7,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 
 import Link from '@mui/material/Link';
-import { Button } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import { LoadingButton } from '@mui/lab';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -29,6 +27,7 @@ import { AccountConfirmDialogContent } from 'src/sections/account/account-confir
 
 import { useAuthContext } from 'src/auth/hooks';
 import { signUp, validateUserInfo } from 'src/auth/context/jwt';
+import { IconButton } from '@mui/material';
 // import { trackMatomoEvent } from 'src/utils/helper';
 
 // ----------------------------------------------------------------------
@@ -55,6 +54,7 @@ export function JwtSignUpView() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const [code, setCode] = useState();
+  const [validating, setValidating] = useState(false);
   const openDialog = useBoolean();
 
   const defaultValues = {
@@ -72,7 +72,7 @@ export function JwtSignUpView() {
   const {
     handleSubmit,
     watch,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isSubmitSuccessful },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -97,7 +97,9 @@ export function JwtSignUpView() {
   });
 
   const verifyInfo = async () => {
+    setValidating(true);
     setErrorMsg('');
+
     const isValid = await methods.trigger(); // runs Zod schema validation
     if (!isValid) return; // stop if form is invalid
     try {
@@ -106,6 +108,8 @@ export function JwtSignUpView() {
     } catch (error) {
       // console.log(error);
       setErrorMsg(error instanceof Error ? error.response.data.message : error.message);
+    } finally {
+      setValidating(false);
     }
   };
 
@@ -156,9 +160,14 @@ export function JwtSignUpView() {
           ),
         }}
       />
-      <Button type="button" variant="outlined" onClick={verifyInfo}>
+      <LoadingButton
+        type="LoadingButton"
+        variant="outlined"
+        onClick={verifyInfo}
+        loading={validating}
+      >
         تایید شماره موبایل
-      </Button>
+      </LoadingButton>
     </Stack>
   );
 
@@ -205,15 +214,14 @@ export function JwtSignUpView() {
           open={openDialog.value}
           onClose={openDialog.onFalse}
           action={
-            <Button
+            <LoadingButton
+              loading={isSubmitting}
               type="submit"
               variant="contained"
-              load
               form="confirm-form"
-              {...(isSubmitting && { loading: true })}
             >
               تایید
-            </Button>
+            </LoadingButton>
           }
         />
       </Form>

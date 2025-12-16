@@ -51,6 +51,7 @@ export const updateBanner = async ({
         'Content-Type': 'multipart/form-data',
       },
     });
+    // console.log(res);
   } catch (error) {
     console.error('Error during updating banner:', error);
     throw error;
