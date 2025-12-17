@@ -23,7 +23,7 @@ export const NewAddressSchema = zod.object({
   full_name: zod.string().min(1, { message: 'نام الزامی است!' }),
   latin_full_name: zod
     .string()
-    .regex(/^[A-Za-z ]+$/, 'فقط حروف لاتین مجاز است')
+    .regex(/^[A-Za-z .:@!#$%&*()_+\-=/]+$/, 'فقط حروف لاتین مجاز است')
     .min(1, 'نام لاتین الزامی است'),
   phone_number: zod.string().min(1, { message: 'شماره موبایل الزامی است!' }),
   address: zod.string().min(1, { message: 'آدرس الزامی است!' }),
@@ -76,6 +76,7 @@ export function AddressNewEditForm({ open, onClose, onCreate, addressesMutate, a
       }
       onCreate?.({
         full_name: data.full_name,
+        latin_full_name: data.latin_full_name,
         phoneNumber: data.phoneNumber,
         fullAddress: `${data.zipCode}, ${data.state}, ${data.city}, ${data.address}`,
         addressType: data.addressType,

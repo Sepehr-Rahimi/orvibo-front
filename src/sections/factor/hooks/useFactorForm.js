@@ -359,8 +359,7 @@ export const useFactorForm = (factorInfo) => {
   };
 
   const handleChangeIrrCalculation = (name, value) => {
-    if (name === 'value' && irrCalculation.mode !== 'manual') return;
-    if (!Number(value)) return;
+    if (name === 'value' && (irrCalculation.mode !== 'manual' || !Number(value))) return;
 
     setIrrCalculation((prev) => ({ ...prev, [name]: value }));
   };
