@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from 'src/hooks/use-debounce';
 
-import { searchProducts } from 'src/actions/product';
+import { searchProducts, useGetProducts } from 'src/actions/product';
 import { searchAddressess } from 'src/actions/addresses-ssr';
 import { calculatePercentage, calculatePercentageByAmount } from 'src/utils/helper';
 import { useGetIrrExchange } from 'src/actions/variables';
@@ -100,12 +100,14 @@ export const useFactorForm = (factorInfo) => {
       ? Math.round(factorInfo.irr_total_cost / factorInfo.total_cost)
       : null;
 
+  const { products, productsLoading, productsError } = useGetProducts();
+
   /* ------------------------------- STATE ---------------------------------- */
   const [items, setItems] = useState(initialItems);
 
   // product search
   const [searchInput, setSearchInput] = useState('');
-  const debouncedInput = useDebounce(searchInput, 1000);
+  // const debouncedInput = useDebounce(searchInput, 1000);
   const [searchItems, setSearchItems] = useState([]);
 
   // address search
@@ -120,6 +122,7 @@ export const useFactorForm = (factorInfo) => {
       ? Math.round((factorInfo.discount_amount / totalProductsCost) * 100)
       : 0
   );
+
   const [discountAmount, setDiscountAmount] = useState(0);
   const [productsPrice, setProductsPrice] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
@@ -143,15 +146,20 @@ export const useFactorForm = (factorInfo) => {
 
   // product search
   useEffect(() => {
-    if (debouncedInput.length < 2) {
+    if (searchInput.length < 2) {
       setSearchItems([]);
       return;
     }
 
-    searchProducts({ search: debouncedInput }).then((res) => {
-      setSearchItems(res.data.products);
-    });
-  }, [debouncedInput]);
+    if (!productsLoading && !productsError) {
+      // console.log(products);
+      setSearchItems(
+        products.filter((singleProduct) =>
+          singleProduct.name.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      );
+    }
+  }, [searchInput, products, productsError, productsLoading]);
 
   // address search
   useEffect(() => {
@@ -185,12 +193,12 @@ export const useFactorForm = (factorInfo) => {
 
   // handle currency exchange value
   useEffect(() => {
-    console.log('called');
+    // console.log('called');
     if (irrCalculation.mode === 'stored') {
-      console.log('stored');
+      // console.log('stored');
       setIrrCalculation((prev) => ({ ...prev, value: storedExchange }));
     } else if (irrCalculation.mode === 'current') {
-      console.log('current');
+      // console.log('current');
       setIrrCalculation((prev) => ({ ...prev, value: currentExchange }));
     }
   }, [irrCalculation.mode, storedExchange, currentExchange]);
@@ -269,8 +277,8 @@ export const useFactorForm = (factorInfo) => {
       ];
     });
 
-    setSearchItems([]);
-    setSearchInput('');
+    // setSearchItems([]);
+    // setSearchInput('');
     setErrorMessage('');
   };
 
@@ -279,10 +287,11 @@ export const useFactorForm = (factorInfo) => {
   };
 
   const handleChangeQuantity = (index, newQty) => {
-    if (newQty < 1) {
-      setErrorMessage('تعداد باید بزرگتر از صفر باشد');
-      return;
-    }
+    // if (newQty < 1) {
+    //   setErrorMessage('تعداد باید بزرگتر از صفر باشد');
+    //   return;
+    // }
+    if (!Number(newQty)) return;
 
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, quantity: newQty } : item)));
     setErrorMessage('');
@@ -345,11 +354,13 @@ export const useFactorForm = (factorInfo) => {
   };
 
   const handleChangeFactorCosts = (name, value) => {
+    if (!Number(value)) return;
     setFactorCost((prev) => ({ ...prev, [name]: Math.round(value) }));
   };
 
   const handleChangeIrrCalculation = (name, value) => {
     if (name === 'value' && irrCalculation.mode !== 'manual') return;
+    if (!Number(value)) return;
 
     setIrrCalculation((prev) => ({ ...prev, [name]: value }));
   };

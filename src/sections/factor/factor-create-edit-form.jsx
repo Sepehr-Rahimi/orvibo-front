@@ -163,7 +163,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
           onInput={(e) => factorState.setSearchInput(e.target.value)}
           value={factorState.searchInput}
         />
-        <Box component="ul" sx={{ maxHeight: 400, overflowY: 'auto' }}>
+        <Box component="ul" sx={{ maxHeight: 200, overflowY: 'auto' }}>
           {factorState.searchItems.map((product) => (
             <Box component="li" key={`${product?.id}`} sx={{ display: 'flex' }}>
               <ProductResultItem
@@ -199,7 +199,6 @@ export const FactorCreateEditForm = ({ order, userId }) => {
 
                 <TableCell align="center">
                   <TextField
-                    type="number"
                     value={item.quantity}
                     onChange={(e) =>
                       factorState.handleChangeQuantity(index, Number(e.target.value))
@@ -263,9 +262,9 @@ export const FactorCreateEditForm = ({ order, userId }) => {
             value={factorState.irrCalculation.mode}
             onChange={(e) => factorState.handleChangeIrrCalculation('mode', e.target.value)}
           >
-            <MenuItem value="stored">stored</MenuItem>
-            <MenuItem value="manual">manual</MenuItem>
-            {order?.id && <MenuItem value="current">current</MenuItem>}
+            <MenuItem value="stored">نرخ لحظه ای</MenuItem>
+            <MenuItem value="manual">نرخ به صورت دستی</MenuItem>
+            {order?.id && <MenuItem value="current">نرخ فاکتور قبلی</MenuItem>}
           </Select>
         </FormControl>
         <FormControlLabel
@@ -297,7 +296,6 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>سود بازرگانی</Typography>
         <Input
-          type="number"
           placeholder="0"
           value={factorCosts.businessProfit}
           onChange={(e) => {
@@ -308,7 +306,6 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>گارانتی</Typography>
         <Input
-          type="number"
           placeholder="0"
           value={factorCosts.guarantee}
           onChange={(e) => {
@@ -319,7 +316,6 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>خدمات نصب و راه اندازی</Typography>
         <Input
-          type="number"
           placeholder="0"
           value={factorCosts.services}
           onChange={(e) => {
@@ -330,7 +326,6 @@ export const FactorCreateEditForm = ({ order, userId }) => {
       <Box display="flex" flexDirection="row" gap={2}>
         <Typography>هزینه حمل و ترخیص</Typography>
         <Input
-          type="number"
           placeholder="0"
           value={factorCosts.shipping}
           onChange={(e) => {
