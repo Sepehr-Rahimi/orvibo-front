@@ -200,9 +200,7 @@ export const FactorCreateEditForm = ({ order, userId }) => {
                 <TableCell align="center">
                   <TextField
                     value={item.quantity}
-                    onChange={(e) =>
-                      factorState.handleChangeQuantity(index, Number(e.target.value))
-                    }
+                    onChange={(e) => factorState.handleChangeQuantity(index, e.target.value)}
                     sx={{ width: 80 }}
                   />
                 </TableCell>

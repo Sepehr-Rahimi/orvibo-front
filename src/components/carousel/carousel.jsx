@@ -10,11 +10,11 @@ export const StyledRoot = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'axis',
 })(({ axis }) => ({
   margin: 'auto',
+  height: '100%',
+  minHeight: 0,
   maxWidth: '100%',
   overflow: 'hidden',
   position: 'relative',
-  height: '100%',
-  minHeight: 0,
   ...(axis === 'y' && {
     height: '100%',
   }),

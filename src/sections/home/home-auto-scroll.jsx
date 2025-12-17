@@ -2,8 +2,9 @@ import AutoScroll from 'embla-carousel-auto-scroll';
 
 import Box from '@mui/material/Box';
 
-import { Image } from 'src/components/image';
+// import { Image } from 'src/components/image';
 import { Carousel, useCarousel } from 'src/components/carousel';
+import Image from 'next/image';
 
 // ----------------------------------------------------------------------
 
@@ -44,13 +45,20 @@ export function HomeAutoScroll() {
             flex: '0 0 auto',
             alignSelf: 'stretch',
             width: 'auto',
+            height: '100%',
           },
+
           container: {
             height: 1,
           },
         }}
         carousel={carousel}
-        sx={{ borderRadius: 0, height: { sm: 70, xs: 40 }, alignItems: 'center', display: 'flex' }}
+        sx={{
+          borderRadius: 0,
+          height: { sm: 70, xs: 40 },
+          alignItems: 'center',
+          display: 'flex',
+        }}
       >
         {workswithImages.map((item, index) => (
           <CarouselItem key={index} index={index} item={item} />
@@ -75,7 +83,8 @@ function CarouselItem({ item, index }) {
     <Box
       sx={{
         position: 'relative',
-        height: '100%',
+        height: { xs: 40, sm: 70 },
+        width: 'auto',
         display: 'flex',
         alignItems: 'center',
         minHeight: 0,
@@ -86,15 +95,9 @@ function CarouselItem({ item, index }) {
         visibleByDefault
         alt={item.name}
         src={item.logo_url}
-        // ratio={{ xs: '4/3', sm: '16/10' }}
-        sx={{
-          // filter: 'grayscale(100%) brightness(50%)',
-          width: 'auto',
-          // height: '100%',
-          height: { xs: 40, sm: 70 },
-          objectFit: 'contain',
-          display: 'block',
-        }}
+        height={150}
+        width={200}
+        style={{ height: '100%', width: 'auto' }}
       />
     </Box>
   );

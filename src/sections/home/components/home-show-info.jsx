@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
-import { Image } from 'src/components/image';
 import { paths } from 'src/routes/paths';
+import Image from 'next/image';
 
 const banners = [
   {
@@ -24,8 +24,15 @@ export const HomeShowProductInfo = () => {
   return (
     <Stack width={1} direction={{ xs: 'column', sm: 'row' }} my={2} spacing={2}>
       {banners.map((singleBanner) => (
-        <Box position="relative" flex={1} width={1}>
-          <Image src={singleBanner.path} alt={singleBanner.text} ratio={isMobile && '1/1'} />
+        <Box position="relative" flex={1} width={1} height={{ xs: 300, sm: 'auto' }}>
+          <Image
+            src={singleBanner.path}
+            alt={singleBanner.text}
+            width={200}
+            height={200}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ width: '100%', height: 'auto' }}
+          />
           <Box
             sx={{
               width: 1,

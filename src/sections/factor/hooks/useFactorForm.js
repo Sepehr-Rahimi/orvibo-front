@@ -291,7 +291,7 @@ export const useFactorForm = (factorInfo) => {
     //   setErrorMessage('تعداد باید بزرگتر از صفر باشد');
     //   return;
     // }
-    if (!Number(newQty)) return;
+    if (!Number(newQty) && newQty) return;
 
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, quantity: newQty } : item)));
     setErrorMessage('');

@@ -57,28 +57,43 @@ export const CoverflowCarousel = ({ data = [] }) => {
 
   const snapToClosestItem = () => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !deviceWidth) return;
 
-    const scroll = container.scrollLeft;
-    const indexFloat = scroll / singleWidth;
+    const currentScroll = container.scrollLeft;
+    const delta = currentScroll - startScrollLeft.current;
 
-    // Find nearest rendered index
-    const nearestIndex = Math.round(indexFloat);
+    // Determine current rendered index
+    const currentIndexFloat = startScrollLeft.current / singleWidth;
+    let targetIndex = Math.round(currentIndexFloat);
 
-    const realIndex = (Math.abs(nearestIndex) - CLONES + originalCount) % originalCount;
-    setCurrentIndex(realIndex);
+    // Decide direction
+    if (Math.abs(delta) > singleWidth * 0.2) {
+      if (delta > 0) {
+        // dragged left → next
+        targetIndex += 1;
+      } else {
+        // dragged right → prev
+        targetIndex -= 1;
+      }
+    }
 
+    // Clamp index safely
     const targetScrollLeft =
-      nearestIndex * singleWidth +
+      targetIndex * singleWidth +
       calculatePercentage((100 - ITEM_WIDTH_PERCENTAGE) / 2, deviceWidth);
+
+    // Update real index (exclude clones)
+    const realIndex = (Math.abs(targetIndex) - CLONES + originalCount) % originalCount;
+
+    setCurrentIndex(realIndex);
 
     container.style.scrollBehavior = 'smooth';
     container.scrollLeft = targetScrollLeft;
 
-    // After scrolling completes, restore auto behavior for dragging
+    // Restore drag behavior & correct infinite scroll
     setTimeout(() => {
       container.style.scrollBehavior = 'auto';
-      correctInfiniteScroll(nearestIndex);
+      correctInfiniteScroll(targetIndex);
     }, 300);
   };
 
@@ -200,17 +215,19 @@ export const CoverflowCarousel = ({ data = [] }) => {
               src={singleItem.image}
               alt="category carousel image"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               style={{ objectFit: 'cover' }}
               draggable={false}
             />
             <Box
               position="absolute"
               bottom={16}
-              right={16}
+              left={16}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
+                mr: 2,
                 padding: '6px 10px',
                 backgroundColor: 'rgba(255, 255, 255, 0.85)',
                 borderRadius: '8px',
@@ -219,7 +236,7 @@ export const CoverflowCarousel = ({ data = [] }) => {
                 cursor: 'pointer',
                 transition: 'all 0.25s ease',
                 zIndex: 10,
-
+                width: 'fit-content',
                 '&:hover': {
                   backgroundColor: 'white',
                   boxShadow: '0 4px 10px rgba(0,0,0,0.25)',
@@ -245,12 +262,12 @@ export const CoverflowCarousel = ({ data = [] }) => {
               >
                 {singleItem.linkTitle}
                 {/* Iconify icon */}
-                <Iconify
+                {/* <Iconify
                   icon="solar:arrow-right-linear"
                   style={{ fontSize: 18 }}
                   width={15}
                   height={15}
-                />
+                /> */}
               </Link>
             </Box>
           </Box>

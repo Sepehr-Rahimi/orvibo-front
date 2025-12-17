@@ -7,6 +7,7 @@ const StyledRoot = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'axis' && prop !== 'slideSpacing',
 })(({ axis, slideSpacing }) => ({
   display: 'block',
+  height: '100%',
   position: 'relative',
   ...(axis === 'x' && {
     minWidth: 0,
@@ -22,6 +23,8 @@ const StyledContent = styled(Box)(() => ({
   overflow: 'hidden',
   position: 'relative',
   borderRadius: 'inherit',
+  height: '100%',
+  width: 'auto',
 }));
 
 // ----------------------------------------------------------------------
