@@ -9,7 +9,7 @@ const banners = [
   {
     path: '/assets/images/landing/secondarybanners/secondarybanner.png',
     text: 'Smart Central Control Panel',
-    link: paths.product.byCategory('پنل های کنترل مرکزی هوشمند'),
+    link: paths.product.byCategory(`پنل های کنترل مرکزی هوشمند`),
   },
   {
     path: '/assets/images/landing/secondarybanners/secondarybanner2.png',
@@ -22,7 +22,7 @@ export const HomeShowProductInfo = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Stack width={1} direction={{ xs: 'column', sm: 'row' }} my={2} spacing={2}>
+    <Stack width={1} direction={{ xs: 'column', sm: 'row' }} my={2} gap={{ xs: 2, md: 4 }}>
       {banners.map((singleBanner) => (
         <Box position="relative" flex={1} width={1} height={{ xs: 300, sm: 'auto' }}>
           <Image

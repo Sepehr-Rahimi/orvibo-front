@@ -7,7 +7,7 @@ import { detectLanguage } from 'src/locales/server';
 import { I18nProvider } from 'src/locales/i18n-provider';
 import { ThemeProvider } from 'src/theme/theme-provider';
 import { getInitColorSchemeScript } from 'src/theme/color-scheme-script';
-
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { Snackbar } from 'src/components/snackbar';
 import { ProgressBar } from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
@@ -84,27 +84,29 @@ export default async function RootLayout({ children }) {
         <MatomoTracker /> */}
         {getInitColorSchemeScript}
         {/* <GoogleAnalyticsProvider> */}
-        <I18nProvider lang={CONFIG.isStaticExport ? undefined : lang}>
-          <LocalizationProvider>
-            <AuthProvider>
-              <SettingsProvider
-                settings={settings}
-                caches={CONFIG.isStaticExport ? 'localStorage' : 'cookie'}
-              >
-                <ThemeProvider>
-                  <MotionLazy>
-                    <CheckoutProvider>
-                      <Snackbar />
-                      <ProgressBar />
-                      <SettingsDrawer />
-                      {children}
-                    </CheckoutProvider>
-                  </MotionLazy>
-                </ThemeProvider>
-              </SettingsProvider>
-            </AuthProvider>
-          </LocalizationProvider>
-        </I18nProvider>
+        <AppRouterCacheProvider>
+          <I18nProvider lang={CONFIG.isStaticExport ? undefined : lang}>
+            <LocalizationProvider>
+              <AuthProvider>
+                <SettingsProvider
+                  settings={settings}
+                  caches={CONFIG.isStaticExport ? 'localStorage' : 'cookie'}
+                >
+                  <ThemeProvider>
+                    <MotionLazy>
+                      <CheckoutProvider>
+                        <Snackbar />
+                        <ProgressBar />
+                        <SettingsDrawer />
+                        {children}
+                      </CheckoutProvider>
+                    </MotionLazy>
+                  </ThemeProvider>
+                </SettingsProvider>
+              </AuthProvider>
+            </LocalizationProvider>
+          </I18nProvider>
+        </AppRouterCacheProvider>
         {/* </GoogleAnalyticsProvider> */}
       </body>
     </html>

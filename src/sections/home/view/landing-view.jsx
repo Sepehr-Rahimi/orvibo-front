@@ -1,32 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
-import { Box, Stack, Button, Container, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
-import { paths } from 'src/routes/paths';
-
-import { Iconify } from 'src/components/iconify';
-import TimeCountdown from 'src/components/time-countdown/timeCountdown';
-
-// import { HomeAutoScroll } from 'src/sections/home/home-auto-scroll';
-// import { CarouselAnimation } from 'src/sections/_examples/extra/carousel-view/carousel-animation';
-
-// import HomeHotDeals from '../home-hot-deals';
-// import HomeNewBlogs from '../home-new-blogs';
-// import HomeCategories from '../home-categories';
-import { useAuthContext } from 'src/auth/hooks';
-// import { trackMatomoEvent } from 'src/utils/helper';
-import { AiSearchInput } from '../home-ai-search';
 import { HomeShowProductInfo } from '../components/home-show-info';
 import { HomeCarouselCategory } from '../home-carousel-categorys';
-// import HomeNewProducts from '../home-new-products';
 
-const HomeHotDeals = dynamic(() => import('../home-hot-deals'), {
-  ssr: false,
-});
-const HomeNewProducts = dynamic(() => import('../home-new-products'), { ssr: false });
 const CarouselAnimation = dynamic(
   () =>
     import('src/sections/_examples/extra/carousel-view/carousel-animation').then(
@@ -39,10 +20,6 @@ const HomeAutoScroll = dynamic(
   { ssr: false }
 );
 
-const HomeNewBlogs = dynamic(() => import('../home-new-blogs').then((mode) => mode.default));
-
-const HomeCategories = dynamic(() => import('../home-categories').then((mode) => mode.default));
-
 // const SLIDES = [...Array(5)].map((_, index) => ({
 //   id: _mock.id(index),
 //   title: _mock.postTitle(index),
@@ -52,6 +29,7 @@ const HomeCategories = dynamic(() => import('../home-categories').then((mode) =>
 
 const LandingView = ({ featureProducts = [], banners = [] }) => {
   const tommorowDate = new Date().setHours(24, 0, 0, 0);
+  // spaces between items : xs:2 , md:4
 
   // const { banners } = useGetBanners();
   // const { products, productsLoading } = useGetProducts({
@@ -60,7 +38,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
   //   featured: true,
   // });
 
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
 
   // useEffect(() => {
   //   if (user) trackMatomoEvent('signin-success', { userFullName: user?.displayName });
@@ -82,7 +60,7 @@ const LandingView = ({ featureProducts = [], banners = [] }) => {
       <Box>
         <HomeShowProductInfo />
       </Box>
-      <Box my={4} mb={8}>
+      <Box my={{ xs: 2, sm: 4 }}>
         <HomeCarouselCategory />
       </Box>
       {/* <Stack spacing={2} sx={{ mt: 6, mx: 2 }}>

@@ -47,7 +47,6 @@ export function HomeAutoScroll() {
             width: 'auto',
             height: '100%',
           },
-
           container: {
             height: 1,
           },
