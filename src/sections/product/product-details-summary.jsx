@@ -37,6 +37,7 @@ export function ProductDetailsSummary({
   product,
   onAddCart,
   onGotoStep,
+  onDeleteCart,
   // disableActions,
   // disableVariant,
   ...other
@@ -321,9 +322,26 @@ export function ProductDetailsSummary({
   );
 
   const renderCartQuantity = (
-    <Label color="error" width="fit-content" px={2}>
-      {quantityOfChoosedVariant ? ` موجود در سبد خرید شما : ${quantityOfChoosedVariant}` : '-'}
-    </Label>
+    <Stack direction="row" alignItems="center" gap={0.5}>
+      <Label
+        color="error"
+        width="fit-content"
+        height={40}
+        px={2}
+        sx={{ height: 30, opacity: quantityOfChoosedVariant ? 1 : 0 }}
+      >
+        {` موجود در سبد خرید شما : ${quantityOfChoosedVariant || 0}`}
+      </Label>
+      {quantityOfChoosedVariant && (
+        <Button
+          onClick={() => onDeleteCart(choosedVariant.id)}
+          color="error"
+          sx={{ height: 30, px: 0 }}
+        >
+          <Iconify icon="solar:trash-bin-trash-broken" width={16} height={16} />
+        </Button>
+      )}
+    </Stack>
   );
 
   const renderActions = (

@@ -128,6 +128,7 @@ export function ProductShopDetailsView({ product, similarProducts }) {
               items={checkout.items}
               onAddCart={checkout.onAddToCart}
               onGotoStep={checkout.onGotoStep}
+              onDeleteCart={(variantId) => checkout.onDeleteCart(variantId)}
               // disableActions={(quantity) => quantity === 0}
               // disableVariant={(variant) => !variant?.stock}
               disabled
