@@ -31,7 +31,7 @@ export function OrderDetailsItems({
     servicesCost,
     irr_total_cost,
   } = costs;
-  console.log(items);
+  // console.log(items);
   const params = useSearchParams();
   const printPricing = params.get('byPricing');
 

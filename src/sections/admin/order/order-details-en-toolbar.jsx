@@ -24,6 +24,7 @@ import { usePopover } from 'src/components/custom-popover';
 import { OrderStatusSelect } from './order-status-select';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
 import { OrderPrintButton } from './components/order-print-button';
+import { OrderSelectPdfDownlowd } from './order-select-pdf-download';
 
 // ----------------------------------------------------------------------
 
@@ -106,12 +107,11 @@ export function OrderDetailsToolbarEn({
         >
           {isAdmin && (
             <>
-              <OrderPrintButton
+              <OrderSelectPdfDownlowd
                 choosedAccount={choosedAccount}
                 isAdmin={isAdmin}
                 orderNumber={orderNumber}
                 lang="en"
-                buttonText="print without pricing"
               />
               {/* <Button
                 color="inherit"
