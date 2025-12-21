@@ -1,3 +1,5 @@
+import { useParams, useSearchParams } from 'next/navigation';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -30,13 +32,15 @@ export function OrderDetailsItems({
     irr_total_cost,
   } = costs;
   console.log(items);
+  const params = useSearchParams();
+  const printPricing = params.get('byPricing');
 
   const renderTotal = (
     <Stack
       spacing={2}
       alignItems="flex-end"
       sx={{ p: 3, textAlign: 'right', typography: 'body2' }}
-      className="print-avoid-break"
+      className={`print-avoid-break ${printPricing === 'true' && 'printOff'}`}
     >
       <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>جمع جزء</Box>

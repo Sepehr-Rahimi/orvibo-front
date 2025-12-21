@@ -22,7 +22,7 @@ export const HomeShowProductInfo = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Stack width={1} direction={{ xs: 'column', sm: 'row' }} my={2} gap={{ xs: 2, md: 4 }}>
+    <Stack width={1} direction={{ xs: 'column', sm: 'row' }} my={2} gap={{ xs: 2, md: 2 }}>
       {banners.map((singleBanner) => (
         <Box position="relative" flex={1} width={1} height={{ xs: 300, sm: 'auto' }}>
           <Image

@@ -237,10 +237,10 @@ export function CheckoutPayment() {
             onClick={handleJustCreate}
             size="large"
             type="button"
-            variant="contained"
+            variant="outlined"
             loading={submitOrderLoading}
           >
-            ثبت سفارش
+            ثبت پیش فاکتور
           </LoadingButton>
         </Grid>
       </Grid>

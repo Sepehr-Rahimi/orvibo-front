@@ -25,7 +25,7 @@ export const PaymentResultView = () => {
   if (status !== 'OK') return <PaymentError />;
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ my: 6 }}>
       <Stack alignItems="center" justifyContent="center" height="90vh">
         {verifyPaymentLoading && <CircularProgress />}
         {!verifyPaymentLoading && (

@@ -86,6 +86,7 @@ export const endpoints = {
   orders: {
     adminCreate: '/api/orders/adminCreate',
     create: '/api/orders/create',
+    finalizeOrder: '/api/orders/finalize-order',
     list: '/api/orders/list',
     listAdmin: '/api/orders/list/admin',
     one: '/api/orders/one',

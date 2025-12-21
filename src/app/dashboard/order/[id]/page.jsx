@@ -25,7 +25,7 @@ export default function Page({ params }) {
       <Head>
         <title>اطلاعات سفارش | داشبورد - {CONFIG.site.name}</title>
       </Head>
-      <OrderDetailsView userRole={user.role} order={order} orderMutate={orderMutate} />;
+      <OrderDetailsView userRole={user?.role} order={order} orderMutate={orderMutate} />;
     </>
   );
 }

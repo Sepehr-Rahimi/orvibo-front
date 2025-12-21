@@ -2,7 +2,16 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Box, Button, Link } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  Link,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -24,6 +33,9 @@ import { usePopover } from 'src/components/custom-popover';
 
 import { OrderStatusSelect } from './order-status-select';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
+import { OrderFinalizeButton } from './components/order-finalize-button';
+import { OrderPrintButton } from './components/order-print-button';
+import { OrderSelectPdfDownlowd } from './order-select-pdf-download';
 
 // ----------------------------------------------------------------------
 
@@ -48,44 +60,6 @@ export function OrderDetailsToolbar({
   const paymentStatusFull = paymentStatusOptions.find((s) => s.value === +paymentStatus);
   // console.log(paymentStatus);
   // console.log(paymentStatusFull);
-
-  const [printLoading, setPrintLoading] = useState(false);
-
-  const handlePrintRequest = async () => {
-    setPrintLoading(true);
-    try {
-      const requestParams = new URLSearchParams({
-        bank: choosedAccount,
-      });
-      const res = await axiosInstance.get(
-        `${endpoints.orders.pdf(orderNumber)}?${requestParams.toString()}`,
-        {
-          responseType: 'arraybuffer',
-          headers: {
-            Accept: 'application/pdf',
-          },
-        }
-      );
-
-      const blob = new Blob([res.data], { type: 'application/pdf' });
-      if (!blob) {
-        toast.error('somthing is wrong with this');
-        return;
-      }
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `order-${orderNumber}.pdf`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      toast.error('یه مشکلی هست');
-      console.log(error);
-    } finally {
-      setPrintLoading(false);
-    }
-  };
 
   return (
     <>
@@ -133,155 +107,92 @@ export function OrderDetailsToolbar({
         <Stack
           flexGrow={1}
           spacing={1.5}
-          direction="row"
+          direction={{ xs: 'column', md: 'row' }}
           alignItems="center"
           justifyContent={{ xs: 'center', sm: 'flex-end' }}
           justifyItems="center"
           alignContent="center"
           className="printOff"
         >
+          <Stack direction="row" gap={1} height={40} width={1} justifyContent="end">
+            <OrderSelectPdfDownlowd
+              choosedAccount={choosedAccount}
+              isAdmin={isAdmin}
+              orderNumber={orderNumber}
+            />
+
+            {!isAdmin && paymentStatus === 0 && <OrderFinalizeButton orderId={orderNumber} />}
+          </Stack>
           {isAdmin && (
             <>
-              {/* <Button
-                color="inherit"
-                variant="outlined"
-                endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-                onClick={popover.onOpen}
-                sx={{ textTransform: 'capitalize', height: 40 }}
-              >
-                {statusFull?.label}
-              </Button> */}
-              <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-                <Stack direction="row" gap={1}>
-                  {statusFull && (
-                    <OrderStatusSelect
-                      handleStatusChange={(event) => onChangeStatus(event.target.value, 'status')}
-                      menuItemDisabled={(option) =>
-                        !blockedTransitions[statusFull.value].includes(option.value)
-                      }
-                      options={ORDER_STATUS_OPTIONS}
-                      selectedStatus={statusFull}
-                    />
-                  )}
-                  {paymentStatusFull && (
-                    <OrderStatusSelect
-                      handleStatusChange={(event) =>
-                        onChangeStatus(event.target.value, 'payment_status')
-                      }
-                      menuItemDisabled={(option) =>
-                        typeOfPayment === '1' && [0, 1].includes(option.value)
-                      }
-                      options={ORDER_PAYMENT_STATUS}
-                      selectedStatus={paymentStatusFull}
-                    />
-                    // <FormControl variant="outlined" sx={{ width: 170, height: 40 }} size="small">
-                    //   <InputLabel id="paymentStatusLabel">وضعیت پرداخت</InputLabel>
-                    //   <Select
-                    //     // labelId="paymentStatusLabel"
-                    //     sx={{ height: 40 }}
-                    //     size="small"
-                    //     value={paymentStatusFull?.value}
-                    //     defaultValue={paymentStatusFull?.value}
-                    //     onChange={(event) => onChangeStatus(event.target.value, 'payment_status')}
-                    //     variant="outlined"
-                    //     disabled={typeOfPayment === '1'}
-                    //   >
-                    //     {ORDER_PAYMENT_STATUS.map((option) => (
-                    //       <MenuItem
-                    //         value={option.value}
-                    //         // defaultChecked={option.value === paymentStatusFull?.value}
-                    //       >
-                    //         {option.label}
-                    //       </MenuItem>
-                    //     ))}
-                    //   </Select>
-                    // </FormControl>
-                  )}
-                </Stack>
-                <Stack direction="row" gap={1} justifyContent="space-between">
-                  <Box>
-                    <Button
-                      color="inherit"
-                      variant="contained"
-                      startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
-                      sx={{ height: 40 }}
-                      onClick={handlePrintRequest}
-                      disabled={printLoading}
-                    >
-                      پرینت
-                    </Button>
-                  </Box>
+              <Stack direction="row" gap={1}>
+                {statusFull && (
+                  <OrderStatusSelect
+                    handleStatusChange={(event) => onChangeStatus(event.target.value, 'status')}
+                    menuItemDisabled={(option) =>
+                      !blockedTransitions[statusFull.value].includes(option.value)
+                    }
+                    options={ORDER_STATUS_OPTIONS}
+                    selectedStatus={statusFull}
+                  />
+                )}
+                {paymentStatusFull && (
+                  <OrderStatusSelect
+                    handleStatusChange={(event) =>
+                      onChangeStatus(event.target.value, 'payment_status')
+                    }
+                    menuItemDisabled={(option) =>
+                      typeOfPayment === '1' && [0, 1].includes(option.value)
+                    }
+                    options={ORDER_PAYMENT_STATUS}
+                    selectedStatus={paymentStatusFull}
+                  />
+                )}
+              </Stack>
+              <Stack direction="row" width={1} gap={1} justifyContent="space-between">
+                <Button
+                  sx={{ height: 40, flex: 1 }}
+                  color="primary"
+                  variant="contained"
+                  startIcon={<Iconify icon="solar:pen-bold" />}
+                  onClick={() => router.push(paths.adminDashboard.factor.edit(orderNumber))}
+                >
+                  ویرایش
+                </Button>
+                {statusFull && paymentStatusFull && (
                   <Button
-                    sx={{ height: 40 }}
-                    color="primary"
+                    color="error"
                     variant="contained"
-                    startIcon={<Iconify icon="solar:pen-bold" />}
-                    onClick={() => router.push(paths.adminDashboard.factor.edit(orderNumber))}
+                    sx={{ height: 40, flex: 1 }}
+                    startIcon={<Iconify icon="solar:trash-bin-minimalistic-broken" />}
+                    disabled={!(statusFull.value === '1' && paymentStatusFull.value === 0)}
+                    onClick={dialog.onTrue}
                   >
-                    ویرایش
+                    حذف
                   </Button>
-                  {statusFull && paymentStatusFull && (
-                    <Button
-                      color="error"
-                      variant="contained"
-                      sx={{ height: 40 }}
-                      startIcon={<Iconify icon="solar:trash-bin-minimalistic-broken" />}
-                      disabled={!(statusFull.value === '1' && paymentStatusFull.value === 0)}
-                      onClick={dialog.onTrue}
-                    >
-                      حذف
-                    </Button>
-                  )}
-                  <Box>
-                    <Link
-                      href="./en"
-                      underline="none"
-                      sx={{
-                        fontWeight: 'bold',
-                        color: 'primary.main',
-                        cursor: 'pointer',
-                        // ml: 2,
-                        '&:hover': {
-                          textDecoration: 'underline',
-                        },
-                      }}
-                    >
-                      EN
-                    </Link>
-                  </Box>
-                </Stack>
+                )}
+                <Box>
+                  <Link
+                    href="./en"
+                    underline="none"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      // ml: 2,
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    EN
+                  </Link>
+                </Box>
               </Stack>
             </>
           )}
-
-          {/* <Button color="inherit" variant="contained" startIcon={<Iconify icon="solar:pen-bold" />}>
-            Edit
-          </Button> */}
         </Stack>
       </Stack>
-
-      {/* <CustomPopover
-        open={popover.open}
-        anchorEl={popover.anchorEl}
-        onClose={popover.onClose}
-        slotProps={{ arrow: { placement: 'top-right' } }}
-      >
-        <MenuList>
-          {statusOptions.map((option) => (
-            <MenuItem
-              key={option.value}
-              selected={option.value === status}
-              disabled={!blockedTransitions[statusFull?.value]?.includes(option.value)}
-              onClick={() => {
-                popover.onClose();
-                onChangeStatus(option.value, 'status');
-              }}
-            >
-              {option.label}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </CustomPopover> */}
       <DeleteConfirmDialog
         open={dialog.value}
         onClose={dialog.onFalse}

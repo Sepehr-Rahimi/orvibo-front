@@ -23,6 +23,7 @@ import { usePopover } from 'src/components/custom-popover';
 
 import { OrderStatusSelect } from './order-status-select';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
+import { OrderPrintButton } from './components/order-print-button';
 
 // ----------------------------------------------------------------------
 
@@ -47,45 +48,6 @@ export function OrderDetailsToolbarEn({
   const paymentStatusFull = paymentStatusOptions.find((s) => s.value === +paymentStatus);
   // console.log(paymentStatus);
   // console.log(paymentStatusFull);
-
-  const [printLoadint, setPrintLoading] = useState(false);
-
-  const handlePrintRequest = async () => {
-    setPrintLoading(true);
-    try {
-      const requestParams = new URLSearchParams({
-        bank: choosedAccount,
-        en: true,
-      });
-      const res = await axiosInstance.get(
-        `${endpoints.orders.pdf(orderNumber)}?${requestParams.toString()}`,
-        {
-          responseType: 'arraybuffer',
-          headers: {
-            Accept: 'application/pdf',
-          },
-        }
-      );
-
-      const blob = new Blob([res.data], { type: 'application/pdf' });
-      if (!blob) {
-        toast.error('somthing is wrong with this');
-        return;
-      }
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `order-${orderNumber}.pdf`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      toast.error('یه مشکلی هست');
-      console.log(error);
-    } finally {
-      setPrintLoading(false);
-    }
-  };
 
   return (
     <>
@@ -144,6 +106,13 @@ export function OrderDetailsToolbarEn({
         >
           {isAdmin && (
             <>
+              <OrderPrintButton
+                choosedAccount={choosedAccount}
+                isAdmin={isAdmin}
+                orderNumber={orderNumber}
+                lang="en"
+                buttonText="print without pricing"
+              />
               {/* <Button
                 color="inherit"
                 variant="outlined"
@@ -201,16 +170,6 @@ export function OrderDetailsToolbarEn({
                   )}
                 </Stack>
                 <Stack direction="row" gap={1} justifyContent="space-between">
-                  <Button
-                    color="inherit"
-                    variant="contained"
-                    startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
-                    sx={{ height: 40 }}
-                    onClick={handlePrintRequest}
-                    disabled={printLoadint}
-                  >
-                    print
-                  </Button>
                   <Button
                     sx={{ height: 40 }}
                     color="primary"

@@ -354,7 +354,7 @@ export const useFactorForm = (factorInfo) => {
   };
 
   const handleChangeFactorCosts = (name, value) => {
-    if (!Number(value)) return;
+    if (value && !Number(value)) return;
     setFactorCost((prev) => ({ ...prev, [name]: Math.round(value) }));
   };
 
