@@ -12,10 +12,7 @@ import { updateOrder } from 'src/actions/orders';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { ORDER_PAYMENT_STATUS_EN, ORDER_STATUS_OPTIONS_EN } from 'src/_mock';
 
-import { OrderDetailsInfo } from '../order-details-info';
-import { OrderDetailsItems } from '../order-details-item';
 import { AdminPrintOrderSocials } from '../admin-print-order-socials';
-import { OrderDetailsBankAccounts } from '../order-details-bankaccount';
 import { OrderDetailsToolbarEn } from '../order-details-en-toolbar';
 import { OrderDetailsItemsEn } from '../order-details-en-item';
 import { OrderDetailsInfoEn } from '../order-details-en-info';

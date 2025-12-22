@@ -38,7 +38,7 @@ export const OrderSelectPdfDownlowd = ({ isAdmin, orderNumber, choosedAccount, l
         lang,
         bank: choosedAccount,
         isAdmin,
-        byPricing: withoutPricing,
+        withoutPricing,
       });
 
       const res = await axiosInstance.get(

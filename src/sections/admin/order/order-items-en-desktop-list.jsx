@@ -9,6 +9,7 @@ import { fCurrency } from 'src/utils/format-number';
 import { ColorPreview } from 'src/components/color-utils';
 import { PRODUCT_COLOR_NAME_OPTIONS_EN } from 'src/_mock';
 import { getCurrentPrice } from 'src/utils/helper';
+import { useIsPdfWithoutPricing } from './hooks/usePrintPricing';
 
 const COLS = {
   product: 480,
@@ -18,6 +19,8 @@ const COLS = {
 };
 
 export const OrderItemsDesktopListEn = ({ items }) => {
+  const withoutPricing = useIsPdfWithoutPricing();
+  const ifPdfIsWithoutPricing = `${withoutPricing && 'printOff'}`;
   const renderTableHead = (
     <Stack
       direction="row"
@@ -36,11 +39,19 @@ export const OrderItemsDesktopListEn = ({ items }) => {
         Qty
       </Typography>
 
-      <Typography variant="body2" sx={{ width: COLS.price, textAlign: 'right' }}>
+      <Typography
+        variant="body2"
+        className={ifPdfIsWithoutPricing}
+        sx={{ width: COLS.price, textAlign: 'right' }}
+      >
         Unit Price
       </Typography>
 
-      <Typography variant="body2" sx={{ width: COLS.total, textAlign: 'right' }}>
+      <Typography
+        variant="body2"
+        className={ifPdfIsWithoutPricing}
+        sx={{ width: COLS.total, textAlign: 'right' }}
+      >
         Total Price
       </Typography>
     </Stack>
@@ -117,11 +128,17 @@ export const OrderItemsDesktopListEn = ({ items }) => {
               x{item.quantity}
             </Box>
 
-            <Box sx={{ width: COLS.price, textAlign: 'right', typography: 'subtitle2' }}>
+            <Box
+              className={ifPdfIsWithoutPricing}
+              sx={{ width: COLS.price, textAlign: 'right', typography: 'subtitle2' }}
+            >
               {fCurrency(getCurrentPrice(item.price, item.discount_price))}
             </Box>
 
-            <Box sx={{ width: COLS.total, textAlign: 'right', typography: 'subtitle2' }}>
+            <Box
+              className={ifPdfIsWithoutPricing}
+              sx={{ width: COLS.total, textAlign: 'right', typography: 'subtitle2' }}
+            >
               {fCurrency(itemTotalCost)}
             </Box>
           </Stack>

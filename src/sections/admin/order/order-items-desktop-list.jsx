@@ -9,6 +9,7 @@ import { fCurrency } from 'src/utils/format-number';
 import { ColorPreview } from 'src/components/color-utils';
 import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
 import { getCurrentPrice } from 'src/utils/helper';
+import { useIsPdfWithoutPricing } from './hooks/usePrintPricing';
 
 const COLS = {
   product: 480,
@@ -18,6 +19,8 @@ const COLS = {
 };
 
 export const OrderItemsDesktopList = ({ items }) => {
+  const withoutPricing = useIsPdfWithoutPricing();
+  const ifPdfIsWithoutPricing = `${withoutPricing && 'printOff'}`;
   const renderTableHead = (
     <>
       {' '}
@@ -37,10 +40,18 @@ export const OrderItemsDesktopList = ({ items }) => {
         <Typography variant="body2" sx={{ width: COLS.qty }}>
           تعداد
         </Typography>
-        <Typography variant="body2" sx={{ width: COLS.price, textAlign: 'right' }}>
+        <Typography
+          variant="body2"
+          className={ifPdfIsWithoutPricing}
+          sx={{ width: COLS.price, textAlign: 'right' }}
+        >
           قیمت واحد
         </Typography>
-        <Typography variant="body2" sx={{ width: COLS.total, textAlign: 'right' }}>
+        <Typography
+          variant="body2"
+          className={ifPdfIsWithoutPricing}
+          sx={{ width: COLS.total, textAlign: 'right' }}
+        >
           قیمت کل
         </Typography>
       </Stack>
@@ -111,11 +122,17 @@ export const OrderItemsDesktopList = ({ items }) => {
 
             <Box sx={{ typography: 'body2', width: 60 }}>x{item.quantity}</Box>
 
-            <Box sx={{ width: 110, textAlign: 'right', typography: 'subtitle2' }}>
+            <Box
+              className={ifPdfIsWithoutPricing}
+              sx={{ width: 110, textAlign: 'right', typography: 'subtitle2' }}
+            >
               {fCurrency(getCurrentPrice(item.price, item.discount_price))}
             </Box>
 
-            <Box sx={{ width: 110, textAlign: 'right', typography: 'subtitle2' }}>
+            <Box
+              className={ifPdfIsWithoutPricing}
+              sx={{ width: 110, textAlign: 'right', typography: 'subtitle2' }}
+            >
               {fCurrency(itemTotalCost)}
             </Box>
           </Stack>

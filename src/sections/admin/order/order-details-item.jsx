@@ -10,6 +10,7 @@ import { fCurrency, fIrr } from 'src/utils/format-number';
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { OrderItemsWrapper } from './order-items-wrapper';
+import { useIsPdfWithoutPricing } from './hooks/usePrintPricing';
 
 // ----------------------------------------------------------------------
 
@@ -32,15 +33,14 @@ export function OrderDetailsItems({
     irr_total_cost,
   } = costs;
   // console.log(items);
-  const params = useSearchParams();
-  const printPricing = params.get('byPricing');
+  const withoutPricing = useIsPdfWithoutPricing();
 
   const renderTotal = (
     <Stack
       spacing={2}
       alignItems="flex-end"
       sx={{ p: 3, textAlign: 'right', typography: 'body2' }}
-      className={`print-avoid-break ${printPricing === 'true' && 'printOff'}`}
+      className={`print-avoid-break ${withoutPricing && 'printOff'}`}
     >
       <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>جمع جزء</Box>

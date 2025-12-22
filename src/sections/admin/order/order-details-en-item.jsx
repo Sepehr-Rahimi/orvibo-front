@@ -9,6 +9,7 @@ import { fCurrency, fIrr } from 'src/utils/format-number';
 
 import { OrderItemsWrapper } from './order-items-wrapper';
 import { OrderItemsWrapperEn } from './order-details-en-items-wrapper';
+import { useIsPdfWithoutPricing } from './hooks/usePrintPricing';
 
 // ----------------------------------------------------------------------
 
@@ -31,15 +32,14 @@ export function OrderDetailsItemsEn({
     irr_total_cost,
   } = costs;
   // console.log(items);
-  const params = useSearchParams();
-  const printPricing = params.get('byPricing');
+  const withoutPricing = useIsPdfWithoutPricing();
 
   const renderTotal = (
     <Stack
       spacing={2}
       alignItems="flex-end"
       sx={{ p: 3, textAlign: 'left', typography: 'body2' }}
-      className={`print-avoid-break ${printPricing === 'true' && 'printOff'}`}
+      className={`print-avoid-break ${withoutPricing && 'printOff'}`}
     >
       {[
         { label: 'Subtotal', value: subtotal },
