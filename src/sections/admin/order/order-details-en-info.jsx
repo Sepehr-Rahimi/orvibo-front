@@ -58,7 +58,7 @@ export function OrderDetailsInfoEn({ order }) {
           <Box component="span" sx={{ color: 'text.secondary', width: 120, flexShrink: 0 }}>
             Full Name
           </Box>
-          {address?.full_name}
+          {address?.latin_full_name}
         </Stack>
 
         <Stack direction="row">

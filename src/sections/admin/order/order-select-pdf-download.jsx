@@ -7,6 +7,19 @@ import axiosInstance, { endpoints } from 'src/utils/axios';
 
 import { Iconify } from 'src/components/iconify';
 
+const downloadOptions = [
+  {
+    title: 'کل فاکتور',
+    enTitle: 'all invoice',
+    onDownload: (handle) => handle?.({ withoutPricing: false }),
+  },
+  {
+    title: 'لیست محصولات',
+    enTitle: 'items list',
+    onDownload: (handle) => handle?.({ withoutPricing: true }),
+  },
+];
+
 export const OrderSelectPdfDownlowd = ({ isAdmin, orderNumber, choosedAccount, lang = 'fa' }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,11 +84,14 @@ export const OrderSelectPdfDownlowd = ({ isAdmin, orderNumber, choosedAccount, l
       </Button>
 
       <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
-        <MenuItem onClick={() => handlePrintRequest({ withoutPricing: false })}>کل فاکتور</MenuItem>
-
-        <MenuItem onClick={() => handlePrintRequest({ withoutPricing: true })}>
-          لیست محصولات
-        </MenuItem>
+        {downloadOptions.map((singleOption) => (
+          <MenuItem
+            onClick={() => singleOption.onDownload(handlePrintRequest)}
+            key={singleOption.title}
+          >
+            {lang === 'en' ? singleOption.enTitle : singleOption.title}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );
