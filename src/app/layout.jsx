@@ -22,6 +22,7 @@ import { AuthProvider as AmplifyAuthProvider } from 'src/auth/context/amplify';
 import { AuthProvider as SupabaseAuthProvider } from 'src/auth/context/supabase';
 import { AuthProvider as FirebaseAuthProvider } from 'src/auth/context/firebase';
 import Script from 'next/script';
+import { CssBaseline } from '@mui/material';
 // import { MatomoTracker } from 'src/components/matomo/matomoTracker';
 // import { InitialMatomo } from 'src/components/matomo/initialMatomo';
 
@@ -84,7 +85,7 @@ export default async function RootLayout({ children }) {
         <MatomoTracker /> */}
         {getInitColorSchemeScript}
         {/* <GoogleAnalyticsProvider> */}
-        <AppRouterCacheProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true, key: 'css', prepend: true }}>
           <I18nProvider lang={CONFIG.isStaticExport ? undefined : lang}>
             <LocalizationProvider>
               <AuthProvider>
@@ -93,6 +94,7 @@ export default async function RootLayout({ children }) {
                   caches={CONFIG.isStaticExport ? 'localStorage' : 'cookie'}
                 >
                   <ThemeProvider>
+                    <CssBaseline />
                     <MotionLazy>
                       <CheckoutProvider>
                         <Snackbar />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, Stack, Typography } from '@mui/material';
+import { Box, Link, Stack, Typography } from '@mui/material';
 
 const socials = [
   {
