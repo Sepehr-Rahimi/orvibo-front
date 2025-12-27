@@ -10,7 +10,7 @@ const swrOptions = {
   revalidateIfStale: false,
   revalidateOnFocus: false,
   revalidateOnReconnect: false,
-  refreshInterval: 0,
+  // refreshInterval: 0,
 };
 
 export const createOrder = async ({
@@ -163,7 +163,13 @@ export const deleteOrder = async (orderId) => {
 export function useGetOrders() {
   const url = endpoints.orders.list;
 
-  const { data, isLoading, error, isValidating, mutate } = useSWR(url, fetcher, swrOptions);
+  const { data, isLoading, error, isValidating, mutate } = useSWR(url, fetcher, {
+    ...swrOptions,
+    revalidateOnMount: true,
+    revalidateIfStale: true,
+    keepPreviousData: false,
+    dedupingInterval: 0,
+  });
 
   const memoizedValue = useMemo(
     () => ({
@@ -187,6 +193,8 @@ export function useGetOrdersAdmin() {
     // provider: () => new Map(),
     // dedupingInterval: 0,
     revalidateIfStale: true,
+    revalidateOnMount: true,
+    keepPreviousData: false,
   });
 
   const memoizedValue = useMemo(
@@ -215,6 +223,7 @@ export function useGetorder(orderId, params) {
   const { data, isLoading, error, isValidating, mutate } = useSWR(url, fetcher, {
     ...swrOptions,
     revalidateIfStale: true,
+    revalidateOnMount: true,
   });
 
   const memoizedValue = useMemo(

@@ -6,6 +6,7 @@ import packageJson from '../package.json';
 
 export const CONFIG = {
   roles: {
+    seller: 3,
     admin: 2,
     customer: 1,
   },

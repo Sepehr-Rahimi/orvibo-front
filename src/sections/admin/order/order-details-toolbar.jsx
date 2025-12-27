@@ -1,41 +1,28 @@
-import { toast } from 'sonner';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  Link,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { Box, Button, Link } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { userRoleIs } from 'src/utils/helper';
 import { fDateTime } from 'src/utils/format-time';
-import axiosInstance, { endpoints } from 'src/utils/axios';
 
+import { CONFIG } from 'src/config-global';
 import { blockedTransitions, ORDER_PAYMENT_STATUS, ORDER_STATUS_OPTIONS } from 'src/_mock';
 
-import { Logo } from 'src/components/logo';
 import { Iconify } from 'src/components/iconify';
 import { LogoBlack } from 'src/components/logo/logoBlack';
-import { usePopover } from 'src/components/custom-popover';
 
 import { OrderStatusSelect } from './order-status-select';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
-import { OrderFinalizeButton } from './components/order-finalize-button';
-import { OrderPrintButton } from './components/order-print-button';
 import { OrderSelectPdfDownlowd } from './order-select-pdf-download';
+import { OrderFinalizeButton } from './components/order-finalize-button';
 
 // ----------------------------------------------------------------------
 
@@ -49,9 +36,10 @@ export function OrderDetailsToolbar({
   statusOptions,
   paymentStatusOptions,
   onChangeStatus,
-  isAdmin,
+  userRole,
   choosedAccount,
 }) {
+  const { roles } = CONFIG;
   const router = useRouter();
 
   const dialog = useBoolean();
@@ -61,6 +49,9 @@ export function OrderDetailsToolbar({
   // console.log(paymentStatus);
   // console.log(paymentStatusFull);
 
+  const isAuth = userRoleIs([roles.admin, roles.seller], userRole);
+  const isAdmin = userRoleIs(roles.admin, userRole);
+  const userDashboard = isAdmin ? 'adminDashboard' : 'dashboard';
   return (
     <>
       <Stack
@@ -121,9 +112,9 @@ export function OrderDetailsToolbar({
               orderNumber={orderNumber}
             />
 
-            {!isAdmin && paymentStatus === 0 && <OrderFinalizeButton orderId={orderNumber} />}
+            {!isAuth && paymentStatus === 0 && <OrderFinalizeButton orderId={orderNumber} />}
           </Stack>
-          {isAdmin && (
+          {isAuth && (
             <>
               <Stack direction="row" gap={1}>
                 {statusFull && (
@@ -155,7 +146,7 @@ export function OrderDetailsToolbar({
                   color="primary"
                   variant="contained"
                   startIcon={<Iconify icon="solar:pen-bold" />}
-                  onClick={() => router.push(paths.adminDashboard.factor.edit(orderNumber))}
+                  onClick={() => router.push(paths[userDashboard].factor.edit(orderNumber))}
                 >
                   ویرایش
                 </Button>
@@ -171,23 +162,25 @@ export function OrderDetailsToolbar({
                     حذف
                   </Button>
                 )}
-                <Box>
-                  <Link
-                    href="./en"
-                    underline="none"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      // ml: 2,
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
-                  >
-                    EN
-                  </Link>
-                </Box>
+                {isAdmin && (
+                  <Box>
+                    <Link
+                      href="./en"
+                      underline="none"
+                      sx={{
+                        fontWeight: 'bold',
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        // ml: 2,
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      EN
+                    </Link>
+                  </Box>
+                )}
               </Stack>
             </>
           )}
@@ -198,8 +191,8 @@ export function OrderDetailsToolbar({
         onClose={dialog.onFalse}
         orderId={orderNumber}
         mutateData={() => {
-          router.prefetch(`${paths.adminDashboard.order.root}`);
-          router.push(`${paths.adminDashboard.order.root}`);
+          router.prefetch(paths[userDashboard].order.root);
+          router.push(paths[userDashboard].order.root);
         }}
       />
     </>

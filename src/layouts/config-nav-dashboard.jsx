@@ -67,7 +67,7 @@ export const navData = [
       {
         title: 'حساب کاربری',
         path: paths.dashboard.user.account,
-        roles: [CONFIG.roles.customer, CONFIG.roles.admin],
+        roles: [roles.customer, roles.admin, roles.seller],
         icon: ICONS.user,
       },
       {
@@ -77,7 +77,7 @@ export const navData = [
           // ICONS.user
           <Iconify icon="solar:users-group-two-rounded-bold-duotone" />
         ),
-        roles: [CONFIG.roles.admin],
+        roles: [roles.admin],
         children: [
           // { title: 'Profile', path: paths.dashboard.user.root },
           // { title: 'Cards', path: paths.dashboard.user.cards },
@@ -135,6 +135,18 @@ export const navData = [
           // { title: 'ویرایش', path: paths.adminDashboard.categories.demo.edit },
         ],
       },
+      {
+        title: 'فاکتور',
+        path: paths.dashboard.order.root,
+        icon: <Iconify icon="solar:bill-list-linear" />,
+        roles: [roles.seller],
+        children: [
+          // { title: 'لیست', path: paths.adminDashboard.categories.root },
+          // { title: 'اطلاعات', path: paths.adminDashboard.categories.demo.details },
+          { title: 'ایجاد', path: paths.dashboard.factor.new },
+          // { title: 'ویرایش', path: paths.adminDashboard.categories.demo.edit },
+        ],
+      },
       // {
       //   title: 'Order',
       //   path: paths.dashboard.order.root,
@@ -148,7 +160,7 @@ export const navData = [
       {
         title: 'لیست سفارشات شما',
         path: paths.dashboard.order.root,
-        roles: [roles.customer],
+        roles: [roles.customer, roles.seller],
         icon: <Iconify icon="solar:reorder-bold" />,
       },
       // {

@@ -18,14 +18,12 @@ export default function Page({ params }) {
 
   const { order, orderMutate } = useGetorder(id);
 
-  const { user } = useAuthContext();
-
   return (
     <>
       <Head>
         <title>اطلاعات سفارش | داشبورد - {CONFIG.site.name}</title>
       </Head>
-      <OrderDetailsView userRole={user?.role} order={order} orderMutate={orderMutate} />;
+      <OrderDetailsView order={order} orderMutate={orderMutate} />;
     </>
   );
 }

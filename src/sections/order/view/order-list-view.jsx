@@ -73,7 +73,7 @@ export function OrderListView() {
   const { orders } = useGetOrders();
 
   useEffect(() => {
-    if (orders.length) setTableData(orders);
+    if (orders && orders instanceof Array) setTableData(orders);
   }, [orders]);
 
   const filters = useSetState({

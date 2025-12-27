@@ -8,9 +8,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import { paths } from 'src/routes/paths';
 
+import { userRoleIs } from 'src/utils/helper';
+
+import { CONFIG } from 'src/config-global';
 import { updateOrder } from 'src/actions/orders';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { ORDER_PAYMENT_STATUS, ORDER_STATUS_OPTIONS } from 'src/_mock';
+
+import { useAuthContext } from 'src/auth/hooks';
 
 import { OrderDetailsInfo } from '../order-details-info';
 import { OrderDetailsItems } from '../order-details-item';
@@ -20,8 +25,11 @@ import { OrderDetailsBankAccounts } from '../order-details-bankaccount';
 
 // ----------------------------------------------------------------------
 
-export function OrderDetailsView({ order, orderMutate, userRole }) {
+export function OrderDetailsView({ order, orderMutate }) {
   // console.log(order);
+  const { user } = useAuthContext();
+  const userRole = user?.role;
+  const { roles } = CONFIG;
   const [choosedAccount, setChoosedAccount] = useState(false);
 
   const handleChangeStatus = useCallback(
@@ -44,7 +52,7 @@ export function OrderDetailsView({ order, orderMutate, userRole }) {
         statusOptions={ORDER_STATUS_OPTIONS}
         paymentStatusOptions={ORDER_PAYMENT_STATUS}
         typeOfPayment={order.type_of_payment}
-        isAdmin={userRole === 2}
+        userRole={userRole}
         choosedAccount={choosedAccount}
       />
 
@@ -71,7 +79,7 @@ export function OrderDetailsView({ order, orderMutate, userRole }) {
         <Grid xs={12} md={4} className="print-user">
           {order && <OrderDetailsInfo order={order} />}
         </Grid>
-        {userRole === 2 && (
+        {userRoleIs([roles.admin, roles.seller], userRole) && (
           <Grid xs={12} md={8}>
             <OrderDetailsBankAccounts
               choosedAccount={choosedAccount}

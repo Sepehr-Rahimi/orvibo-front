@@ -153,3 +153,8 @@ export const calculatePercentage = (percentage, price) => {
 // ----------------------------------------------------------------------
 
 export const calculatePercentageByAmount = (piece, fullAmount) => (piece / fullAmount) * 100;
+
+// ----------------------------------------------------------------------
+
+export const userRoleIs = (expectingRole, userRole) =>
+  expectingRole instanceof Array ? expectingRole.includes(userRole) : expectingRole === userRole;

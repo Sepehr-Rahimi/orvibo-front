@@ -133,6 +133,10 @@ export const paths = {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },
     },
+    factor: {
+      new: `${ROOTS.DASHBOARD}/factor/new`,
+      edit: (id) => `${ROOTS.DASHBOARD}/factor/${id}/edit`,
+    },
     product: {
       root: `${ROOTS.DASHBOARD}/products`,
       new: `${ROOTS.DASHBOARD}/products/new`,

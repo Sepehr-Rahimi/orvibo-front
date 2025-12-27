@@ -28,15 +28,18 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { calculatePercentage } from 'src/utils/helper';
 import { fCurrency, fIrr } from 'src/utils/format-number';
+import { calculatePercentage, userRoleIs } from 'src/utils/helper';
 
+import { CONFIG } from 'src/config-global';
 import { PRODUCT_COLOR_NAME_OPTIONS } from 'src/_mock';
 import { updateOrder, createAdminOrder } from 'src/actions/orders';
 import ProductResultItem from 'src/layouts/components/searchbar/product-result-item';
 
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+
+import { useAuthContext } from 'src/auth/hooks';
 
 import { useFactorForm } from './hooks/useFactorForm';
 import { AddressItem, AddressNewEditForm } from '../address';
@@ -72,6 +75,9 @@ export const FactorCreateEditForm = ({ order, userId }) => {
   const shippingCost = calculatePercentage(factorCosts.shipping, factorState.productsPrice);
   const guarantee = calculatePercentage(factorCosts.guarantee, factorState.productsPrice);
   const services = calculatePercentage(factorCosts.services, factorState.productsPrice);
+
+  const { user } = useAuthContext();
+  const userDashboard = userRoleIs(CONFIG.roles.admin, user.role) ? 'adminDashboard' : 'dashboard';
 
   return (
     <Stack direction="column" gap={3}>
@@ -404,13 +410,9 @@ export const FactorCreateEditForm = ({ order, userId }) => {
               shippingPercentage: factorCosts.shipping,
             })
               .then((res) => {
+                router.prefetch(paths[userDashboard].order.details(order.id));
+                router.push(paths[userDashboard].order.details(order.id));
                 setLoading(false);
-                router.prefetch(
-                  `${process.env.NEXT_PUBLIC_BASE_URL}${paths.adminDashboard.order.details(order.id)}`
-                );
-                router.push(
-                  `${process.env.NEXT_PUBLIC_BASE_URL}${paths.adminDashboard.order.details(order.id)}`
-                );
               })
               .catch((err) => {
                 setLoading(false);
@@ -430,10 +432,8 @@ export const FactorCreateEditForm = ({ order, userId }) => {
               type_of_payment: 0,
             })
               .then((res) => {
+                router.push(paths[userDashboard].order.root);
                 setLoading(false);
-                router.push(
-                  `${process.env.NEXT_PUBLIC_BASE_URL}${paths.adminDashboard.order.root}`
-                );
               })
               .catch((err) => {
                 setLoading(false);
